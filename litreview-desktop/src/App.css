@@ -272,3 +272,137 @@ button[type="button"] {
 button[type="button"]:hover:not(:disabled) {
   background: #666;
 }
+
+/* Provider Type Badge */
+.provider-type-badge {
+  background: #666;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+/* Settings Modal - Multi Provider */
+.settings-modal {
+  max-width: 700px !important;
+}
+
+.settings-layout {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 400px;
+}
+
+/* Provider List (Left Panel) */
+.provider-list {
+  width: 180px;
+  flex-shrink: 0;
+  border-right: 1px solid #333;
+  padding-right: 1rem;
+}
+
+.provider-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.add-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border-radius: 4px;
+}
+
+.provider-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.provider-item:hover {
+  background: #333;
+}
+
+.provider-item.selected {
+  background: #3a3a3a;
+  border: 1px solid #4a9eff;
+}
+
+.provider-item.new-provider {
+  border-style: dashed;
+}
+
+.provider-item .provider-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.provider-item .provider-type {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.default-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #ffd700;
+  font-size: 0.8rem;
+}
+
+/* Provider Form (Right Panel) */
+.provider-form {
+  flex: 1;
+  min-width: 0;
+}
+
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-style: italic;
+}
+
+/* Config Path */
+.config-path {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #333;
+  color: #666;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #333;
+}
+
+/* Danger Button */
+.danger-btn {
+  background: #dc3545 !important;
+}
+
+.danger-btn:hover:not(:disabled) {
+  background: #c82333 !important;
+}

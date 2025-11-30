@@ -1,61 +1,64 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { LlmConfig } from "./useLlmStream";
+import { LlmConfig, AppConfig, ProviderConfig } from "./useLlmStream";
 
-const DEFAULT_CONFIGS: Record<string, Partial<LlmConfig>> = {
+// Provider type templates for creating new providers
+export const PROVIDER_TYPE_TEMPLATES: Record<string, Partial<ProviderConfig>> = {
   openai: {
+    provider_type: "openai",
     base_url: "https://api.openai.com/v1",
     model: "gpt-4o",
+    context_window: 128000,
   },
-  ollama: {
-    base_url: "http://localhost:11434/v1",
-    model: "llama3.2",
-    api_key: "",
+  claude: {
+    provider_type: "claude",
+    base_url: "https://api.anthropic.com",
+    model: "claude-sonnet-4-20250514",
+    context_window: 200000,
+    api_version: "2023-06-01",
   },
   gemini: {
+    provider_type: "gemini",
     base_url: "https://generativelanguage.googleapis.com",
     model: "gemini-1.5-flash",
-  },
-  deepseek: {
-    base_url: "https://api.deepseek.com/v1",
-    model: "deepseek-chat",
-  },
-  moonshot: {
-    base_url: "https://api.moonshot.cn/v1",
-    model: "moonshot-v1-8k",
+    context_window: 1000000,
   },
 };
 
 export function useConfig() {
+  const [appConfig, setAppConfig] = useState<AppConfig | null>(null);
   const [config, setConfig] = useState<LlmConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [configPath, setConfigPath] = useState<string>("");
 
   // Load config on mount
   useEffect(() => {
     const loadConfig = async () => {
       try {
-        const savedConfig = await invoke<LlmConfig | null>("load_config");
-        if (savedConfig) {
-          setConfig(savedConfig);
-        } else {
-          // Set default config
+        const [loadedConfig, path] = await Promise.all([
+          invoke<AppConfig>("load_toml_config"),
+          invoke<string>("get_config_file_path"),
+        ]);
+        
+        setAppConfig(loadedConfig);
+        setConfigPath(path);
+        
+        // Set active config
+        const activeProvider = loadedConfig.providers[loadedConfig.default];
+        if (activeProvider) {
           setConfig({
-            provider: "openai",
-            base_url: DEFAULT_CONFIGS.openai.base_url!,
-            api_key: "",
-            model: DEFAULT_CONFIGS.openai.model!,
+            provider: loadedConfig.default,
+            provider_type: activeProvider.provider_type,
+            base_url: activeProvider.base_url,
+            api_key: activeProvider.api_key,
+            model: activeProvider.model,
+            context_window: activeProvider.context_window,
+            api_version: activeProvider.api_version,
           });
         }
       } catch (e) {
         console.error("Failed to load config:", e);
-        // Set default config on error
-        setConfig({
-          provider: "openai",
-          base_url: DEFAULT_CONFIGS.openai.base_url!,
-          api_key: "",
-          model: DEFAULT_CONFIGS.openai.model!,
-        });
       } finally {
         setLoading(false);
       }
@@ -64,11 +67,26 @@ export function useConfig() {
     loadConfig();
   }, []);
 
-  const saveConfig = useCallback(async (newConfig: LlmConfig) => {
+  // Save entire app config
+  const saveAppConfig = useCallback(async (newAppConfig: AppConfig) => {
     setSaving(true);
     try {
-      await invoke("save_config", { config: newConfig });
-      setConfig(newConfig);
+      await invoke("save_toml_config", { config: newAppConfig });
+      setAppConfig(newAppConfig);
+      
+      // Update active config
+      const activeProvider = newAppConfig.providers[newAppConfig.default];
+      if (activeProvider) {
+        setConfig({
+          provider: newAppConfig.default,
+          provider_type: activeProvider.provider_type,
+          base_url: activeProvider.base_url,
+          api_key: activeProvider.api_key,
+          model: activeProvider.model,
+          context_window: activeProvider.context_window,
+          api_version: activeProvider.api_version,
+        });
+      }
     } catch (e) {
       console.error("Failed to save config:", e);
       throw e;
@@ -77,26 +95,102 @@ export function useConfig() {
     }
   }, []);
 
-  const updateProvider = useCallback((provider: string) => {
-    if (!config) return;
+  // Switch active provider
+  const setDefaultProvider = useCallback(async (providerName: string) => {
+    if (!appConfig) return;
     
-    const defaults = DEFAULT_CONFIGS[provider] || {};
-    setConfig({
-      ...config,
-      provider,
-      base_url: defaults.base_url || config.base_url,
-      model: defaults.model || config.model,
-      api_key: defaults.api_key !== undefined ? defaults.api_key : config.api_key,
-    });
-  }, [config]);
+    setSaving(true);
+    try {
+      await invoke("set_default_provider", { providerName });
+      
+      const newAppConfig = { ...appConfig, default: providerName };
+      setAppConfig(newAppConfig);
+      
+      const activeProvider = appConfig.providers[providerName];
+      if (activeProvider) {
+        setConfig({
+          provider: providerName,
+          provider_type: activeProvider.provider_type,
+          base_url: activeProvider.base_url,
+          api_key: activeProvider.api_key,
+          model: activeProvider.model,
+          context_window: activeProvider.context_window,
+          api_version: activeProvider.api_version,
+        });
+      }
+    } catch (e) {
+      console.error("Failed to set default provider:", e);
+      throw e;
+    } finally {
+      setSaving(false);
+    }
+  }, [appConfig]);
+
+  // Add a new provider
+  const addProvider = useCallback(async (name: string, provider: ProviderConfig) => {
+    if (!appConfig) return;
+    
+    const newAppConfig: AppConfig = {
+      ...appConfig,
+      providers: {
+        ...appConfig.providers,
+        [name]: provider,
+      },
+    };
+    
+    await saveAppConfig(newAppConfig);
+  }, [appConfig, saveAppConfig]);
+
+  // Update an existing provider
+  const updateProvider = useCallback(async (name: string, provider: ProviderConfig) => {
+    if (!appConfig) return;
+    
+    const newAppConfig: AppConfig = {
+      ...appConfig,
+      providers: {
+        ...appConfig.providers,
+        [name]: provider,
+      },
+    };
+    
+    await saveAppConfig(newAppConfig);
+  }, [appConfig, saveAppConfig]);
+
+  // Delete a provider
+  const deleteProvider = useCallback(async (name: string) => {
+    if (!appConfig) return;
+    if (Object.keys(appConfig.providers).length <= 1) {
+      throw new Error("Cannot delete the last provider");
+    }
+    
+    const newProviders = { ...appConfig.providers };
+    delete newProviders[name];
+    
+    // If deleting the default, switch to another
+    let newDefault = appConfig.default;
+    if (newDefault === name) {
+      newDefault = Object.keys(newProviders)[0];
+    }
+    
+    const newAppConfig: AppConfig = {
+      default: newDefault,
+      providers: newProviders,
+    };
+    
+    await saveAppConfig(newAppConfig);
+  }, [appConfig, saveAppConfig]);
 
   return {
     config,
+    appConfig,
     loading,
     saving,
-    saveConfig,
+    configPath,
+    saveAppConfig,
+    setDefaultProvider,
+    addProvider,
     updateProvider,
-    setConfig,
-    defaultConfigs: DEFAULT_CONFIGS,
+    deleteProvider,
+    providerTypeTemplates: PROVIDER_TYPE_TEMPLATES,
   };
 }

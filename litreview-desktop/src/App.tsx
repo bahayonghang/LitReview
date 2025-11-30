@@ -9,7 +9,16 @@ function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   
   const { content, loading, error, startStream, reset } = useLlmStream();
-  const { config, loading: configLoading, saving, saveConfig, defaultConfigs } = useConfig();
+  const { 
+    config, 
+    appConfig,
+    loading: configLoading, 
+    saving, 
+    configPath,
+    saveAppConfig,
+    setDefaultProvider,
+    deleteProvider,
+  } = useConfig();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +27,8 @@ function App() {
     await startStream(prompt, config);
   };
 
-  const isConfigured = config && config.api_key && (config.provider !== "ollama" || config.base_url);
+  // Check if API key is configured (allow empty for OpenAI compatible like Ollama)
+  const isConfigured = config && config.api_key;
 
   return (
     <main className="container">
@@ -44,6 +54,7 @@ function App() {
         <>
           <div className="provider-info">
             <span className="provider-badge">{config.provider}</span>
+            <span className="provider-type-badge">{config.provider_type}</span>
             <span className="model-name">{config.model}</span>
           </div>
 
@@ -87,10 +98,12 @@ function App() {
       <SettingsModal
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
-        config={config}
-        onSave={saveConfig}
+        appConfig={appConfig}
+        configPath={configPath}
         saving={saving}
-        defaultConfigs={defaultConfigs}
+        onSaveAppConfig={saveAppConfig}
+        onSetDefault={setDefaultProvider}
+        onDeleteProvider={deleteProvider}
       />
     </main>
   );

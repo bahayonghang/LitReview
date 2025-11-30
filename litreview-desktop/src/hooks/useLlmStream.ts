@@ -9,12 +9,31 @@ export interface LlmStreamEvent {
   error?: string;
 }
 
-export interface LlmConfig {
-  provider: string;
+// Provider configuration for TOML file
+export interface ProviderConfig {
+  provider_type: string;  // "openai" | "claude" | "gemini"
   base_url: string;
   api_key: string;
   model: string;
   context_window?: number;
+  api_version?: string;  // Required for Claude
+}
+
+// Full app configuration
+export interface AppConfig {
+  default: string;  // Name of the active provider
+  providers: Record<string, ProviderConfig>;
+}
+
+// Active LLM configuration (with provider name)
+export interface LlmConfig {
+  provider: string;       // Provider name (key in providers map)
+  provider_type: string;  // "openai" | "claude" | "gemini"
+  base_url: string;
+  api_key: string;
+  model: string;
+  context_window?: number;
+  api_version?: string;
 }
 
 export interface UseLlmStreamReturn {
@@ -81,11 +100,12 @@ export function useLlmStream(): UseLlmStreamReturn {
 
     try {
       const newStreamId = await invoke<string>("start_llm_stream", {
-        provider: config.provider,
+        providerType: config.provider_type,
         baseUrl: config.base_url,
         apiKey: config.api_key,
         model: config.model,
         prompt,
+        apiVersion: config.api_version,
       });
 
       activeStreamId.current = newStreamId;
