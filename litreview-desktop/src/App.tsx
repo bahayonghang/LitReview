@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLlmStream } from "./hooks/useLlmStream";
 import { useConfig } from "./hooks/useConfig";
+import { useTheme } from "./hooks/useTheme";
 import { SettingsModal } from "./components/SettingsModal";
 import "./App.css";
 
@@ -8,6 +9,7 @@ function App() {
   const [prompt, setPrompt] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   
+  const { mode: themeMode, setTheme } = useTheme();
   const { content, loading, error, startStream, reset } = useLlmStream();
   const { 
     config, 
@@ -104,6 +106,8 @@ function App() {
         onSaveAppConfig={saveAppConfig}
         onSetDefault={setDefaultProvider}
         onDeleteProvider={deleteProvider}
+        themeMode={themeMode}
+        onThemeChange={setTheme}
       />
     </main>
   );

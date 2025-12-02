@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { AppConfig, ProviderConfig } from "../hooks/useLlmStream";
 import { PROVIDER_TYPE_TEMPLATES } from "../hooks/useConfig";
+import type { ThemeMode } from "../hooks/useTheme";
+import { GlassSelect } from "./GlassSelect";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -11,12 +13,20 @@ interface SettingsModalProps {
   onSaveAppConfig: (config: AppConfig) => Promise<void>;
   onSetDefault: (providerName: string) => Promise<void>;
   onDeleteProvider: (name: string) => Promise<void>;
+  themeMode: ThemeMode;
+  onThemeChange: (mode: ThemeMode) => void;
 }
+
+const THEME_OPTIONS: { value: ThemeMode; label: string }[] = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "system", label: "Auto" },
+];
 
 const PROVIDER_TYPES = [
   { value: "openai", label: "OpenAI Compatible" },
-  { value: "claude", label: "Claude (Anthropic)" },
-  { value: "gemini", label: "Google Gemini" },
+  { value: "claude", label: "Claude Compatible" },
+  { value: "gemini", label: "Gemini Compatible" },
 ];
 
 export function SettingsModal({
@@ -28,6 +38,8 @@ export function SettingsModal({
   onSaveAppConfig,
   onSetDefault,
   onDeleteProvider,
+  themeMode,
+  onThemeChange,
 }: SettingsModalProps) {
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
   const [editingProvider, setEditingProvider] = useState<ProviderConfig | null>(null);
@@ -55,8 +67,19 @@ export function SettingsModal({
   const providerNames = Object.keys(appConfig.providers);
 
   const handleSelectProvider = (name: string) => {
+    const provider = appConfig.providers[name];
+    const template = PROVIDER_TYPE_TEMPLATES[provider.provider_type] || {};
+    
+    // 用模板覆盖字段，但保留 api_key
     setSelectedProvider(name);
-    setEditingProvider({ ...appConfig.providers[name] });
+    setEditingProvider({
+      provider_type: provider.provider_type,
+      base_url: template.base_url || provider.base_url,
+      api_key: provider.api_key,
+      model: template.model || provider.model,
+      context_window: template.context_window,
+      api_version: template.api_version,
+    });
     setEditingName(name);
     setIsNewProvider(false);
     setError(null);
@@ -251,17 +274,12 @@ export function SettingsModal({
                 
                 <div className="form-group">
                   <label htmlFor="provider-type">API Type</label>
-                  <select
+                  <GlassSelect
                     id="provider-type"
                     value={editingProvider.provider_type}
-                    onChange={(e) => handleProviderTypeChange(e.target.value)}
-                  >
-                    {PROVIDER_TYPES.map((t) => (
-                      <option key={t.value} value={t.value}>
-                        {t.label}
-                      </option>
-                    ))}
-                  </select>
+                    options={PROVIDER_TYPES}
+                    onChange={handleProviderTypeChange}
+                  />
                   <small className="hint">
                     OpenAI Compatible works with DeepSeek, Moonshot, Ollama, etc.
                   </small>
@@ -330,7 +348,7 @@ export function SettingsModal({
                       Delete
                     </button>
                   )}
-                  <button type="button" onClick={handleSave} disabled={saving}>
+                  <button type="button" onClick={handleSave} disabled={saving} className="primary-btn">
                     {saving ? "Saving..." : "Save"}
                   </button>
                 </div>
@@ -343,6 +361,23 @@ export function SettingsModal({
           </div>
         </div>
         
+        {/* Theme Switcher */}
+        <div className="theme-section">
+          <span className="theme-label">Appearance</span>
+          <div className="theme-switcher">
+            {THEME_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`theme-btn ${themeMode === option.value ? "active" : ""}`}
+                onClick={() => onThemeChange(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="config-path">
           <small>Config file: {configPath}</small>
         </div>
