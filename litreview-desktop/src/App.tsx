@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useLlmStream } from "./hooks/useLlmStream";
 import { useConfig } from "./hooks/useConfig";
 import { useTheme } from "./hooks/useTheme";
-import { SettingsModal } from "./components/SettingsModal";
+import { Sidebar, TabType } from "./components/Sidebar";
+import { HomePage } from "./components/HomePage";
+import { ReviewGenerator } from "./components/ReviewGenerator";
+import { LanguagePolish } from "./components/LanguagePolish";
+import { ApiConfigPage } from "./components/ApiConfigPage";
 import "./App.css";
 
 function App() {
-  const [prompt, setPrompt] = useState("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>("home");
   
   const { mode: themeMode, setTheme } = useTheme();
   const { content, loading, error, startStream, reset } = useLlmStream();
@@ -22,94 +25,89 @@ function App() {
     deleteProvider,
   } = useConfig();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim() || !config) return;
-    
+  // Get current provider name
+  const providerName = appConfig?.default || "";
+
+  const handleGenerate = async (prompt: string) => {
+    if (!config) return;
     await startStream(prompt, config);
   };
 
-  // Check if API key is configured (allow empty for OpenAI compatible like Ollama)
-  const isConfigured = config && config.api_key;
+  const renderContent = () => {
+    if (configLoading) {
+      return <div className="loading">加载配置中...</div>;
+    }
+
+    switch (activeTab) {
+      case "home":
+        return (
+          <HomePage
+            config={config}
+            providerName={providerName}
+            onNavigate={setActiveTab}
+          />
+        );
+      case "review":
+        return (
+          <ReviewGenerator
+            config={config}
+            providerName={providerName}
+            content={content}
+            loading={loading}
+            error={error}
+            onGenerate={handleGenerate}
+            onReset={reset}
+          />
+        );
+      case "polish":
+        return (
+          <LanguagePolish
+            config={config}
+            loading={loading}
+            error={error}
+            content={content}
+            onPolish={handleGenerate}
+            onReset={reset}
+          />
+        );
+      case "config":
+        return (
+          <ApiConfigPage
+            appConfig={appConfig}
+            configPath={configPath}
+            saving={saving}
+            onSaveAppConfig={saveAppConfig}
+            onSetDefault={setDefaultProvider}
+            onDeleteProvider={deleteProvider}
+            themeMode={themeMode}
+            onThemeChange={setTheme}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <main className="container">
+    <div className="app-wrapper">
       <header className="app-header">
         <h1>LitReview Pro</h1>
-        <button 
-          className="settings-btn" 
-          onClick={() => setSettingsOpen(true)}
-          title="Settings"
-        >
-          ⚙️
-        </button>
+        <div className="header-right">
+          {config && (
+            <span className="header-provider">
+              {providerName} / {config.model}
+            </span>
+          )}
+        </div>
       </header>
 
-      {configLoading ? (
-        <div className="loading">Loading configuration...</div>
-      ) : !isConfigured ? (
-        <div className="setup-prompt">
-          <p>Please configure your LLM provider to get started.</p>
-          <button onClick={() => setSettingsOpen(true)}>Open Settings</button>
-        </div>
-      ) : (
-        <>
-          <div className="provider-info">
-            <span className="provider-badge">{config.provider}</span>
-            <span className="provider-type-badge">{config.provider_type}</span>
-            <span className="model-name">{config.model}</span>
-          </div>
-
-          <form className="prompt-form" onSubmit={handleSubmit}>
-            <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Enter your prompt here..."
-              rows={4}
-              disabled={loading}
-            />
-            <div className="form-actions">
-              <button type="submit" disabled={loading || !prompt.trim()}>
-                {loading ? "Generating..." : "Generate"}
-              </button>
-              {(content || error) && (
-                <button type="button" onClick={reset} disabled={loading}>
-                  Clear
-                </button>
-              )}
-            </div>
-          </form>
-
-          {error && (
-            <div className="error-box">
-              <strong>Error:</strong> {error}
-            </div>
-          )}
-
-          {(content || loading) && (
-            <div className="output-section">
-              <h3>Output {loading && <span className="cursor-blink">▌</span>}</h3>
-              <div className="output-content">
-                {content || (loading && <span className="placeholder">Waiting for response...</span>)}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      <SettingsModal
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        appConfig={appConfig}
-        configPath={configPath}
-        saving={saving}
-        onSaveAppConfig={saveAppConfig}
-        onSetDefault={setDefaultProvider}
-        onDeleteProvider={deleteProvider}
-        themeMode={themeMode}
-        onThemeChange={setTheme}
-      />
-    </main>
+      <div className="app-layout">
+        <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        <main className="app-content">
+          {renderContent()}
+        </main>
+      </div>
+    </div>
   );
 }
 
