@@ -1277,3 +1277,185 @@ button[type="button"]:hover:not(:disabled) {
   padding: 1.25rem;
   margin-bottom: 1rem;
 }
+
+/* ============================================================================
+   Enhanced Language Polish Options
+   ============================================================================ */
+
+.polish-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+}
+
+.option-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.option-buttons {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  padding: 0.45rem 0.85rem !important;
+  font-size: 0.85rem !important;
+  border-radius: 8px !important;
+  background: var(--glass-bg-active) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: var(--glass-bg-hover) !important;
+  color: var(--text-primary) !important;
+  transform: none !important;
+  border-color: var(--accent) !important;
+}
+
+.option-btn.active {
+  background: var(--accent-gradient) !important;
+  color: white !important;
+  border-color: transparent !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25) !important;
+}
+
+.option-btn:disabled {
+  opacity: 0.5;
+}
+
+/* Modifications Section */
+.modifications-section {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.modifications-section .section-title {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modifications-section .section-title::before {
+  content: "📝";
+}
+
+.modifications-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.modifications-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.modifications-table th,
+.modifications-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.modifications-table th {
+  background: var(--glass-bg-active);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.modifications-table tr:last-child td {
+  border-bottom: none;
+}
+
+.modifications-table tr:hover td {
+  background: var(--glass-bg-hover);
+}
+
+.modifications-table .cell-original {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  max-width: 250px;
+}
+
+.modifications-table .cell-modified {
+  color: var(--success);
+  font-weight: 500;
+  max-width: 250px;
+}
+
+.modifications-table .cell-reason {
+  color: var(--text-secondary);
+  font-style: italic;
+  max-width: 300px;
+}
+
+/* Light theme modifications table */
+[data-theme="light"] .modifications-table .cell-original {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .modifications-table .cell-modified {
+  color: #2e7d32;
+}
+
+/* Responsive adjustments for polish page */
+@media (max-width: 900px) {
+  .polish-options {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .option-group {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .polish-comparison {
+    grid-template-columns: 1fr;
+  }
+  
+  .modifications-table {
+    font-size: 0.8rem;
+  }
+  
+  .modifications-table th,
+  .modifications-table td {
+    padding: 0.5rem 0.75rem;
+  }
+}

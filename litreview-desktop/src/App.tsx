@@ -23,6 +23,7 @@ function App() {
     saveAppConfig,
     setDefaultProvider,
     deleteProvider,
+    testConnection,
   } = useConfig();
 
   // Get current provider name
@@ -31,6 +32,22 @@ function App() {
   const handleGenerate = async (prompt: string) => {
     if (!config) return;
     await startStream(prompt, config);
+  };
+
+  const handlePolish = async (prompt: string, systemPrompt?: string) => {
+    console.log("[App] handlePolish called");
+    console.log("[App] prompt length:", prompt?.length);
+    console.log("[App] systemPrompt length:", systemPrompt?.length);
+    console.log("[App] config:", config);
+    
+    if (!config) {
+      console.log("[App] Early return - no config");
+      return;
+    }
+    
+    console.log("[App] Calling startStream...");
+    await startStream(prompt, config, systemPrompt);
+    console.log("[App] startStream completed");
   };
 
   const renderContent = () => {
@@ -66,7 +83,7 @@ function App() {
             loading={loading}
             error={error}
             content={content}
-            onPolish={handleGenerate}
+            onPolish={handlePolish}
             onReset={reset}
           />
         );
@@ -79,6 +96,7 @@ function App() {
             onSaveAppConfig={saveAppConfig}
             onSetDefault={setDefaultProvider}
             onDeleteProvider={deleteProvider}
+            onTestConnection={testConnection}
             themeMode={themeMode}
             onThemeChange={setTheme}
           />
