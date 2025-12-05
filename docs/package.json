@@ -1,0 +1,31 @@
+{
+  "name": "litreview-docs",
+  "version": "1.0.0",
+  "description": "Documentation for LitReview Pro",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "serve": "vitepress serve",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "vitepress": "^1.0.0",
+    "vue-tsc": "^1.8.0"
+  },
+  "keywords": [
+    "documentation",
+    "vitepress",
+    "litreview",
+    "ai",
+    "literature-review"
+  ],
+  "author": "LitReview Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/LitReview.git"
+  }
+}
