@@ -1,0 +1,47 @@
+[install]
+# Configure bun install behavior
+cache = true
+cache-dir = "~/.bun/install/cache"
+global-dir = "~/.bun/install/global"
+registry = "https://registry.npmjs.org/"
+scoped-registry-set = []
+
+[install.cache]
+# Enable install cache
+disable = false
+disable-pr = false
+
+[install.lockfile]
+# Use bun.lockb
+print = "yarn"
+
+[test]
+# Test configuration
+preload = []
+
+[run]
+# Run script configuration
+shell = ["sh", "-c"]
+
+[target]
+# Target configuration for different platforms
+bun = "bun"
+node = "node"
+
+[define]
+# Define global constants
+__DEV__ = "process.env.NODE_ENV === 'development'"
+__PROD__ = "process.env.NODE_ENV === 'production'"
+
+[loader]
+# File loader configuration
+".css" = "css"
+".js" = "js"
+".jsx" = "jsx"
+".ts" = "ts"
+".tsx" = "tsx"
+".json" = "json"
+
+[loglevel]
+# Logging level for bun
+level = "info"

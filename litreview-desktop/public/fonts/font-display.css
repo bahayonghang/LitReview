@@ -1,0 +1,165 @@
+/* ============================================================================
+   LitReview Pro Font Loading Strategy
+   Optimized font loading with fallbacks and performance in mind
+   ============================================================================ */
+
+/* Font Face Definitions */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter'), local('Inter-Variable'),
+       url('inter-variable.woff2') format('woff2-variations'),
+       url('inter-variable.woff') format('woff-variations');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter Italic'), local('Inter-Variable-Italic'),
+       url('inter-variable-italic.woff2') format('woff2-variations'),
+       url('inter-variable-italic.woff') format('woff-variations');
+}
+
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Outfit'), local('Outfit-Variable'),
+       url('outfit-variable.woff2') format('woff2-variations'),
+       url('outfit-variable.woff') format('woff-variations');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: local('JetBrains Mono'), local('JetBrainsMono-Variable'),
+       url('jetbrains-mono-variable.woff2') format('woff2-variations'),
+       url('jetbrains-mono-variable.woff') format('woff-variations');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 100 800;
+  font-display: swap;
+  src: local('JetBrains Mono Italic'), local('JetBrainsMono-Variable-Italic'),
+       url('jetbrains-mono-variable-italic.woff2') format('woff2-variations'),
+       url('jetbrains-mono-variable-italic.woff') format('woff-variations');
+}
+
+/* System Font Fallbacks */
+.system-font-stack {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+.system-mono-font-stack {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    "SF Mono",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+}
+
+/* Font Loading Classes */
+.fonts-loading {
+  /* Show system fonts during loading */
+  font-family: var(--system-font-stack);
+}
+
+.fonts-loaded {
+  /* Use custom fonts when loaded */
+  font-family: var(--font-family-primary);
+}
+
+/* Preload critical font weights */
+@font-face {
+  font-family: 'Inter Critical';
+  src: local('Inter Medium'), local('Inter-Medium');
+  unicode-range: U+000-5FF; /* Basic Latin + Latin-1 Supplement */
+  font-display: swap;
+}
+
+/* Font subsets for better performance */
+@font-face {
+  font-family: 'Inter Latin';
+  src: local('Inter'), url('inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-024F, U+1E00-1EFF, U+20A0-20CF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter CJK';
+  src: local('Inter'), url('inter-cjk.woff2') format('woff2');
+  unicode-range: U+4E00-9FFF, U+3040-309F, U+30A0-30FF;
+  font-display: swap;
+}
+
+/* Prevent flash of invisible text (FOIT) */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 94%; /* Adjust size to match Inter */
+  ascent-override: 92%;
+  descent-override: 28%;
+  line-gap-override: 8%;
+}
+
+/* Font optimization for different screens */
+@media (max-resolution: 1dppx) {
+  /* Standard resolution - use standard fonts */
+  .optimized-text {
+    font-family: var(--font-family-primary);
+  }
+}
+
+@media (min-resolution: 2dppx) {
+  /* High resolution - use full font features */
+  .optimized-text {
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+}
+
+/* Print optimization */
+@media print {
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  .monospace {
+    font-family: 'Courier New', Courier, monospace;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  /* Ensure font loading doesn't cause layout shifts */
+  html {
+    font-family: var(--system-font-stack);
+  }
+
+  .fonts-loaded html {
+    font-family: var(--font-family-primary);
+  }
+}
