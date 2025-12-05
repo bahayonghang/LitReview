@@ -11,6 +11,7 @@ interface ApiConfigPageProps {
   onSaveAppConfig: (config: AppConfig) => Promise<void>;
   onSetDefault: (providerName: string) => Promise<void>;
   onDeleteProvider: (name: string) => Promise<void>;
+  onTestConnection: (provider: ProviderConfig) => Promise<void>;
   themeMode: ThemeMode;
   onThemeChange: (mode: ThemeMode) => void;
 }
@@ -34,6 +35,7 @@ export function ApiConfigPage({
   onSaveAppConfig,
   onSetDefault,
   onDeleteProvider,
+  onTestConnection,
   themeMode,
   onThemeChange,
 }: ApiConfigPageProps) {
@@ -70,16 +72,16 @@ export function ApiConfigPage({
 
   const handleSelectProvider = (name: string) => {
     const provider = appConfig.providers[name];
-    const template = PROVIDER_TYPE_TEMPLATES[provider.provider_type] || {};
     
     setSelectedProvider(name);
+    // Use actual saved values, not templates
     setEditingProvider({
       provider_type: provider.provider_type,
-      base_url: template.base_url || provider.base_url,
+      base_url: provider.base_url,
       api_key: provider.api_key,
-      model: template.model || provider.model,
-      context_window: template.context_window,
-      api_version: template.api_version,
+      model: provider.model,
+      context_window: provider.context_window,
+      api_version: provider.api_version,
     });
     setEditingName(name);
     setIsNewProvider(false);
@@ -195,17 +197,7 @@ export function ApiConfigPage({
     setError(null);
 
     try {
-      const { invoke } = await import("@tauri-apps/api/core");
-      
-      await invoke("start_llm_stream", {
-        providerType: editingProvider.provider_type,
-        baseUrl: editingProvider.base_url,
-        apiKey: editingProvider.api_key,
-        model: editingProvider.model,
-        prompt: "Say 'OK' in one word.",
-        apiVersion: editingProvider.api_version,
-      });
-      
+      await onTestConnection(editingProvider);
       setTestResult("✓ 连接成功！");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
