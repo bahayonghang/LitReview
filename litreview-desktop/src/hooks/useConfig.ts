@@ -2,6 +2,40 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { LlmConfig, AppConfig, ProviderConfig } from "./useLlmStream";
 
+interface RustProviderConfig {
+  type: string;
+  base_url: string;
+  api_key: string;
+  model: string;
+  context_window?: number;
+  api_version?: string;
+}
+
+interface RustAppConfig {
+  default: string;
+  providers: Record<string, RustProviderConfig>;
+}
+
+function toRustConfig(config: AppConfig): RustAppConfig {
+  const providers: Record<string, RustProviderConfig> = {};
+  for (const [name, provider] of Object.entries(config.providers)) {
+    const p = provider as ProviderConfig & { type?: string };
+    const providerType = p.provider_type ?? p.type;
+    if (!providerType) {
+      throw new Error(`Missing provider_type for provider "${name}"`);
+    }
+    providers[name] = {
+      type: providerType,
+      base_url: p.base_url,
+      api_key: p.api_key,
+      model: p.model,
+      context_window: p.context_window,
+      api_version: p.api_version,
+    };
+  }
+  return { default: config.default, providers };
+}
+
 // Provider type templates for creating new providers
 export const PROVIDER_TYPE_TEMPLATES: Record<string, Partial<ProviderConfig>> = {
   openai: {
@@ -40,15 +74,35 @@ export function useConfig() {
           invoke<AppConfig>("load_toml_config"),
           invoke<string>("get_config_file_path"),
         ]);
-        
-        setAppConfig(loadedConfig);
+
+        const normalizedProviders: Record<string, ProviderConfig> = {};
+        for (const [name, provider] of Object.entries(
+          (loadedConfig as AppConfig).providers,
+        )) {
+          const p = provider as ProviderConfig & { type?: string };
+          const provider_type = p.provider_type ?? p.type ?? "openai";
+          normalizedProviders[name] = {
+            provider_type,
+            base_url: p.base_url,
+            api_key: p.api_key,
+            model: p.model,
+            context_window: p.context_window,
+            api_version: p.api_version,
+          };
+        }
+
+        const normalizedConfig: AppConfig = {
+          default: loadedConfig.default,
+          providers: normalizedProviders,
+        };
+
+        setAppConfig(normalizedConfig);
         setConfigPath(path);
-        
-        // Set active config
-        const activeProvider = loadedConfig.providers[loadedConfig.default];
+
+        const activeProvider = normalizedConfig.providers[normalizedConfig.default];
         if (activeProvider) {
           setConfig({
-            provider: loadedConfig.default,
+            provider: normalizedConfig.default,
             provider_type: activeProvider.provider_type,
             base_url: activeProvider.base_url,
             api_key: activeProvider.api_key,
@@ -71,7 +125,8 @@ export function useConfig() {
   const saveAppConfig = useCallback(async (newAppConfig: AppConfig) => {
     setSaving(true);
     try {
-      await invoke("save_toml_config", { config: newAppConfig });
+      // Convert to Rust-compatible format (provider_type -> type)
+      await invoke("save_toml_config", { config: toRustConfig(newAppConfig) });
       setAppConfig(newAppConfig);
       
       // Update active config
@@ -180,6 +235,17 @@ export function useConfig() {
     await saveAppConfig(newAppConfig);
   }, [appConfig, saveAppConfig]);
 
+  // Test connection with real HTTP request
+  const testConnection = useCallback(async (provider: ProviderConfig) => {
+    await invoke("test_llm_connection", {
+      providerType: provider.provider_type,
+      baseUrl: provider.base_url,
+      apiKey: provider.api_key,
+      model: provider.model,
+      apiVersion: provider.api_version,
+    });
+  }, []);
+
   return {
     config,
     appConfig,
@@ -191,6 +257,7 @@ export function useConfig() {
     addProvider,
     updateProvider,
     deleteProvider,
+    testConnection,
     providerTypeTemplates: PROVIDER_TYPE_TEMPLATES,
   };
 }

@@ -41,7 +41,7 @@ export interface UseLlmStreamReturn {
   loading: boolean;
   error: string | null;
   streamId: string | null;
-  startStream: (prompt: string, config: LlmConfig) => Promise<void>;
+  startStream: (prompt: string, config: LlmConfig, systemPrompt?: string) => Promise<void>;
   reset: () => void;
 }
 
@@ -92,13 +92,21 @@ export function useLlmStream(): UseLlmStreamReturn {
     };
   }, []);
 
-  const startStream = useCallback(async (prompt: string, config: LlmConfig) => {
+  const startStream = useCallback(async (prompt: string, config: LlmConfig, systemPrompt?: string) => {
+    console.log("[useLlmStream] startStream called");
+    console.log("[useLlmStream] provider_type:", config.provider_type);
+    console.log("[useLlmStream] model:", config.model);
+    console.log("[useLlmStream] base_url:", config.base_url);
+    console.log("[useLlmStream] prompt length:", prompt?.length);
+    console.log("[useLlmStream] systemPrompt length:", systemPrompt?.length);
+    
     // Reset state
     setContent("");
     setError(null);
     setLoading(true);
 
     try {
+      console.log("[useLlmStream] Invoking start_llm_stream...");
       const newStreamId = await invoke<string>("start_llm_stream", {
         providerType: config.provider_type,
         baseUrl: config.base_url,
@@ -106,11 +114,14 @@ export function useLlmStream(): UseLlmStreamReturn {
         model: config.model,
         prompt,
         apiVersion: config.api_version,
+        systemPrompt: systemPrompt || null,
       });
 
+      console.log("[useLlmStream] Got stream ID:", newStreamId);
       activeStreamId.current = newStreamId;
       setStreamId(newStreamId);
     } catch (e) {
+      console.error("[useLlmStream] Error:", e);
       setError(e instanceof Error ? e.message : String(e));
       setLoading(false);
     }
