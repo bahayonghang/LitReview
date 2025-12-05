@@ -4,7 +4,94 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri + React + Typescript</title>
+
+    <!-- Preconnect to font providers for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Font Display Styles -->
+    <link rel="stylesheet" href="/fonts/font-display.css">
+
+    <!-- Google Fonts (fallback) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap"></noscript>
+
+    <!-- Theme Detection -->
+    <script>
+      // Detect system theme preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const savedTheme = localStorage.getItem('litreview-theme');
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('litreview-theme')) {
+          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        }
+      });
+
+      // Font loading detection
+      document.documentElement.classList.add('fonts-loading');
+      document.fonts.ready.then(() => {
+        document.documentElement.classList.remove('fonts-loading');
+        document.documentElement.classList.add('fonts-loaded');
+      });
+    </script>
+
+    <title>LitReview Pro - Literature Review Assistant</title>
+
+    <!-- Meta tags for better SEO and sharing -->
+    <meta name="description" content="Advanced literature review generator powered by multiple LLM providers">
+    <meta name="keywords" content="literature review, academic writing, AI assistant, research tool">
+    <meta name="author" content="LitReview Pro">
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="LitReview Pro - Literature Review Assistant">
+    <meta property="og:description" content="Advanced literature review generator powered by multiple LLM providers">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/og-image.png">
+
+    <!-- Theme color -->
+    <meta name="theme-color" content="#6366f1">
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      /* Critical CSS to prevent FOUC */
+      html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #0f0c29;
+        color: #f0f0f0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Light theme critical styles */
+      [data-theme="light"] {
+        background: #e8e8f0;
+        color: #1a1a2e;
+      }
+
+      /* Hide loading state quickly */
+      .fonts-loading {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      /* Prevent flash of unstyled content */
+      #root {
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
+      }
+
+      .fonts-loaded #root {
+        opacity: 1;
+      }
+    </style>
   </head>
 
   <body>
