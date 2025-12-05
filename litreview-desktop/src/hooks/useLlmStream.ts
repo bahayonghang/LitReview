@@ -108,13 +108,15 @@ export function useLlmStream(): UseLlmStreamReturn {
     try {
       console.log("[useLlmStream] Invoking start_llm_stream...");
       const newStreamId = await invoke<string>("start_llm_stream", {
-        providerType: config.provider_type,
-        baseUrl: config.base_url,
-        apiKey: config.api_key,
-        model: config.model,
-        prompt,
-        apiVersion: config.api_version,
-        systemPrompt: systemPrompt || null,
+        config: {
+          provider_type: config.provider_type,
+          base_url: config.base_url,
+          api_key: config.api_key,
+          model: config.model,
+          prompt,
+          api_version: config.api_version,
+          system_prompt: systemPrompt || null,
+        },
       });
 
       console.log("[useLlmStream] Got stream ID:", newStreamId);

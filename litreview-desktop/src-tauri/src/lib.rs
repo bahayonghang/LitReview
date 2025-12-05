@@ -11,6 +11,30 @@ use uuid::Uuid;
 // Data Structures
 // ============================================================================
 
+/// Configuration for streaming LLM requests
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct StreamRequestConfig {
+    provider_type: String,
+    base_url: String,
+    api_key: String,
+    model: String,
+    prompt: String,
+    api_version: Option<String>,
+    system_prompt: Option<String>,
+}
+
+/// Configuration for provider-specific streaming
+#[derive(Debug, Clone)]
+struct ProviderStreamConfig<'a> {
+    stream_id: &'a str,
+    base_url: &'a str,
+    api_key: &'a str,
+    model: &'a str,
+    prompt: &'a str,
+    api_version: Option<&'a str>,
+    system_prompt: Option<&'a str>,
+}
+
 // ============================================================================
 // TOML Configuration Structures
 // ============================================================================
@@ -198,24 +222,15 @@ fn get_default_config() -> AppConfig {
 /// Start a streaming LLM request
 /// Returns stream_id immediately, emits 'llm-stream' events as data arrives
 #[tauri::command]
-async fn start_llm_stream(
-    app: AppHandle,
-    provider_type: String,
-    base_url: String,
-    api_key: String,
-    model: String,
-    prompt: String,
-    api_version: Option<String>,
-    system_prompt: Option<String>,
-) -> Result<String, String> {
+async fn start_llm_stream(app: AppHandle, config: StreamRequestConfig) -> Result<String, String> {
     println!("[Rust] start_llm_stream called");
-    println!("[Rust] provider_type: {}", provider_type);
-    println!("[Rust] model: {}", model);
-    println!("[Rust] base_url: {}", base_url);
-    println!("[Rust] prompt length: {}", prompt.len());
+    println!("[Rust] provider_type: {}", config.provider_type);
+    println!("[Rust] model: {}", config.model);
+    println!("[Rust] base_url: {}", config.base_url);
+    println!("[Rust] prompt length: {}", config.prompt.len());
     println!(
         "[Rust] system_prompt: {:?}",
-        system_prompt.as_ref().map(|s| s.len())
+        config.system_prompt.as_ref().map(|s| s.len())
     );
 
     let stream_id = Uuid::new_v4().to_string();
@@ -223,51 +238,51 @@ async fn start_llm_stream(
 
     // Spawn async task to handle streaming
     tauri::async_runtime::spawn(async move {
-        let system = system_prompt.clone();
+        let system = config.system_prompt.clone();
         println!(
             "[Rust] Spawned task, system_prompt len: {:?}",
             system.as_ref().map(|s| s.len())
         );
-        let result = match provider_type.as_str() {
+        let provider_config = ProviderStreamConfig {
+            stream_id: &stream_id_clone,
+            base_url: &config.base_url,
+            api_key: &config.api_key,
+            model: &config.model,
+            prompt: &config.prompt,
+            api_version: config.api_version.as_deref(),
+            system_prompt: system.as_deref(),
+        };
+
+        let result = match config.provider_type.as_str() {
             "openai" => {
                 stream_openai_compatible(
                     &app,
-                    &stream_id_clone,
-                    &base_url,
-                    &api_key,
-                    &model,
-                    &prompt,
-                    system.as_deref(),
+                    provider_config.stream_id,
+                    provider_config.base_url,
+                    provider_config.api_key,
+                    provider_config.model,
+                    provider_config.prompt,
+                    provider_config.system_prompt,
                 )
                 .await
             }
-            "claude" => {
-                let version = api_version.unwrap_or_else(|| "2023-06-01".to_string());
-                stream_claude(
-                    &app,
-                    &stream_id_clone,
-                    &base_url,
-                    &api_key,
-                    &model,
-                    &prompt,
-                    &version,
-                    system.as_deref(),
-                )
-                .await
-            }
+            "claude" => stream_claude(&app, provider_config).await,
             "gemini" => {
                 stream_gemini(
                     &app,
-                    &stream_id_clone,
-                    &base_url,
-                    &api_key,
-                    &model,
-                    &prompt,
-                    system.as_deref(),
+                    provider_config.stream_id,
+                    provider_config.base_url,
+                    provider_config.api_key,
+                    provider_config.model,
+                    provider_config.prompt,
+                    provider_config.system_prompt,
                 )
                 .await
             }
-            _ => Err(format!("Unsupported provider type: {}", provider_type)),
+            _ => Err(format!(
+                "Unsupported provider type: {}",
+                config.provider_type
+            )),
         };
 
         if let Err(e) = result {
@@ -926,36 +941,28 @@ async fn stream_gemini(
 }
 
 /// Stream from Claude (Anthropic) API
-async fn stream_claude(
-    app: &AppHandle,
-    stream_id: &str,
-    base_url: &str,
-    api_key: &str,
-    model: &str,
-    prompt: &str,
-    api_version: &str,
-    system_prompt: Option<&str>,
-) -> Result<(), String> {
+async fn stream_claude(app: &AppHandle, config: ProviderStreamConfig<'_>) -> Result<(), String> {
+    let api_version = config.api_version.unwrap_or("2023-06-01");
     let client = Client::new();
-    let url = format!("{}/v1/messages", base_url.trim_end_matches('/'));
+    let url = format!("{}/v1/messages", config.base_url.trim_end_matches('/'));
 
     // Build body with optional system prompt
     let mut body = serde_json::json!({
-        "model": model,
+        "model": config.model,
         "max_tokens": 4096,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "user", "content": config.prompt}],
         "stream": true
     });
 
     // Add system prompt if provided (Claude uses top-level "system" field)
-    if let Some(system) = system_prompt {
+    if let Some(system) = config.system_prompt {
         body["system"] = serde_json::json!(system);
     }
 
     let response = client
         .post(&url)
         .header("Content-Type", "application/json")
-        .header("x-api-key", api_key)
+        .header("x-api-key", config.api_key)
         .header("anthropic-version", api_version)
         .json(&body)
         .send()
@@ -996,7 +1003,7 @@ async fn stream_claude(
                                         let _ = app.emit(
                                             "llm-stream",
                                             LlmStreamEvent {
-                                                stream_id: stream_id.to_string(),
+                                                stream_id: config.stream_id.to_string(),
                                                 delta: text,
                                                 done: false,
                                                 error: None,
@@ -1010,7 +1017,7 @@ async fn stream_claude(
                             let _ = app.emit(
                                 "llm-stream",
                                 LlmStreamEvent {
-                                    stream_id: stream_id.to_string(),
+                                    stream_id: config.stream_id.to_string(),
                                     delta: String::new(),
                                     done: true,
                                     error: None,
@@ -1029,7 +1036,7 @@ async fn stream_claude(
     let _ = app.emit(
         "llm-stream",
         LlmStreamEvent {
-            stream_id: stream_id.to_string(),
+            stream_id: config.stream_id.to_string(),
             delta: String::new(),
             done: true,
             error: None,

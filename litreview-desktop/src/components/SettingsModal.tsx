@@ -200,12 +200,15 @@ export function SettingsModal({
       const { invoke } = await import("@tauri-apps/api/core");
       
       await invoke("start_llm_stream", {
-        providerType: editingProvider.provider_type,
-        baseUrl: editingProvider.base_url,
-        apiKey: editingProvider.api_key,
-        model: editingProvider.model,
-        prompt: "Say 'OK' in one word.",
-        apiVersion: editingProvider.api_version,
+        config: {
+          provider_type: editingProvider.provider_type,
+          base_url: editingProvider.base_url,
+          api_key: editingProvider.api_key,
+          model: editingProvider.model,
+          prompt: "Say 'OK' in one word.",
+          api_version: editingProvider.api_version,
+          system_prompt: null,
+        },
       });
       
       setTestResult("✓ Connection successful!");
