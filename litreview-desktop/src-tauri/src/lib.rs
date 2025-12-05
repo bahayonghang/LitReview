@@ -24,14 +24,14 @@ pub struct AppConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProviderConfig {
     #[serde(rename = "type")]
-    pub provider_type: String,  // "openai" | "claude" | "gemini"
+    pub provider_type: String, // "openai" | "claude" | "gemini"
     pub base_url: String,
     pub api_key: String,
     pub model: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub context_window: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub api_version: Option<String>,  // Claude needs this
+    pub api_version: Option<String>, // Claude needs this
 }
 
 // Legacy struct for backward compatibility with frontend
@@ -128,7 +128,7 @@ fn get_config_path(app: &AppHandle) -> Result<PathBuf, String> {
         .path()
         .resource_dir()
         .map_err(|e| format!("Failed to get resource dir: {}", e))?;
-    
+
     // In development, use the project directory
     // In production, use resource directory
     let config_path = if cfg!(debug_assertions) {
@@ -142,13 +142,13 @@ fn get_config_path(app: &AppHandle) -> Result<PathBuf, String> {
         // Production: use resource directory
         resource_dir.join("config.toml")
     };
-    
+
     Ok(config_path)
 }
 
 fn get_default_config() -> AppConfig {
     let mut providers = HashMap::new();
-    
+
     providers.insert(
         "openai".to_string(),
         ProviderConfig {
@@ -160,7 +160,7 @@ fn get_default_config() -> AppConfig {
             api_version: None,
         },
     );
-    
+
     providers.insert(
         "claude".to_string(),
         ProviderConfig {
@@ -172,7 +172,7 @@ fn get_default_config() -> AppConfig {
             api_version: Some("2023-06-01".to_string()),
         },
     );
-    
+
     providers.insert(
         "gemini".to_string(),
         ProviderConfig {
@@ -184,7 +184,7 @@ fn get_default_config() -> AppConfig {
             api_version: None,
         },
     );
-    
+
     AppConfig {
         default: "openai".to_string(),
         providers,
@@ -206,22 +206,66 @@ async fn start_llm_stream(
     model: String,
     prompt: String,
     api_version: Option<String>,
+    system_prompt: Option<String>,
 ) -> Result<String, String> {
+    println!("[Rust] start_llm_stream called");
+    println!("[Rust] provider_type: {}", provider_type);
+    println!("[Rust] model: {}", model);
+    println!("[Rust] base_url: {}", base_url);
+    println!("[Rust] prompt length: {}", prompt.len());
+    println!(
+        "[Rust] system_prompt: {:?}",
+        system_prompt.as_ref().map(|s| s.len())
+    );
+
     let stream_id = Uuid::new_v4().to_string();
     let stream_id_clone = stream_id.clone();
 
     // Spawn async task to handle streaming
     tauri::async_runtime::spawn(async move {
+        let system = system_prompt.clone();
+        println!(
+            "[Rust] Spawned task, system_prompt len: {:?}",
+            system.as_ref().map(|s| s.len())
+        );
         let result = match provider_type.as_str() {
             "openai" => {
-                stream_openai_compatible(&app, &stream_id_clone, &base_url, &api_key, &model, &prompt).await
+                stream_openai_compatible(
+                    &app,
+                    &stream_id_clone,
+                    &base_url,
+                    &api_key,
+                    &model,
+                    &prompt,
+                    system.as_deref(),
+                )
+                .await
             }
             "claude" => {
                 let version = api_version.unwrap_or_else(|| "2023-06-01".to_string());
-                stream_claude(&app, &stream_id_clone, &base_url, &api_key, &model, &prompt, &version).await
+                stream_claude(
+                    &app,
+                    &stream_id_clone,
+                    &base_url,
+                    &api_key,
+                    &model,
+                    &prompt,
+                    &version,
+                    system.as_deref(),
+                )
+                .await
             }
             "gemini" => {
-                stream_gemini(&app, &stream_id_clone, &base_url, &api_key, &model, &prompt).await
+                stream_gemini(
+                    &app,
+                    &stream_id_clone,
+                    &base_url,
+                    &api_key,
+                    &model,
+                    &prompt,
+                    system.as_deref(),
+                )
+                .await
             }
             _ => Err(format!("Unsupported provider type: {}", provider_type)),
         };
@@ -253,7 +297,7 @@ async fn get_config_file_path(app: AppHandle) -> Result<String, String> {
 #[tauri::command]
 async fn load_toml_config(app: AppHandle) -> Result<AppConfig, String> {
     let config_path = get_config_path(&app)?;
-    
+
     if !config_path.exists() {
         // Create default config if not exists
         let default_config = get_default_config();
@@ -263,13 +307,13 @@ async fn load_toml_config(app: AppHandle) -> Result<AppConfig, String> {
             .map_err(|e| format!("Failed to write default config: {}", e))?;
         return Ok(default_config);
     }
-    
+
     let content = fs::read_to_string(&config_path)
         .map_err(|e| format!("Failed to read config file: {}", e))?;
-    
-    let config: AppConfig = toml::from_str(&content)
-        .map_err(|e| format!("Failed to parse config file: {}", e))?;
-    
+
+    let config: AppConfig =
+        toml::from_str(&content).map_err(|e| format!("Failed to parse config file: {}", e))?;
+
     Ok(config)
 }
 
@@ -277,13 +321,80 @@ async fn load_toml_config(app: AppHandle) -> Result<AppConfig, String> {
 #[tauri::command]
 async fn save_toml_config(app: AppHandle, config: AppConfig) -> Result<(), String> {
     let config_path = get_config_path(&app)?;
-    
+
     let toml_str = toml::to_string_pretty(&config)
         .map_err(|e| format!("Failed to serialize config: {}", e))?;
-    
-    fs::write(&config_path, toml_str)
-        .map_err(|e| format!("Failed to write config file: {}", e))?;
-    
+
+    fs::write(&config_path, toml_str).map_err(|e| format!("Failed to write config file: {}", e))?;
+
+    Ok(())
+}
+
+fn handle_gemini_json_response(
+    app: &AppHandle,
+    stream_id: &str,
+    body_text: &str,
+) -> Result<(), String> {
+    let json: serde_json::Value =
+        serde_json::from_str(body_text).map_err(|e| format!("Invalid JSON response: {}", e))?;
+
+    if let Some(error) = json.get("error") {
+        let message = error
+            .get("message")
+            .and_then(|m| m.as_str())
+            .or_else(|| error.as_str())
+            .unwrap_or("Unknown error");
+        return Err(format!("API error: {}", message));
+    }
+
+    let mut emitted = false;
+
+    if let Some(candidates) = json.get("candidates").and_then(|c| c.as_array()) {
+        for candidate in candidates {
+            if let Some(content) = candidate.get("content") {
+                if let Some(parts) = content.get("parts").and_then(|p| p.as_array()) {
+                    for part in parts {
+                        if let Some(text) = part.get("text").and_then(|t| t.as_str()) {
+                            emitted = true;
+                            let _ = app.emit(
+                                "llm-stream",
+                                LlmStreamEvent {
+                                    stream_id: stream_id.to_string(),
+                                    delta: text.to_string(),
+                                    done: false,
+                                    error: None,
+                                },
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if !emitted {
+        // Emit raw body text as fallback
+        let _ = app.emit(
+            "llm-stream",
+            LlmStreamEvent {
+                stream_id: stream_id.to_string(),
+                delta: body_text.to_string(),
+                done: false,
+                error: None,
+            },
+        );
+    }
+
+    let _ = app.emit(
+        "llm-stream",
+        LlmStreamEvent {
+            stream_id: stream_id.to_string(),
+            delta: String::new(),
+            done: true,
+            error: None,
+        },
+    );
+
     Ok(())
 }
 
@@ -291,7 +402,7 @@ async fn save_toml_config(app: AppHandle, config: AppConfig) -> Result<(), Strin
 #[tauri::command]
 async fn get_active_config(app: AppHandle) -> Result<Option<LlmConfig>, String> {
     let app_config = load_toml_config(app).await?;
-    
+
     let provider_name = &app_config.default;
     match app_config.providers.get(provider_name) {
         Some(provider) => Ok(Some(LlmConfig {
@@ -311,13 +422,139 @@ async fn get_active_config(app: AppHandle) -> Result<Option<LlmConfig>, String> 
 #[tauri::command]
 async fn set_default_provider(app: AppHandle, provider_name: String) -> Result<(), String> {
     let mut config = load_toml_config(app.clone()).await?;
-    
+
     if !config.providers.contains_key(&provider_name) {
         return Err(format!("Provider '{}' not found in config", provider_name));
     }
-    
+
     config.default = provider_name;
     save_toml_config(app, config).await
+}
+
+/// Test LLM connection with a minimal request (non-streaming)
+/// Returns Ok(()) if connection succeeds, Err with details if it fails
+#[tauri::command]
+async fn test_llm_connection(
+    provider_type: String,
+    base_url: String,
+    api_key: String,
+    model: String,
+    api_version: Option<String>,
+) -> Result<(), String> {
+    let client = Client::builder()
+        .timeout(std::time::Duration::from_secs(30))
+        .build()
+        .map_err(|e| format!("Failed to create HTTP client: {}", e))?;
+
+    match provider_type.as_str() {
+        "openai" => {
+            let url = format!("{}/chat/completions", base_url.trim_end_matches('/'));
+            let body = serde_json::json!({
+                "model": model,
+                "messages": [{"role": "user", "content": "ping"}],
+                "max_tokens": 1,
+                "temperature": 0.0
+            });
+
+            let mut request = client
+                .post(&url)
+                .header("Content-Type", "application/json")
+                .json(&body);
+
+            if !api_key.is_empty() {
+                request = request.header("Authorization", format!("Bearer {}", api_key));
+            }
+
+            let response = request
+                .send()
+                .await
+                .map_err(|e| format!("网络错误: {}", e))?;
+
+            if response.status().is_success() {
+                Ok(())
+            } else {
+                let status = response.status();
+                let error_text = response.text().await.unwrap_or_default();
+                // Truncate error text to avoid huge messages
+                let snippet = if error_text.len() > 200 {
+                    format!("{}...", &error_text[..200])
+                } else {
+                    error_text
+                };
+                Err(format!("HTTP {}: {}", status, snippet))
+            }
+        }
+        "claude" => {
+            let url = format!("{}/v1/messages", base_url.trim_end_matches('/'));
+            let version = api_version.unwrap_or_else(|| "2023-06-01".to_string());
+            let body = serde_json::json!({
+                "model": model,
+                "messages": [{"role": "user", "content": "ping"}],
+                "max_tokens": 1
+            });
+
+            let response = client
+                .post(&url)
+                .header("Content-Type", "application/json")
+                .header("x-api-key", &api_key)
+                .header("anthropic-version", &version)
+                .json(&body)
+                .send()
+                .await
+                .map_err(|e| format!("网络错误: {}", e))?;
+
+            if response.status().is_success() {
+                Ok(())
+            } else {
+                let status = response.status();
+                let error_text = response.text().await.unwrap_or_default();
+                let snippet = if error_text.len() > 200 {
+                    format!("{}...", &error_text[..200])
+                } else {
+                    error_text
+                };
+                Err(format!("HTTP {}: {}", status, snippet))
+            }
+        }
+        "gemini" => {
+            let url = format!(
+                "{}/v1beta/models/{}:generateContent?key={}",
+                base_url.trim_end_matches('/'),
+                model,
+                api_key
+            );
+            let body = serde_json::json!({
+                "contents": [{
+                    "parts": [{"text": "ping"}]
+                }],
+                "generationConfig": {
+                    "maxOutputTokens": 1
+                }
+            });
+
+            let response = client
+                .post(&url)
+                .header("Content-Type", "application/json")
+                .json(&body)
+                .send()
+                .await
+                .map_err(|e| format!("网络错误: {}", e))?;
+
+            if response.status().is_success() {
+                Ok(())
+            } else {
+                let status = response.status();
+                let error_text = response.text().await.unwrap_or_default();
+                let snippet = if error_text.len() > 200 {
+                    format!("{}...", &error_text[..200])
+                } else {
+                    error_text
+                };
+                Err(format!("HTTP {}: {}", status, snippet))
+            }
+        }
+        _ => Err(format!("不支持的 provider 类型: {}", provider_type)),
+    }
 }
 
 // ============================================================================
@@ -332,13 +569,21 @@ async fn stream_openai_compatible(
     api_key: &str,
     model: &str,
     prompt: &str,
+    system_prompt: Option<&str>,
 ) -> Result<(), String> {
     let client = Client::new();
     let url = format!("{}/chat/completions", base_url.trim_end_matches('/'));
 
+    // Build messages array with optional system prompt
+    let mut messages = Vec::new();
+    if let Some(system) = system_prompt {
+        messages.push(serde_json::json!({"role": "system", "content": system}));
+    }
+    messages.push(serde_json::json!({"role": "user", "content": prompt}));
+
     let body = serde_json::json!({
         "model": model,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": messages,
         "stream": true,
         "temperature": 0.3
     });
@@ -362,6 +607,21 @@ async fn stream_openai_compatible(
         let status = response.status();
         let error_text = response.text().await.unwrap_or_default();
         return Err(format!("HTTP {}: {}", status, error_text));
+    }
+
+    let is_sse = response
+        .headers()
+        .get(reqwest::header::CONTENT_TYPE)
+        .and_then(|value| value.to_str().ok())
+        .map(|value| value.contains("text/event-stream"))
+        .unwrap_or(false);
+
+    if !is_sse {
+        let body_text = response
+            .text()
+            .await
+            .map_err(|e| format!("Failed to read response body: {}", e))?;
+        return handle_openai_json_response(app, stream_id, &body_text);
     }
 
     let mut stream = response.bytes_stream();
@@ -444,6 +704,102 @@ async fn stream_openai_compatible(
     Ok(())
 }
 
+fn handle_openai_json_response(
+    app: &AppHandle,
+    stream_id: &str,
+    body_text: &str,
+) -> Result<(), String> {
+    let json: serde_json::Value =
+        serde_json::from_str(body_text).map_err(|e| format!("Invalid JSON response: {}", e))?;
+
+    if let Some(error) = json.get("error") {
+        let message = error
+            .get("message")
+            .and_then(|m| m.as_str())
+            .or_else(|| error.as_str())
+            .unwrap_or("Unknown error");
+        return Err(format!("API error: {}", message));
+    }
+
+    let mut emitted = false;
+
+    if let Some(choices) = json.get("choices").and_then(|c| c.as_array()) {
+        for choice in choices {
+            if let Some(message_content) = choice
+                .get("message")
+                .and_then(|message| message.get("content"))
+                .and_then(|content| content.as_str())
+            {
+                emitted = true;
+                let _ = app.emit(
+                    "llm-stream",
+                    LlmStreamEvent {
+                        stream_id: stream_id.to_string(),
+                        delta: message_content.to_string(),
+                        done: false,
+                        error: None,
+                    },
+                );
+            } else if let Some(text) = choice.get("text").and_then(|text| text.as_str()) {
+                emitted = true;
+                let _ = app.emit(
+                    "llm-stream",
+                    LlmStreamEvent {
+                        stream_id: stream_id.to_string(),
+                        delta: text.to_string(),
+                        done: false,
+                        error: None,
+                    },
+                );
+            }
+        }
+    }
+
+    if !emitted {
+        if let Some(result) = json
+            .get("result")
+            .and_then(|value| value.get("response"))
+            .and_then(|value| value.as_str())
+        {
+            emitted = true;
+            let _ = app.emit(
+                "llm-stream",
+                LlmStreamEvent {
+                    stream_id: stream_id.to_string(),
+                    delta: result.to_string(),
+                    done: false,
+                    error: None,
+                },
+            );
+        }
+    }
+
+    if !emitted {
+        // Emit raw body text to help with debugging unknown response formats
+        let _ = app.emit(
+            "llm-stream",
+            LlmStreamEvent {
+                stream_id: stream_id.to_string(),
+                delta: body_text.to_string(),
+                done: false,
+                error: None,
+            },
+        );
+    }
+
+    let _ = app.emit(
+        "llm-stream",
+        LlmStreamEvent {
+            stream_id: stream_id.to_string(),
+            delta: String::new(),
+            done: true,
+            error: None,
+        },
+    );
+
+    Ok(())
+}
+
 /// Stream from Google Gemini API
 async fn stream_gemini(
     app: &AppHandle,
@@ -452,6 +808,7 @@ async fn stream_gemini(
     api_key: &str,
     model: &str,
     prompt: &str,
+    system_prompt: Option<&str>,
 ) -> Result<(), String> {
     let client = Client::new();
     let url = format!(
@@ -461,7 +818,8 @@ async fn stream_gemini(
         api_key
     );
 
-    let body = serde_json::json!({
+    // Build body with optional system instruction
+    let mut body = serde_json::json!({
         "contents": [{
             "parts": [{"text": prompt}]
         }],
@@ -469,6 +827,13 @@ async fn stream_gemini(
             "temperature": 0.3
         }
     });
+
+    // Add system instruction if provided
+    if let Some(system) = system_prompt {
+        body["systemInstruction"] = serde_json::json!({
+            "parts": [{"text": system}]
+        });
+    }
 
     let response = client
         .post(&url)
@@ -482,6 +847,21 @@ async fn stream_gemini(
         let status = response.status();
         let error_text = response.text().await.unwrap_or_default();
         return Err(format!("HTTP {}: {}", status, error_text));
+    }
+
+    let is_sse = response
+        .headers()
+        .get(reqwest::header::CONTENT_TYPE)
+        .and_then(|value| value.to_str().ok())
+        .map(|value| value.contains("text/event-stream"))
+        .unwrap_or(false);
+
+    if !is_sse {
+        let body_text = response
+            .text()
+            .await
+            .map_err(|e| format!("Failed to read response body: {}", e))?;
+        return handle_gemini_json_response(app, stream_id, &body_text);
     }
 
     let mut stream = response.bytes_stream();
@@ -554,16 +934,23 @@ async fn stream_claude(
     model: &str,
     prompt: &str,
     api_version: &str,
+    system_prompt: Option<&str>,
 ) -> Result<(), String> {
     let client = Client::new();
     let url = format!("{}/v1/messages", base_url.trim_end_matches('/'));
 
-    let body = serde_json::json!({
+    // Build body with optional system prompt
+    let mut body = serde_json::json!({
         "model": model,
         "max_tokens": 4096,
         "messages": [{"role": "user", "content": prompt}],
         "stream": true
     });
+
+    // Add system prompt if provided (Claude uses top-level "system" field)
+    if let Some(system) = system_prompt {
+        body["system"] = serde_json::json!(system);
+    }
 
     let response = client
         .post(&url)
@@ -667,7 +1054,8 @@ pub fn run() {
             load_toml_config,
             save_toml_config,
             get_active_config,
-            set_default_provider
+            set_default_provider,
+            test_llm_connection
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
