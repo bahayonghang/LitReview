@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import type { LlmConfig } from "../hooks/useLlmStream";
+import styles from "./LanguagePolish.module.css";
 
 // ============================================================================
 // Type Definitions
@@ -299,31 +300,15 @@ export function LanguagePolish({
   }, [content]);
 
   const handlePolish = async () => {
-    console.log("[Polish] handlePolish called");
-    console.log("[Polish] config:", config);
-    console.log("[Polish] originalText:", originalText.substring(0, 100));
-    
-    if (!originalText.trim() || !config) {
-      console.log("[Polish] Early return - missing text or config");
-      return;
-    }
+    if (!originalText.trim() || !config) return;
 
     const styleConfig = STYLE_CONFIGS.find((s) => s.id === selectedStyle);
-    if (!styleConfig) {
-      console.log("[Polish] Early return - style config not found");
-      return;
-    }
+    if (!styleConfig) return;
 
     const systemPrompt = styleConfig.systemPrompt;
     const userPrompt = buildUserPrompt(originalText, intensity, format, targetLanguage);
 
-    console.log("[Polish] Calling onPolish with:");
-    console.log("[Polish] - systemPrompt length:", systemPrompt.length);
-    console.log("[Polish] - userPrompt length:", userPrompt.length);
-    console.log("[Polish] - userPrompt preview:", userPrompt.substring(0, 200));
-
     await onPolish(userPrompt, systemPrompt);
-    console.log("[Polish] onPolish completed");
   };
 
   const handleCopy = async () => {
@@ -344,49 +329,43 @@ export function LanguagePolish({
 
   if (!isConfigured) {
     return (
-      <div className="page-container">
-        <div className="setup-prompt">
-          <p>请先配置 LLM Provider 以使用语言润色功能。</p>
+      <div className={styles.setupPrompt}>
+        <div className={styles.setupCard}>
+          <div className={styles.setupIcon}>⚠️</div>
+          <h3>需要配置 LLM Provider</h3>
+          <p>请先在设置页面配置 API Key 以使用语言润色功能。</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="page-container">
-      <h2 className="page-title">语言润色</h2>
-
-      {/* Options Panel */}
-      <div className="polish-options">
-        {/* Style Selection */}
-        <div className="option-group">
-          <span className="option-label">润色风格</span>
-          <div className="option-buttons">
-            {STYLE_CONFIGS.map((style) => (
-              <button
-                key={style.id}
-                className={`option-btn ${selectedStyle === style.id ? "active" : ""}`}
-                onClick={() => setSelectedStyle(style.id)}
-                disabled={loading}
-                title={style.description}
-              >
-                {style.label}
-              </button>
-            ))}
-          </div>
+    <div className={styles.workbenchContainer}>
+      {/* Top Toolbar - Configuration */}
+      <div className={styles.toolbar}>
+        <div className={styles.toolbarGroup}>
+          <span className={styles.toolbarLabel}>风格</span>
+          <select 
+            value={selectedStyle} 
+            onChange={(e) => setSelectedStyle(e.target.value as PolishStyleId)}
+            className={styles.glassSelect}
+            disabled={loading}
+          >
+            {STYLE_CONFIGS.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
+          </select>
         </div>
 
-        {/* Intensity Selection */}
-        <div className="option-group">
-          <span className="option-label">润色强度</span>
-          <div className="option-buttons">
+        <div className={styles.toolbarDivider} />
+
+        <div className={styles.toolbarGroup}>
+          <span className={styles.toolbarLabel}>强度</span>
+          <div className={styles.toggleGroup}>
             {INTENSITY_OPTIONS.map((opt) => (
               <button
                 key={opt.id}
-                className={`option-btn ${intensity === opt.id ? "active" : ""}`}
+                className={`${styles.toggleBtn} ${intensity === opt.id ? styles.active : ""}`}
                 onClick={() => setIntensity(opt.id)}
                 disabled={loading}
-                title={opt.description}
               >
                 {opt.label}
               </button>
@@ -394,17 +373,17 @@ export function LanguagePolish({
           </div>
         </div>
 
-        {/* Format Selection */}
-        <div className="option-group">
-          <span className="option-label">格式保留</span>
-          <div className="option-buttons">
+        <div className={styles.toolbarDivider} />
+
+        <div className={styles.toolbarGroup}>
+          <span className={styles.toolbarLabel}>格式</span>
+          <div className={styles.toggleGroup}>
             {FORMAT_OPTIONS.map((opt) => (
               <button
                 key={opt.id}
-                className={`option-btn ${format === opt.id ? "active" : ""}`}
+                className={`${styles.toggleBtn} ${format === opt.id ? styles.active : ""}`}
                 onClick={() => setFormat(opt.id)}
                 disabled={loading}
-                title={opt.description}
               >
                 {opt.label}
               </button>
@@ -412,14 +391,15 @@ export function LanguagePolish({
           </div>
         </div>
 
-        {/* Target Language Selection */}
-        <div className="option-group">
-          <span className="option-label">目标语言</span>
-          <div className="option-buttons">
+        <div className={styles.toolbarDivider} />
+
+        <div className={styles.toolbarGroup}>
+          <span className={styles.toolbarLabel}>目标</span>
+          <div className={styles.toggleGroup}>
             {LANGUAGE_OPTIONS.map((opt) => (
               <button
                 key={opt.id}
-                className={`option-btn ${targetLanguage === opt.id ? "active" : ""}`}
+                className={`${styles.toggleBtn} ${targetLanguage === opt.id ? styles.active : ""}`}
                 onClick={() => setTargetLanguage(opt.id)}
                 disabled={loading}
               >
@@ -430,90 +410,94 @@ export function LanguagePolish({
         </div>
       </div>
 
-      {/* Comparison View */}
-      <div className="polish-comparison">
-        {/* Left: Original Text */}
-        <div className="polish-panel">
-          <div className="panel-header">
-            <h3>原文</h3>
+      {/* Main Workspace - Split View */}
+      <div className={styles.splitPane}>
+        {/* Source Panel */}
+        <div className={styles.editorPanel}>
+          <div className={styles.panelHeader}>
+            <span className={styles.panelTitle}>原文输入</span>
+            {originalText && (
+              <button className={styles.iconBtn} onClick={handleClear} disabled={loading} title="清空">
+                🗑️
+              </button>
+            )}
           </div>
           <textarea
-            className="polish-textarea"
+            className={styles.editorTextarea}
             value={originalText}
             onChange={(e) => setOriginalText(e.target.value)}
-            placeholder="请输入需要润色的文本..."
+            placeholder="在此粘贴或输入需要润色的英文/中文段落..."
             disabled={loading}
           />
-          <div className="panel-actions">
-            <button
-              onClick={handlePolish}
-              disabled={loading || !originalText.trim()}
-              className="primary-btn"
-            >
-              {loading ? "润色中..." : "开始润色"}
-            </button>
-            <button type="button" onClick={handleClear} disabled={loading}>
-              清空
-            </button>
-          </div>
         </div>
 
-        {/* Right: Polished Result */}
-        <div className="polish-panel">
-          <div className="panel-header">
-            <h3>润色结果 {loading && <span className="cursor-blink">▌</span>}</h3>
+        {/* Target Panel */}
+        <div className={`${styles.editorPanel} ${styles.targetPanel}`}>
+          <div className={styles.panelHeader}>
+            <span className={styles.panelTitle}>润色结果</span>
+            <div className={styles.panelActions}>
+              {loading && <span className={styles.statusBadge}>✨ 润色中...</span>}
+              <button 
+                className={styles.iconBtn} 
+                onClick={handleCopy} 
+                disabled={!polishedText} 
+                title="复制结果"
+              >
+                {copySuccess ? "✓" : "📋"}
+              </button>
+            </div>
           </div>
-          <div className="polish-result">
-            {polishedText || (loading ? (
-              <span className="placeholder">正在润色，请稍候...</span>
+          <div className={styles.resultContainer}>
+            {polishedText ? (
+              <div className={styles.resultContent}>{polishedText}</div>
             ) : (
-              <span className="placeholder">润色结果将显示在这里</span>
-            ))}
-          </div>
-          <div className="panel-actions">
-            <button
-              type="button"
-              onClick={handleCopy}
-              disabled={!polishedText || loading}
-            >
-              {copySuccess ? "已复制 ✓" : "复制结果"}
-            </button>
+              <div className={styles.emptyState}>
+                {loading ? "AI 正在思考..." : "润色结果将显示在这里"}
+              </div>
+            )}
+            
+            {/* Modifications Table (inline or separate tab depending on preference, here inline at bottom) */}
+            {modifications.length > 0 && (
+              <div className={styles.modificationsSection}>
+                <div className={styles.modificationsHeader}>修改详情</div>
+                <div className={styles.tableWrapper}>
+                  <table className={styles.modTable}>
+                    <thead>
+                      <tr>
+                        <th>原文</th>
+                        <th>修改</th>
+                        <th>原因</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {modifications.map((mod, i) => (
+                        <tr key={i}>
+                          <td className={styles.diffDel}>{mod.original}</td>
+                          <td className={styles.diffAdd}>{mod.modified}</td>
+                          <td className={styles.diffReason}>{mod.reason}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Modification Explanation Table */}
-      {modifications.length > 0 && (
-        <div className="modifications-section">
-          <h3 className="section-title">修改说明</h3>
-          <div className="modifications-table-wrapper">
-            <table className="modifications-table">
-              <thead>
-                <tr>
-                  <th>原文</th>
-                  <th>修改后</th>
-                  <th>原因</th>
-                </tr>
-              </thead>
-              <tbody>
-                {modifications.map((mod, index) => (
-                  <tr key={index}>
-                    <td className="cell-original">{mod.original}</td>
-                    <td className="cell-modified">{mod.modified}</td>
-                    <td className="cell-reason">{mod.reason}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {error && (
-        <div className="error-box">
-          <strong>错误：</strong> {error}
-        </div>
-      )}
+      {/* Bottom Action Bar */}
+      <div className={styles.actionBar}>
+        {error && <div className={styles.errorMsg}>{error}</div>}
+        <div className={styles.actionSpacer} />
+        <button 
+          className={styles.primaryBtn} 
+          onClick={handlePolish}
+          disabled={loading || !originalText.trim()}
+        >
+          {loading ? "正在润色..." : "开始润色 ✨"}
+        </button>
+      </div>
     </div>
   );
 }
