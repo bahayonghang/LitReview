@@ -1,6 +1,7 @@
 /**
  * LitReview Pro Design Tokens
- * Modern design system for responsive, accessible interface
+ * Academic Elegance Design System
+ * 为学术研究者打造的专业优雅界面
  */
 
 :root {
@@ -8,29 +9,58 @@
      COLORS
      ========================================================================== */
 
-  /* Primary Colors - Sophisticated Blue-Purple Evolution */
-  --color-primary-50: #f0f4ff;
-  --color-primary-100: #e0ecff;
-  --color-primary-200: #c7ddff;
-  --color-primary-300: #a4c7ff;
-  --color-primary-400: #818cf8;
+  /* ==========================================================================
+     ACADEMIC ELEGANCE COLOR PALETTE
+     ========================================================================== */
+
+  /* Primary Colors - 深邃学术蓝 (Academic Deep Blue) */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+
+  /* Secondary Colors - 知识紫 (Knowledge Purple) */
+  --color-secondary-50: #faf5ff;
+  --color-secondary-100: #f3e8ff;
+  --color-secondary-200: #e9d5ff;
+  --color-secondary-300: #d8b4fe;
+  --color-secondary-400: #c084fc;
+  --color-secondary-500: #a855f7;
+  --color-secondary-600: #9333ea;
+  --color-secondary-700: #7c3aed;
+  --color-secondary-800: #6b21a8;
+  --color-secondary-900: #581c87;
+
+  /* Academic Accent - 活力青 (Vibrant Cyan) */
+  --color-accent-50: #ecfeff;
+  --color-accent-100: #cffafe;
+  --color-accent-200: #a5f3fc;
+  --color-accent-300: #67e8f9;
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+  --color-accent-700: #0e7490;
+  --color-accent-800: #155e75;
+  --color-accent-900: #164e63;
+
+  /* Aurora Gradient - 极光渐变 */
+  --gradient-aurora-primary: linear-gradient(135deg, #0ea5e9 0%, #a855f7 50%, #06b6d4 100%);
+  --gradient-aurora-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%);
+  --gradient-aurora-glow: linear-gradient(135deg, #38bdf8 0%, #d8b4fe 50%, #67e8f9 100%);
+
+  /* Legacy Compatibility */
+  --color-primary-400: #818cf8; /* 保留原有的indigo for backward compatibility */
   --color-primary-500: #6366f1;
   --color-primary-600: #5b21b6;
   --color-primary-700: #4c1d95;
   --color-primary-800: #3730a3;
   --color-primary-900: #312e81;
-
-  /* Secondary Colors - Refined Complementary Palette */
-  --color-secondary-50: #fdf4ff;
-  --color-secondary-100: #fae8ff;
-  --color-secondary-200: #f5d0fe;
-  --color-secondary-300: #f0abfc;
-  --color-secondary-400: #e879f9;
-  --color-secondary-500: #d946ef;
-  --color-secondary-600: #c026d3;
-  --color-secondary-700: #a21caf;
-  --color-secondary-800: #86198f;
-  --color-secondary-900: #701a75;
 
   /* Neutral Colors - Extended Grayscale */
   --color-gray-50: #f9fafb;
@@ -73,10 +103,18 @@
      TYPOGRAPHY
      ========================================================================== */
 
-  /* Font Families */
-  --font-family-primary: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
-  --font-family-display: 'Outfit', 'SF Pro Display', system-ui, sans-serif;
+  /* ==========================================================================
+     ACADEMIC TYPOGRAPHY SYSTEM
+     ========================================================================== */
+
+  /* Font Families - 优雅字体栈 */
+  --font-family-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-family-mono: 'SF Mono', 'JetBrains Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  --font-family-display: 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  --font-family-academic: 'SF Pro Display', 'Times New Roman', 'Georgia', serif; /* 学术写作专用 */
+
+  /* Font Loading Strategy */
+  --font-display-swap: swap;
 
   /* Font Sizes - Fluid Typography Scale */
   --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);    /* 12px - 14px */
@@ -219,70 +257,139 @@
   --duration-700: 700ms;
   --duration-1000: 1000ms;
 
-  /* Transition Timing Functions */
+  /* ==========================================================================
+     ACADEMIC ELEGANCE ANIMATION SYSTEM
+     ========================================================================== */
+
+  /* Transition Timing Functions - 学术优雅动效 */
   --ease-linear: linear;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-  /* Standard Transitions */
-  --transition-colors: color var(--duration-150) var(--ease-in-out),
-                      background-color var(--duration-150) var(--ease-in-out),
-                      border-color var(--duration-150) var(--ease-in-out);
+  /* Academic Elegance Curves - 专业动效曲线 */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);           /* 标准平滑 */
+  --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);  /* 温和优雅 */
+  --ease-academic: cubic-bezier(0.32, 0.72, 0.46, 0.92); /* 学术专业 */
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* 弹性活力 */
+  --ease-premium: cubic-bezier(0.23, 1, 0.32, 1);        /* 高级质感 */
 
-  --transition-opacity: opacity var(--duration-150) var(--ease-in-out);
+  /* Academic Transition Durations - 专业过渡时长 */
+  --duration-instant: 0ms;           /* 即时响应 */
+  --duration-quick: 0.15s;           /* 快速交互 */
+  --duration-normal: 0.25s;          /* 标准过渡 */
+  --duration-smooth: 0.35s;          /* 平滑动效 */
+  --duration-slow: 0.5s;             /* 缓慢变化 */
+  --duration-page: 0.6s;             /* 页面切换 */
 
-  --transition-shadow: box-shadow var(--duration-150) var(--ease-in-out),
-                      drop-shadow var(--duration-150) var(--ease-in-out);
+  /* ==========================================================================
+     ACADEMIC ELEGANCE STANDARD TRANSITIONS
+     ========================================================================== */
 
-  --transition-transform: transform var(--duration-200) var(--ease-in-out);
+  /* Color Transitions - 色彩过渡 */
+  --transition-colors-quick: color var(--duration-quick) var(--ease-smooth),
+                            background-color var(--duration-quick) var(--ease-smooth),
+                            border-color var(--duration-quick) var(--ease-smooth);
 
-  --transition-all: all var(--duration-150) var(--ease-in-out);
+  --transition-colors-smooth: color var(--duration-normal) var(--ease-gentle),
+                              background-color var(--duration-normal) var(--ease-gentle),
+                              border-color var(--duration-normal) var(--ease-gentle);
+
+  /* Opacity Transitions - 透明度过渡 */
+  --transition-opacity-gentle: opacity var(--duration-quick) var(--ease-gentle);
+  --transition-opacity-smooth: opacity var(--duration-normal) var(--ease-smooth);
+
+  /* Shadow & Glow Effects - 阴影和光晕 */
+  --transition-shadow-academic: box-shadow var(--duration-normal) var(--ease-academic),
+                               drop-shadow var(--duration-normal) var(--ease-academic);
+
+  --transition-glow-premium: box-shadow var(--duration-smooth) var(--ease-premium),
+                            filter var(--duration-smooth) var(--ease-premium);
+
+  /* Transform & Scale - 变换和缩放 */
+  --transition-transform-interactive: transform var(--duration-quick) var(--ease-smooth),
+                                      scale var(--duration-quick) var(--ease-smooth);
+
+  --transition-transform-elegant: transform var(--duration-normal) var(--ease-gentle),
+                                 scale var(--duration-normal) var(--ease-gentle);
+
+  /* Comprehensive Transitions - 综合过渡 */
+  --transition-ui-quick: all var(--duration-quick) var(--ease-smooth);
+  --transition-ui-smooth: all var(--duration-normal) var(--ease-gentle);
+  --transition-ui-premium: all var(--duration-smooth) var(--ease-premium);
+
+  /* Legacy Compatibility */
+  --transition-colors: var(--transition-colors-smooth);
+  --transition-opacity: var(--transition-opacity-gentle);
+  --transition-shadow: var(--transition-shadow-academic);
+  --transition-transform: var(--transition-transform-interactive);
+  --transition-all: var(--transition-ui-smooth);
 }
 
 /* ==========================================================================
    THEME VARIATIONS
    ========================================================================== */
 
-/* Light Theme */
+/* ==========================================================================
+     ACADEMIC ELEGANCE THEME SYSTEM
+     ========================================================================== */
+
+/* Light Theme - 学术优雅浅色主题 */
 [data-theme="light"] {
-  /* Text Colors */
-  --color-text-primary: var(--color-gray-900);
-  --color-text-secondary: var(--color-gray-700);
-  --color-text-muted: var(--color-gray-500);
-  --color-text-inverse: #ffffff;
+  /* Text Colors - 高对比度文字 */
+  --color-text-primary: #0f172a;           /* 深邃学术蓝 */
+  --color-text-secondary: #334155;         /* 中等蓝灰 */
+  --color-text-muted: #64748b;            /* 柔和灰蓝 */
+  --color-text-inverse: #ffffff;          /* 纯白反色 */
 
-  /* Background Colors */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: var(--color-gray-50);
-  --color-bg-tertiary: var(--color-gray-100);
+  /* Background Colors - 清新学术背景 */
+  --color-bg-primary: #ffffff;            /* 纯白主背景 */
+  --color-bg-secondary: #f8fafc;          /* 极淡蓝灰 */
+  --color-bg-tertiary: #f1f5f9;           /* 淡蓝灰 */
 
-  /* Glass Effects */
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.5);
+  /* Academic Glass Effects - 学术玻璃效果 */
+  --glass-bg: rgba(255, 255, 255, 0.85);   /* 半透明白 */
+  --glass-border: rgba(14, 165, 233, 0.2);  /* 学术蓝边框 */
   --glass-bg-light: rgba(255, 255, 255, 0.95);
-  --glass-border-light: rgba(255, 255, 255, 0.7);
+  --glass-border-light: rgba(14, 165, 233, 0.3);
+
+  /* Academic Gradients - 学术渐变 */
+  --gradient-primary: var(--gradient-aurora-primary);
+  --gradient-subtle: var(--gradient-aurora-subtle);
+  --gradient-glow: var(--gradient-aurora-glow);
+
+  /* Enhanced Contrast for Academic Reading */
+  --contrast-text-primary: 16;             /* WCAG AAA standard */
+  --contrast-text-secondary: 7;            /* WCAG AA+ standard */
 }
 
-/* Dark Theme */
+/* Dark Theme - 深邃学术深色主题 */
 [data-theme="dark"] {
-  /* Text Colors */
-  --color-text-primary: var(--color-gray-50);
-  --color-text-secondary: var(--color-gray-300);
-  --color-text-muted: var(--color-gray-500);
-  --color-text-inverse: var(--color-gray-900);
+  /* Text Colors - 深色主题文字 */
+  --color-text-primary: #f8fafc;           /* 高亮白 */
+  --color-text-secondary: #e2e8f0;         /* 中等亮白 */
+  --color-text-muted: #94a3b8;            /* 柔和亮灰 */
+  --color-text-inverse: #0f172a;          /* 深邃蓝反色 */
 
-  /* Background Colors */
-  --color-bg-primary: #0f0c29;
-  --color-bg-secondary: #1a1625;
-  --color-bg-tertiary: #24243e;
+  /* Background Colors - 深邃学术背景 */
+  --color-bg-primary: #0f172a;            /* 深邃学术蓝 */
+  --color-bg-secondary: #1e293b;          /* 中等深蓝 */
+  --color-bg-tertiary: #334155;           /* 淡蓝灰 */
 
-  /* Glass Effects */
-  --glass-bg: rgba(15, 12, 41, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-bg-light: rgba(15, 12, 41, 0.85);
-  --glass-border-light: rgba(255, 255, 255, 0.18);
+  /* Academic Glass Effects - 深色玻璃效果 */
+  --glass-bg: rgba(15, 23, 42, 0.75);     /* 半透明深蓝 */
+  --glass-border: rgba(56, 189, 248, 0.3); /* 明亮蓝边框 */
+  --glass-bg-light: rgba(15, 23, 42, 0.85);
+  --glass-border-light: rgba(56, 189, 248, 0.4);
+
+  /* Academic Gradients - 深色渐变 */
+  --gradient-primary: var(--gradient-aurora-primary);
+  --gradient-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(6, 182, 212, 0.15) 100%);
+  --gradient-glow: linear-gradient(135deg, #38bdf8 0%, #d8b4fe 50%, #67e8f9 100%);
+
+  /* Enhanced Contrast for Academic Reading */
+  --contrast-text-primary: 18;             /* 极高对比度 */
+  --contrast-text-secondary: 8;            /* 高对比度 */
 }
 
 /* High Contrast Mode */
