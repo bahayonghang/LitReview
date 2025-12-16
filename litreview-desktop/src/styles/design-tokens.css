@@ -54,6 +54,13 @@
   --gradient-aurora-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%);
   --gradient-aurora-glow: linear-gradient(135deg, #38bdf8 0%, #d8b4fe 50%, #67e8f9 100%);
 
+  /* Card Gradients - 卡片语义化渐变 */
+  --gradient-card-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-card-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-card-neutral: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-card-accent: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+
   /* Legacy Compatibility */
   --color-primary-400: #818cf8; /* 保留原有的indigo for backward compatibility */
   --color-primary-500: #6366f1;
@@ -352,6 +359,7 @@
   --glass-border: rgba(14, 165, 233, 0.2);  /* 学术蓝边框 */
   --glass-bg-light: rgba(255, 255, 255, 0.95);
   --glass-border-light: rgba(14, 165, 233, 0.3);
+  --glass-bg-hover: rgba(255, 255, 255, 0.5);
 
   /* Academic Gradients - 学术渐变 */
   --gradient-primary: var(--gradient-aurora-primary);
@@ -381,6 +389,7 @@
   --glass-border: rgba(56, 189, 248, 0.3); /* 明亮蓝边框 */
   --glass-bg-light: rgba(15, 23, 42, 0.85);
   --glass-border-light: rgba(56, 189, 248, 0.4);
+  --glass-bg-hover: rgba(255, 255, 255, 0.1);
 
   /* Academic Gradients - 深色渐变 */
   --gradient-primary: var(--gradient-aurora-primary);

@@ -5,28 +5,10 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { ProviderConfig } from '../hooks/useLlmStream';
+import { TemplateCard, type Template } from './review/TemplateCard';
+import { HistoryItem, type ReviewHistory } from './review/HistoryItem';
+import { WordCounter } from './common/WordCounter';
 import styles from './ReviewGenerator.module.css';
-
-interface Template {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  prompt: string;
-  category: 'academic' | 'general' | 'technical' | 'medical';
-  tags: string[];
-  isNew?: boolean;
-}
-
-interface ReviewHistory {
-  id: string;
-  prompt: string;
-  result: string;
-  timestamp: Date;
-  provider: string;
-  model: string;
-  wordCount: number;
-}
 
 interface ExportFormat {
   id: string;
@@ -130,121 +112,6 @@ interface ReviewGeneratorProps {
   onReset: () => void;
 }
 
-const TemplateCard: React.FC<{
-  template: Template;
-  isSelected: boolean;
-  onSelect: () => void;
-}> = ({ template, isSelected, onSelect }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <button
-      className={`
-        ${styles.templateCard}
-        ${isSelected ? styles.templateCardSelected : ''}
-        ${isHovered ? styles.templateCardHovered : ''}
-      `}
-      onClick={onSelect}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className={styles.templateHeader}>
-        <span className={styles.templateIcon}>{template.icon}</span>
-        {template.isNew && (
-          <span className={styles.templateBadge}>NEW</span>
-        )}
-      </div>
-
-      <div className={styles.templateContent}>
-        <h3 className={styles.templateName}>{template.name}</h3>
-        <p className={styles.templateDescription}>{template.description}</p>
-        <div className={styles.templateTags}>
-          {template.tags.map(tag => (
-            <span key={tag} className={styles.templateTag}>
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </button>
-  );
-};
-
-const HistoryItem: React.FC<{
-  item: ReviewHistory;
-  onLoad: () => void;
-  onDelete: () => void;
-}> = ({ item, onLoad, onDelete }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className={`${styles.historyItem} ${isHovered ? styles.historyItemHovered : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className={styles.historyContent}>
-        <div className={styles.historyHeader}>
-          <h4 className={styles.historyTitle}>
-            {item.prompt.substring(0, 50)}...
-          </h4>
-          <div className={styles.historyActions}>
-            {isHovered && (
-              <>
-                <button
-                  className={styles.historyAction}
-                  onClick={onLoad}
-                  aria-label="加载历史记录"
-                >
-                  📂
-                </button>
-                <button
-                  className={styles.historyAction}
-                  onClick={onDelete}
-                  aria-label="删除历史记录"
-                >
-                  🗑️
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.historyMeta}>
-          <span className={styles.historyProvider}>{item.provider}</span>
-          <span className={styles.historyWordCount}>{item.wordCount} 字</span>
-          <span className={styles.historyDate}>
-            {new Date(item.timestamp).toLocaleDateString()}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const WordCounter: React.FC<{ text: string }> = ({ text }) => {
-  const wordCount = text.trim().split(/\s+/).filter(word => word.length > 0).length;
-  const charCount = text.length;
-
-  return (
-    <div className={styles.wordCounter}>
-      <div className={styles.wordCounterItem}>
-        <span className={styles.wordCounterLabel}>字数</span>
-        <span className={styles.wordCounterValue}>{wordCount.toLocaleString()}</span>
-      </div>
-      <div className={styles.wordCounterItem}>
-        <span className={styles.wordCounterLabel}>字符</span>
-        <span className={styles.wordCounterValue}>{charCount.toLocaleString()}</span>
-      </div>
-      <div className={styles.wordCounterItem}>
-        <span className={styles.wordCounterLabel}>阅读时间</span>
-        <span className={styles.wordCounterValue}>
-          {Math.max(1, Math.ceil(wordCount / 200))} 分钟
-        </span>
-      </div>
-    </div>
-  );
-};
-
 export function ReviewGenerator({
   config,
   providerName,
@@ -347,7 +214,7 @@ export function ReviewGenerator({
     if (!content) return;
 
     let exportContent = content;
-    let filename = `review_${Date.now()}${format.extension}`;
+    const filename = `review_${Date.now()}${format.extension}`;
 
     // Format content based on export type
     switch (format.id) {

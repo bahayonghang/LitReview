@@ -1,0 +1,87 @@
+.historyItem {
+  padding: var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.historyItem:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--color-primary-300);
+  transform: translateX(4px);
+}
+
+.historyContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.historyTitle {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.historyActions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  min-height: 28px; /* Maintain height for layout stability */
+}
+
+.historyAction {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.historyAction:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .historyAction:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.historyMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.historyProvider {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.historyProvider::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary-500);
+}

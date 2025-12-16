@@ -69,8 +69,6 @@ const NavButton: React.FC<NavButtonProps> = ({
   onClick,
   isCollapsed
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -82,14 +80,11 @@ const NavButton: React.FC<NavButtonProps> = ({
     <button
       className={`
         ${styles.navButton}
-        ${isActive ? styles.navButtonActive : styles.navButtonInactive}
-        ${isCollapsed ? styles.navButtonCollapsed : styles.navButtonExpanded}
-        ${isHovered ? styles.navButtonHover : ''}
+        ${isActive ? styles.navButtonActive : ''}
+        ${isCollapsed ? styles.navButtonCollapsed : ''}
       `}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       aria-current={isActive ? 'page' : undefined}
       aria-label={`${item.label} - ${item.description}`}
       data-tooltip={isCollapsed ? item.label : undefined}

@@ -1,0 +1,206 @@
+/* Stat Cards - 学术优雅统计卡片 */
+.statCard {
+  position: relative;
+  padding: 28px;
+  overflow: hidden;
+
+  /* Academic Glassmorphism - 学术玻璃效果 */
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur-lg);
+  -webkit-backdrop-filter: var(--backdrop-blur-lg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+
+  /* Academic Shadows - 学术阴影系统 */
+  box-shadow:
+    0 4px 20px -4px rgba(14, 165, 233, 0.1),
+    0 2px 10px -2px rgba(168, 85, 247, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  /* Academic Elegance Transitions */
+  transition:
+    transform var(--duration-smooth) var(--ease-gentle),
+    background-color var(--duration-normal) var(--ease-gentle),
+    border-color var(--duration-normal) var(--ease-gentle),
+    box-shadow var(--duration-normal) var(--ease-academic);
+
+  /* Academic Animation - 学术动画 */
+  animation: academicCardEntrance 0.8s var(--ease-premium);
+  animation-fill-mode: both;
+}
+
+@keyframes academicCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Light Theme Stat Cards - 浅色主题统计卡片 */
+:global([data-theme="light"]) .statCard {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 4px 20px -4px rgba(14, 165, 233, 0.08),
+    0 2px 10px -2px rgba(168, 85, 247, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Clickable Stat Card - 可点击统计卡片 */
+.statCardClickable {
+  cursor: pointer;
+}
+
+.statCardClickable:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: var(--glass-bg-hover);
+  border-color: var(--color-primary-400);
+  box-shadow:
+    0 12px 40px -8px rgba(14, 165, 233, 0.25),
+    0 6px 20px -4px rgba(168, 85, 247, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Academic Card Hover Glow - 学术卡片悬停光晕 */
+.statCardClickable::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-2xl);
+  padding: 1px;
+  background: var(--gradient-aurora-primary);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-gentle);
+  pointer-events: none;
+}
+
+.statCardClickable:hover::before {
+  opacity: 0.3;
+}
+
+.statCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.statCardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.trendPositive {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.trendNegative {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.trendIcon {
+  font-weight: 700;
+}
+
+.statCardContent {
+  margin-bottom: 16px;
+}
+
+.statCardValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.statCardTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.statCardSubtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.statCardChart {
+  height: 40px;
+  margin-top: auto;
+}
+
+.statCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--duration-200) var(--ease-out);
+  pointer-events: none;
+}
+
+.statCardClickable:hover .statCardOverlay {
+  opacity: 1;
+}
+
+.statCardOverlayText {
+  color: white;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+@media (max-width: 768px) {
+  .statCard {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .statCardValue {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (prefers-contrast: high) {
+  .statCard {
+    border-width: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statCard {
+    animation: none;
+  }
+  .statCard:hover {
+    transform: none;
+  }
+}

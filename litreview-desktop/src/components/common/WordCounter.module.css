@@ -1,0 +1,34 @@
+.wordCounter {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.wordCounterItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.wordCounterLabel {
+  color: var(--color-text-muted);
+}
+
+.wordCounterValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 640px) {
+  .wordCounter {
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+}

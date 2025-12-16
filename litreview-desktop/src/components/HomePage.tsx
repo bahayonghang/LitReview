@@ -7,6 +7,8 @@ import React, { useState, useEffect } from 'react';
 import type { TabType } from '../types/tabs';
 import type { ProviderConfig } from '../hooks/useLlmStream';
 import { useBreakpoint } from '../hooks/useDesignTokens';
+import { StatCard } from './common/StatCard';
+import { ActionCard } from './common/ActionCard';
 import styles from './HomePage.module.css';
 
 interface Stats {
@@ -44,7 +46,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     description: '智能生成高质量文献综述',
     icon: '📝',
     color: 'primary',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    gradient: 'var(--gradient-card-primary)',
     shortcut: '1',
     isNew: false
   },
@@ -54,7 +56,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     description: '提升文本表达质量',
     icon: '✨',
     color: 'secondary',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    gradient: 'var(--gradient-card-secondary)',
     shortcut: '2',
     isNew: true
   },
@@ -64,164 +66,11 @@ const QUICK_ACTIONS: QuickAction[] = [
     description: '管理 LLM 提供商设置',
     icon: '⚙️',
     color: 'neutral',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    gradient: 'var(--gradient-card-neutral)',
     shortcut: '3',
     isNew: false
   }
 ];
-
-const MiniChart: React.FC<{ data: number[]; color: string; height?: number }> = ({
-  data,
-  color,
-  height = 60
-}) => {
-  const maxValue = Math.max(...data, 1);
-  const points = data
-    .map((value, index) => {
-      const x = (index / (data.length - 1)) * 100;
-      const y = ((maxValue - value) / maxValue) * 100;
-      return `${x},${y}`;
-    })
-    .join(' ');
-
-  return (
-    <div className={styles.miniChart} style={{ height }}>
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        className={styles.miniChartSvg}
-      >
-        <defs>
-          <linearGradient id={`gradient-${color}`} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor={color} stopOpacity="0.3" />
-            <stop offset="100%" stopColor={color} stopOpacity="0.05" />
-          </linearGradient>
-        </defs>
-        <polygon
-          points={`0,100 ${points} 100,100`}
-          fill={`url(#gradient-${color})`}
-          className={styles.miniChartFill}
-        />
-        <polyline
-          points={points}
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          className={styles.miniChartLine}
-        />
-      </svg>
-    </div>
-  );
-};
-
-const StatCard: React.FC<{
-  title: string;
-  value: string | number;
-  subtitle?: string;
-  icon: string;
-  trend?: {
-    value: number;
-    isPositive: boolean;
-  };
-  chart?: number[];
-  color?: string;
-  onClick?: () => void;
-}> = ({ title, value, subtitle, icon, trend, chart, color = '#667eea', onClick }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className={`${styles.statCard} ${onClick ? styles.statCardClickable : ''}`}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className={styles.statCardHeader}>
-        <div className={styles.statCardIcon} style={{ backgroundColor: `${color}20` }}>
-          <span style={{ fontSize: '1.5rem' }}>{icon}</span>
-        </div>
-        {trend && (
-          <div className={`${styles.trend} ${trend.isPositive ? styles.trendPositive : styles.trendNegative}`}>
-            <span className={styles.trendIcon}>
-              {trend.isPositive ? '↑' : '↓'}
-            </span>
-            <span className={styles.trendValue}>
-              {Math.abs(trend.value)}%
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className={styles.statCardContent}>
-        <div className={styles.statCardValue}>{value}</div>
-        <div className={styles.statCardTitle}>{title}</div>
-        {subtitle && (
-          <div className={styles.statCardSubtitle}>{subtitle}</div>
-        )}
-      </div>
-
-      {chart && (
-        <div className={styles.statCardChart}>
-          <MiniChart data={chart} color={color} height={40} />
-        </div>
-      )}
-
-      {isHovered && onClick && (
-        <div className={styles.statCardOverlay}>
-          <span className={styles.statCardOverlayText}>查看详情</span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const QuickActionCard: React.FC<{
-  action: QuickAction;
-  onClick: () => void;
-  index: number;
-}> = ({ action, onClick, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <button
-      className={styles.quickActionCard}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        animationDelay: `${index * 100}ms`,
-        background: isHovered ? action.gradient : 'var(--glass-bg)'
-      }}
-    >
-      {action.isNew && (
-        <span className={styles.newBadge}>NEW</span>
-      )}
-
-      <div className={styles.quickActionIcon} style={{ color: isHovered ? 'white' : undefined }}>
-        <span style={{ fontSize: '2rem' }}>{action.icon}</span>
-      </div>
-
-      <div className={styles.quickActionContent}>
-        <h3 className={styles.quickActionTitle} style={{ color: isHovered ? 'white' : undefined }}>
-          {action.title}
-        </h3>
-        <p className={styles.quickActionDescription} style={{ color: isHovered ? 'rgba(255,255,255,0.8)' : undefined }}>
-          {action.description}
-        </p>
-      </div>
-
-      {action.shortcut && (
-        <div className={styles.quickActionShortcut} style={{ color: isHovered ? 'rgba(255,255,255,0.6)' : undefined }}>
-          <kbd className={styles.kbd}>{action.shortcut}</kbd>
-        </div>
-      )}
-
-      <div className={styles.quickActionGlow} style={{ background: action.gradient }} />
-    </button>
-  );
-};
 
 export function HomePage({ config, providerName, onNavigate, className = '' }: HomePageProps) {
   const { isMobile } = useBreakpoint();
@@ -390,10 +239,15 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
 
         <div className={styles.quickAccessGrid}>
           {QUICK_ACTIONS.map((action, index) => (
-            <QuickActionCard
+            <ActionCard
               key={action.id}
-              action={action}
+              title={action.title}
+              description={action.description}
+              icon={action.icon}
               onClick={() => onNavigate(action.id)}
+              gradient={action.gradient}
+              shortcut={action.shortcut}
+              isNew={action.isNew}
               index={index}
             />
           ))}
