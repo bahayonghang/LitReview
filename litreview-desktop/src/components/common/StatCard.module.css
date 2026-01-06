@@ -103,6 +103,15 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* SVG 图标内部样式 */
+.statCardIconInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .trend {
   display: flex;
   align-items: center;

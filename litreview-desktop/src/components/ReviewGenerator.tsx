@@ -8,13 +8,33 @@ import type { ProviderConfig } from '../hooks/useLlmStream';
 import { TemplateCard, type Template } from './review/TemplateCard';
 import { HistoryItem, type ReviewHistory } from './review/HistoryItem';
 import { WordCounter } from './common/WordCounter';
+import {
+  BookIcon,
+  ZapIcon,
+  SearchIcon,
+  CodeIcon,
+  HospitalIcon,
+  DocumentIcon,
+  EditIcon,
+  ExportIcon,
+  TemplateIcon,
+  HistoryIcon,
+  BotIcon,
+  RocketIcon,
+  LoaderIcon,
+  RefreshIcon,
+  AlertIcon,
+  CloseIcon,
+  EyeIcon,
+  CopyIcon,
+} from './icons';
 import styles from './ReviewGenerator.module.css';
 
 interface ExportFormat {
   id: string;
   name: string;
   extension: string;
-  icon: string;
+  icon: React.ReactNode;
   mimeType: string;
 }
 
@@ -23,7 +43,7 @@ const TEMPLATES: Template[] = [
     id: 'standard-academic',
     name: '标准学术综述',
     description: '适用于学术期刊的标准文献综述格式',
-    icon: '📚',
+    icon: <BookIcon size={24} />,
     category: 'academic',
     tags: ['学术', '期刊', '标准格式'],
     prompt: '请撰写一篇关于{topic}的学术文献综述，包含以下部分：\n1. 引言\n2. 文献检索策略\n3. 主要研究发现\n4. 研究方法分析\n5. 未来研究方向\n6. 结论\n\n要求：\n- 字数约2000-3000字\n- 引用至少20篇相关文献\n- 使用学术写作风格\n- 包含批判性分析',
@@ -33,7 +53,7 @@ const TEMPLATES: Template[] = [
     id: 'quick-summary',
     name: '快速文献摘要',
     description: '快速生成文献的核心内容摘要',
-    icon: '⚡',
+    icon: <ZapIcon size={24} />,
     category: 'general',
     tags: ['快速', '摘要', '核心内容'],
     prompt: '请为以下文献{topic}生成一份简明摘要，包括：\n1. 研究背景\n2. 主要贡献\n3. 关键方法\n4. 重要发现\n5. 研究意义\n\n要求：\n- 字数约300-500字\n- 突出核心观点\n- 逻辑清晰',
@@ -43,17 +63,17 @@ const TEMPLATES: Template[] = [
     id: 'systematic-review',
     name: '系统性综述',
     description: '符合PRISMA标准的系统性文献综述',
-    icon: '🔍',
+    icon: <SearchIcon size={24} />,
     category: 'academic',
     tags: ['系统', 'PRISMA', '严谨'],
-    prompt: '请按照PRISMA指南撰写关于{topic}的系统性综述，包含：\n1. 研究问题和目标\n2. 纳入排除标准\n3. 检索策略\n4. 研究质量评估\n5. 结果综合\n6. 偏倚风险评估\n7. 结果解释\n8. 结论和建议\n\n要求：\n- 严格遵循PRISMA流程\n- 包含风险偏倚评估\n- 提供证据等级评估',
+    prompt: '请按照PRISMA指南撰写关于{topic}的系统性综述，包含：\n1. 研究问题和目标\n2. 纳入排除标准\n3. 检索策略\n4. 研究质量评估\n5. 结果综合\n6. 偏候风险评估\n7. 结果解释\n8. 结论和建议\n\n要求：\n- 严格遵循PRISMA流程\n- 包含风险偏候评估\n- 提供证据等级评估',
     isNew: false
   },
   {
     id: 'technical-review',
     name: '技术发展综述',
     description: '特定技术领域的发展历程和趋势分析',
-    icon: '💻',
+    icon: <CodeIcon size={24} />,
     category: 'technical',
     tags: ['技术', '发展', '趋势'],
     prompt: '请撰写关于{topic}技术发展的综述，包括：\n1. 技术发展历程\n2. 关键技术突破\n3. 当前技术水平\n4. 技术挑战和局限\n5. 未来发展趋势\n6. 应用前景分析\n\n要求：\n- 技术描述准确\n- 包含具体案例\n- 分析技术演进路径',
@@ -63,7 +83,7 @@ const TEMPLATES: Template[] = [
     id: 'medical-review',
     name: '医学文献综述',
     description: '医学领域的专业文献综述',
-    icon: '🏥',
+    icon: <HospitalIcon size={24} />,
     category: 'medical',
     tags: ['医学', '临床', '研究'],
     prompt: '请撰写关于{topic}的医学文献综述，包含：\n1. 疾病背景和流行病学\n2. 病理生理机制\n3. 诊断方法进展\n4. 治疗策略对比\n5. 循证医学证据\n6. 临床实践指南\n7. 研究局限和展望\n\n要求：\n- 遵循医学写作规范\n- 强调循证医学\n- 包含临床意义分析',
@@ -76,28 +96,28 @@ const EXPORT_FORMATS: ExportFormat[] = [
     id: 'markdown',
     name: 'Markdown',
     extension: '.md',
-    icon: '📝',
+    icon: <DocumentIcon size={20} />,
     mimeType: 'text/markdown'
   },
   {
     id: 'pdf',
     name: 'PDF',
     extension: '.pdf',
-    icon: '📄',
+    icon: <DocumentIcon size={20} />,
     mimeType: 'application/pdf'
   },
   {
     id: 'word',
     name: 'Word',
     extension: '.docx',
-    icon: '📘',
+    icon: <BookIcon size={20} />,
     mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   },
   {
     id: 'latex',
     name: 'LaTeX',
     extension: '.tex',
-    icon: '📐',
+    icon: <CodeIcon size={20} />,
     mimeType: 'application/x-latex'
   }
 ];
@@ -273,7 +293,7 @@ export function ReviewGenerator({
     return (
       <div className={styles.pageContainer}>
         <div className={styles.setupPrompt}>
-          <div className={styles.setupIcon}>⚠️</div>
+          <div className={styles.setupIcon}><AlertIcon size={48} /></div>
           <h2 className={styles.setupTitle}>需要配置 API</h2>
           <p className={styles.setupDescription}>
             请先配置 LLM Provider 以使用综述生成功能。前往设置页面添加您的 API 密钥。
@@ -306,7 +326,7 @@ export function ReviewGenerator({
             onClick={() => setShowTemplates(!showTemplates)}
             disabled={loading}
           >
-            <span className={styles.actionButtonIcon}>📋</span>
+            <span className={styles.actionButtonIcon}><TemplateIcon size={18} /></span>
             <span className={styles.actionButtonText}>模板</span>
           </button>
 
@@ -315,7 +335,7 @@ export function ReviewGenerator({
             onClick={() => setShowHistory(!showHistory)}
             disabled={loading}
           >
-            <span className={styles.actionButtonIcon}>📚</span>
+            <span className={styles.actionButtonIcon}><HistoryIcon size={18} /></span>
             <span className={styles.actionButtonText}>历史</span>
             {history.length > 0 && (
               <span className={styles.actionButtonBadge}>{history.length}</span>
@@ -327,7 +347,7 @@ export function ReviewGenerator({
       {/* Provider Info */}
       <div className={styles.providerInfo}>
         <div className={styles.providerBadge}>
-          <span className={styles.providerIcon}>🤖</span>
+          <span className={styles.providerIcon}><BotIcon size={18} /></span>
           <span className={styles.providerName}>{providerName}</span>
         </div>
         <div className={styles.providerDetails}>
@@ -463,7 +483,7 @@ export function ReviewGenerator({
             disabled={loading || !prompt.trim()}
           >
             <span className={styles.submitButtonIcon}>
-              {loading ? '⏳' : '🚀'}
+              {loading ? <LoaderIcon size={18} /> : <RocketIcon size={18} />}
             </span>
             <span className={styles.submitButtonText}>
               {loading ? '生成中...' : '生成综述'}
@@ -477,7 +497,7 @@ export function ReviewGenerator({
               onClick={onReset}
               disabled={loading}
             >
-              <span className={styles.resetButtonIcon}>🔄</span>
+              <span className={styles.resetButtonIcon}><RefreshIcon size={18} /></span>
               <span className={styles.resetButtonText}>重新开始</span>
             </button>
           )}
@@ -488,7 +508,7 @@ export function ReviewGenerator({
       {error && (
         <div className={styles.errorBox}>
           <div className={styles.errorHeader}>
-            <span className={styles.errorIcon}>❌</span>
+            <span className={styles.errorIcon}><CloseIcon size={18} /></span>
             <span className={styles.errorTitle}>生成失败</span>
           </div>
           <p className={styles.errorMessage}>{error}</p>
@@ -519,7 +539,7 @@ export function ReviewGenerator({
                     onClick={() => setIsPreviewMode(!isPreviewMode)}
                   >
                     <span className={styles.outputButtonIcon}>
-                      {isPreviewMode ? '✏️' : '👁️'}
+                      {isPreviewMode ? <EditIcon size={18} /> : <EyeIcon size={18} />}
                     </span>
                     <span className={styles.outputButtonText}>
                       {isPreviewMode ? '编辑' : '预览'}
@@ -530,7 +550,7 @@ export function ReviewGenerator({
                     className={styles.outputButton}
                     onClick={() => setShowExport(true)}
                   >
-                    <span className={styles.outputButtonIcon}>📤</span>
+                    <span className={styles.outputButtonIcon}><ExportIcon size={18} /></span>
                     <span className={styles.outputButtonText}>导出</span>
                   </button>
 
@@ -541,7 +561,7 @@ export function ReviewGenerator({
                       // Show toast notification
                     }}
                   >
-                    <span className={styles.outputButtonIcon}>📋</span>
+                    <span className={styles.outputButtonIcon}><CopyIcon size={18} /></span>
                     <span className={styles.outputButtonText}>复制</span>
                   </button>
                 </>

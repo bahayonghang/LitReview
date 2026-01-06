@@ -1,5 +1,12 @@
 import { useState, useMemo } from "react";
 import type { LlmConfig } from "../hooks/useLlmStream";
+import {
+  AlertIcon,
+  TrashIcon,
+  SparklesIcon,
+  CopyIcon,
+  CheckIcon,
+} from "./icons";
 import styles from "./LanguagePolish.module.css";
 
 // ============================================================================
@@ -331,7 +338,7 @@ export function LanguagePolish({
     return (
       <div className={styles.setupPrompt}>
         <div className={styles.setupCard}>
-          <div className={styles.setupIcon}>⚠️</div>
+          <div className={styles.setupIcon}><AlertIcon size={48} color="var(--color-warning)" /></div>
           <h3>需要配置 LLM Provider</h3>
           <p>请先在设置页面配置 API Key 以使用语言润色功能。</p>
         </div>
@@ -418,7 +425,7 @@ export function LanguagePolish({
             <span className={styles.panelTitle}>原文输入</span>
             {originalText && (
               <button className={styles.iconBtn} onClick={handleClear} disabled={loading} title="清空">
-                🗑️
+                <TrashIcon size={16} />
               </button>
             )}
           </div>
@@ -436,14 +443,14 @@ export function LanguagePolish({
           <div className={styles.panelHeader}>
             <span className={styles.panelTitle}>润色结果</span>
             <div className={styles.panelActions}>
-              {loading && <span className={styles.statusBadge}>✨ 润色中...</span>}
+              {loading && <span className={styles.statusBadge}><SparklesIcon size={14} /> 润色中...</span>}
               <button 
                 className={styles.iconBtn} 
                 onClick={handleCopy} 
                 disabled={!polishedText} 
                 title="复制结果"
               >
-                {copySuccess ? "✓" : "📋"}
+                {copySuccess ? <CheckIcon size={16} color="var(--color-success)" /> : <CopyIcon size={16} />}
               </button>
             </div>
           </div>
@@ -495,7 +502,7 @@ export function LanguagePolish({
           onClick={handlePolish}
           disabled={loading || !originalText.trim()}
         >
-          {loading ? "正在润色..." : "开始润色 ✨"}
+          {loading ? "正在润色..." : <><SparklesIcon size={16} /> 开始润色</>}
         </button>
       </div>
     </div>

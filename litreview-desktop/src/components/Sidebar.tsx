@@ -6,11 +6,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme, useBreakpoint } from '../hooks/useDesignTokens';
 import type { TabType } from '../types/tabs';
+import {
+  HomeIcon,
+  DocumentIcon,
+  SparklesIcon,
+  SettingsIcon,
+  BookIcon,
+  MoonIcon,
+  SunIcon,
+  MenuIcon,
+  CloseIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from './icons';
 import styles from './Sidebar.module.css';
 
 interface NavItem {
   id: TabType;
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   description?: string;
   badge?: string;
@@ -20,28 +33,28 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   {
     id: "home",
-    icon: "🏠",
+    icon: <HomeIcon size={20} />,
     label: "首页",
     description: "仪表板和快速操作",
     keyboard: "1"
   },
   {
     id: "review",
-    icon: "📝",
+    icon: <DocumentIcon size={20} />,
     label: "综述生成",
     description: "生成文献综述",
     keyboard: "2"
   },
   {
     id: "polish",
-    icon: "✨",
+    icon: <SparklesIcon size={20} />,
     label: "语言润色",
     description: "改进文本表达",
     keyboard: "3"
   },
   {
     id: "config",
-    icon: "⚙️",
+    icon: <SettingsIcon size={20} />,
     label: "API 配置",
     description: "管理LLM提供商",
     keyboard: "4"
@@ -199,7 +212,7 @@ export function Sidebar({
           aria-controls="sidebar-navigation"
         >
           <span className={styles.mobileMenuToggleIcon} aria-hidden="true">
-            {isMobileMenuOpen ? '✕' : '☰'}
+            {isMobileMenuOpen ? <CloseIcon size={20} /> : <MenuIcon size={20} />}
           </span>
         </button>
       )}
@@ -220,7 +233,9 @@ export function Sidebar({
         {/* Header */}
         <div className={styles.sidebarHeader}>
           <div className={styles.sidebarLogo}>
-            <span className={styles.sidebarLogoIcon} aria-hidden="true">📚</span>
+            <span className={styles.sidebarLogoIcon} aria-hidden="true">
+              <BookIcon size={24} />
+            </span>
             {!actualIsCollapsed && (
               <span className={styles.sidebarLogoText}>LitReview Pro</span>
             )}
@@ -234,7 +249,7 @@ export function Sidebar({
               aria-expanded={!isCollapsed}
             >
               <span className={styles.sidebarToggleIcon} aria-hidden="true">
-                {isCollapsed ? '▶' : '◀'}
+                {isCollapsed ? <ChevronRightIcon size={16} /> : <ChevronLeftIcon size={16} />}
               </span>
             </button>
           )}
@@ -265,7 +280,7 @@ export function Sidebar({
         <div className={styles.sidebarFooter}>
           <div className={styles.sidebarThemeInfo}>
             <span className={styles.sidebarThemeIcon} aria-hidden="true">
-              {theme === 'dark' ? '🌙' : theme === 'light' ? '☀️' : '🌓'}
+              {theme === 'dark' ? <MoonIcon size={18} /> : <SunIcon size={18} />}
             </span>
             {!actualIsCollapsed && (
               <span className={styles.sidebarThemeLabel}>

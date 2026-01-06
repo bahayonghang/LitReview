@@ -9,6 +9,14 @@ import type { ProviderConfig } from '../hooks/useLlmStream';
 import { useBreakpoint } from '../hooks/useDesignTokens';
 import { StatCard } from './common/StatCard';
 import { ActionCard } from './common/ActionCard';
+import {
+  DocumentIcon,
+  SparklesIcon,
+  SettingsIcon,
+  ChartIcon,
+  LinkIcon,
+  ZapIcon,
+} from './icons';
 import styles from './HomePage.module.css';
 
 interface Stats {
@@ -24,7 +32,7 @@ interface QuickAction {
   id: TabType;
   title: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
   color: string;
   gradient?: string;
   shortcut?: string;
@@ -44,7 +52,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     id: 'review',
     title: '文献综述生成',
     description: '智能生成高质量文献综述',
-    icon: '📝',
+    icon: <DocumentIcon size={32} />,
     color: 'primary',
     gradient: 'var(--gradient-card-primary)',
     shortcut: '1',
@@ -54,7 +62,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     id: 'polish',
     title: '语言润色',
     description: '提升文本表达质量',
-    icon: '✨',
+    icon: <SparklesIcon size={32} />,
     color: 'secondary',
     gradient: 'var(--gradient-card-secondary)',
     shortcut: '2',
@@ -64,7 +72,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     id: 'config',
     title: 'API 配置',
     description: '管理 LLM 提供商设置',
-    icon: '⚙️',
+    icon: <SettingsIcon size={32} />,
     color: 'neutral',
     gradient: 'var(--gradient-card-neutral)',
     shortcut: '3',
@@ -195,7 +203,7 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             title="总生成次数"
             value={stats.generationCount.toLocaleString()}
             subtitle="本周 +23%"
-            icon="📊"
+            icon={<ChartIcon size={24} />}
             trend={{ value: 23, isPositive: true }}
             chart={stats.weeklyActivity}
             color="#667eea"
@@ -205,7 +213,7 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             title="语言润色次数"
             value={stats.polishCount.toLocaleString()}
             subtitle="本周 +15%"
-            icon="✨"
+            icon={<SparklesIcon size={24} />}
             trend={{ value: 15, isPositive: true }}
             chart={stats.weeklyActivity.map(v => v * 0.8)}
             color="#f093fb"
@@ -215,7 +223,7 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             title="当前 Provider"
             value={providerName || '未配置'}
             subtitle={config?.model || '请配置 API'}
-            icon="🔗"
+            icon={<LinkIcon size={24} />}
             color="#4facfe"
           />
 
@@ -223,7 +231,7 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             title="平均响应时间"
             value={`${stats.averageResponseTime}ms`}
             subtitle="响应速度优秀"
-            icon="⚡"
+            icon={<ZapIcon size={24} />}
             trend={{ value: 12, isPositive: true }}
             color="#f5576c"
           />
@@ -264,7 +272,9 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
 
           <div className={styles.activityFeed}>
             <div className={styles.activityItem}>
-              <div className={styles.activityIcon}>📝</div>
+              <div className={styles.activityIcon}>
+                <DocumentIcon size={18} />
+              </div>
               <div className={styles.activityContent}>
                 <div className={styles.activityTitle}>生成了文献综述</div>
                 <div className={styles.activityTime}>2 分钟前</div>
@@ -272,7 +282,9 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             </div>
 
             <div className={styles.activityItem}>
-              <div className={styles.activityIcon}>✨</div>
+              <div className={styles.activityIcon}>
+                <SparklesIcon size={18} />
+              </div>
               <div className={styles.activityContent}>
                 <div className={styles.activityTitle}>润色了论文摘要</div>
                 <div className={styles.activityTime}>15 分钟前</div>
@@ -280,7 +292,9 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             </div>
 
             <div className={styles.activityItem}>
-              <div className={styles.activityIcon}>⚙️</div>
+              <div className={styles.activityIcon}>
+                <SettingsIcon size={18} />
+              </div>
               <div className={styles.activityContent}>
                 <div className={styles.activityTitle}>更新了 API 配置</div>
                 <div className={styles.activityTime}>1 小时前</div>

@@ -90,6 +90,13 @@
   color: var(--color-text-primary);
 }
 
+/* SVG 图标内部样式 */
+.actionIconInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .actionCard:hover .actionIcon {
   transform: scale(1.1);
   color: #a78bfa;

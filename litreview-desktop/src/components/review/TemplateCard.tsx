@@ -5,7 +5,7 @@ export interface Template {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
   prompt: string;
   category: 'academic' | 'general' | 'technical' | 'medical';
   tags: string[];

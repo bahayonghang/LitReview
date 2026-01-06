@@ -6,7 +6,7 @@ export interface StatCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
-  icon: string;
+  icon: React.ReactNode;
   trend?: {
     value: number;
     isPositive: boolean;
@@ -37,7 +37,7 @@ export const StatCard: React.FC<StatCardProps> = ({
     >
       <div className={styles.statCardHeader}>
         <div className={styles.statCardIcon} style={{ backgroundColor: `${color}20` }}>
-          <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+          <span className={styles.statCardIconInner}>{icon}</span>
         </div>
         {trend && (
           <div className={`${styles.trend} ${trend.isPositive ? styles.trendPositive : styles.trendNegative}`}>

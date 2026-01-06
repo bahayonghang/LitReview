@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DocumentIcon, TrashIcon } from '../icons';
 import styles from './HistoryItem.module.css';
 
 export interface ReviewHistory {
@@ -39,14 +40,14 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ item, onLoad, onDelete
                   onClick={(e) => { e.stopPropagation(); onLoad(); }}
                   title="加载此记录"
                 >
-                  📂
+                  <DocumentIcon size={14} />
                 </button>
                 <button
                   className={styles.historyAction}
                   onClick={(e) => { e.stopPropagation(); onDelete(); }}
                   title="删除此记录"
                 >
-                  🗑️
+                  <TrashIcon size={14} />
                 </button>
               </>
             )}

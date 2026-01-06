@@ -4,7 +4,7 @@ import styles from './ActionCard.module.css';
 export interface ActionCardProps {
   title: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
   onClick: () => void;
   gradient?: string;
   shortcut?: string;
@@ -40,7 +40,7 @@ export const ActionCard: React.FC<ActionCardProps> = ({
       )}
 
       <div className={styles.actionIcon} style={{ color: isHovered ? 'white' : undefined }}>
-        <span style={{ fontSize: '2rem' }}>{icon}</span>
+        <span className={styles.actionIconInner}>{icon}</span>
       </div>
 
       <div className={styles.actionContent}>
