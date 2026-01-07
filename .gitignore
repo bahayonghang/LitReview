@@ -2,4 +2,4 @@
 .spec-workflow/
 .windsurf/
 openspec/
-.serena/
+.serena/*.backup
