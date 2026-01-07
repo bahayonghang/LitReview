@@ -93,20 +93,12 @@ export function useLlmStream(): UseLlmStreamReturn {
   }, []);
 
   const startStream = useCallback(async (prompt: string, config: LlmConfig, systemPrompt?: string) => {
-    console.log("[useLlmStream] startStream called");
-    console.log("[useLlmStream] provider_type:", config.provider_type);
-    console.log("[useLlmStream] model:", config.model);
-    console.log("[useLlmStream] base_url:", config.base_url);
-    console.log("[useLlmStream] prompt length:", prompt?.length);
-    console.log("[useLlmStream] systemPrompt length:", systemPrompt?.length);
-    
     // Reset state
     setContent("");
     setError(null);
     setLoading(true);
 
     try {
-      console.log("[useLlmStream] Invoking start_llm_stream...");
       const newStreamId = await invoke<string>("start_llm_stream", {
         config: {
           provider_type: config.provider_type,
@@ -119,11 +111,9 @@ export function useLlmStream(): UseLlmStreamReturn {
         },
       });
 
-      console.log("[useLlmStream] Got stream ID:", newStreamId);
       activeStreamId.current = newStreamId;
       setStreamId(newStreamId);
     } catch (e) {
-      console.error("[useLlmStream] Error:", e);
       setError(e instanceof Error ? e.message : String(e));
       setLoading(false);
     }

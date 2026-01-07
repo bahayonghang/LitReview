@@ -311,8 +311,13 @@
   gap: 24px;
 }
 
-
-
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+  animation: fadeInUp var(--duration-500) var(--ease-out) 0.3s both;
+}
 
 
 /* Quick Access Section */

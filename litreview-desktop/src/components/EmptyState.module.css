@@ -1,0 +1,204 @@
+/* ============================================================================
+   Empty State Styles - Academic Elegance
+   学术优雅主义空状态样式
+   ============================================================================ */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  min-height: 300px;
+}
+
+.emptyStateIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+  border-radius: 50%;
+  color: var(--color-primary-500);
+  opacity: 0.8;
+  animation: emptyStateFloat 3s ease-in-out infinite;
+}
+
+@keyframes emptyStateFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.emptyStateTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.emptyStateDescription {
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.emptyStateAction {
+  padding: 0.75rem 1.5rem;
+  background: var(--gradient-aurora-primary);
+  border: none;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-primary);
+  color: white;
+  cursor: pointer;
+  transition: var(--transition-ui-smooth);
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+}
+
+.emptyStateAction:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+}
+
+.emptyStateAction:active:not(:disabled) {
+  transform: translateY(-1px);
+  transition: var(--transition-colors-quick);
+}
+
+/* ============================================================================
+   Size Variants
+   ============================================================================ */
+
+.emptyState.small {
+  padding: 2rem 1.5rem;
+  min-height: 200px;
+}
+
+.emptyState.small .emptyStateIcon {
+  width: 64px;
+  height: 64px;
+}
+
+.emptyState.small .emptyStateIcon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.emptyState.small .emptyStateTitle {
+  font-size: var(--font-size-lg);
+}
+
+.emptyState.small .emptyStateDescription {
+  font-size: var(--font-size-xs);
+}
+
+.emptyState.large {
+  padding: 4rem 3rem;
+  min-height: 400px;
+}
+
+.emptyState.large .emptyStateIcon {
+  width: 128px;
+  height: 128px;
+}
+
+.emptyState.large .emptyStateIcon svg {
+  width: 64px;
+  height: 64px;
+}
+
+.emptyState.large .emptyStateTitle {
+  font-size: var(--font-size-2xl);
+}
+
+.emptyState.large .emptyStateDescription {
+  font-size: var(--font-size-base);
+}
+
+/* ============================================================================
+   Light Theme
+   ============================================================================ */
+
+[data-theme="light"] .emptyState {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .emptyStateIcon {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  color: var(--color-primary-600);
+}
+
+/* ============================================================================
+   Reduced Motion
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .emptyStateIcon {
+    animation: none;
+  }
+
+  .emptyStateAction:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   Responsive Design
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .emptyState {
+    padding: 2rem 1.5rem;
+  }
+
+  .emptyStateIcon {
+    width: 72px;
+    height: 72px;
+  }
+
+  .emptyStateIcon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .emptyStateTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .emptyStateDescription {
+    font-size: var(--font-size-xs);
+  }
+
+  .emptyStateAction {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ============================================================================
+   High Contrast Mode
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  .emptyState {
+    border-width: 2px;
+  }
+
+  .emptyStateAction {
+    border: 2px solid transparent;
+  }
+}

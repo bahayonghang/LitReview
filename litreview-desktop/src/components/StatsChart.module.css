@@ -1,0 +1,339 @@
+/* ============================================================================
+   Stats Chart Component Styles
+   学术优雅主义统计图表样式
+   ============================================================================ */
+
+.chartContainer {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-4);
+}
+
+.chartTitle {
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================================
+   Bar Chart
+   ============================================================================ */
+
+.barChartContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.barItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.barLabel {
+  min-width: 80px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--glass-bg-active);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--gradient-aurora-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-duration-default) var(--ease-premium);
+  position: relative;
+}
+
+.barFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.barValue {
+  min-width: 40px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
+/* ============================================================================
+   Donut Chart
+   ============================================================================ */
+
+.donutChart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.donut {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.donutSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.donutSegment {
+  transition: stroke-width var(--transition-duration-default) var(--ease-smooth);
+  cursor: pointer;
+}
+
+.donutSegment:hover {
+  stroke-width: 12;
+}
+
+.donutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donutValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-aurora-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.chartLegend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-base);
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  flex: 1;
+  color: var(--color-text-secondary);
+}
+
+.legendValue {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================================
+   Weekly Activity Chart
+   ============================================================================ */
+
+.activityChart {
+  width: 100%;
+}
+
+.activityBars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-1);
+  height: 120px;
+  padding-top: var(--space-2);
+}
+
+.activityBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  height: 100%;
+}
+
+.activityBarFill {
+  width: 100%;
+  max-width: 32px;
+  min-height: 4px;
+  background: var(--gradient-aurora-primary);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  transition: height var(--transition-duration-default) var(--ease-premium);
+  position: relative;
+  cursor: pointer;
+}
+
+.activityBarFill::before {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-2);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-duration-fast) var(--ease-smooth);
+  z-index: 10;
+}
+
+.activityBarFill:hover::before {
+  opacity: 1;
+}
+
+.activityBarFill:hover {
+  filter: brightness(1.1);
+}
+
+.activityBarLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ============================================================================
+   Chart Colors
+   ============================================================================ */
+
+:root {
+  --chart-color-1: #0ea5e9;
+  --chart-color-2: #8b5cf6;
+  --chart-color-3: #ec4899;
+  --chart-color-4: #f59e0b;
+  --chart-color-5: #10b981;
+  --chart-color-6: #06b6d4;
+}
+
+/* ============================================================================
+   Light Theme
+   ============================================================================ */
+
+[data-theme="light"] .barFill,
+[data-theme="light"].activityBarFill {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+[data-theme="light"] .donutValue {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================================
+   Responsive Design
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .barLabel {
+    min-width: 60px;
+    font-size: var(--font-size-xs);
+  }
+
+  .barValue {
+    min-width: 32px;
+    font-size: var(--font-size-xs);
+  }
+
+  .donut {
+    width: 140px;
+    height: 140px;
+  }
+
+  .donutValue {
+    font-size: var(--font-size-xl);
+  }
+
+  .activityBars {
+    height: 100px;
+  }
+
+  .activityBarFill {
+    max-width: 24px;
+  }
+
+  .activityBarLabel {
+    font-size: 10px;
+  }
+}
+
+/* ============================================================================
+   Reduced Motion
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .barFill,
+  .donutSegment,
+  .activityBarFill {
+    transition: none;
+    animation: none;
+  }
+
+  .barFill::after {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   High Contrast Mode
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  .chartContainer {
+    border-width: 2px;
+  }
+
+  .barTrack {
+    border: 1px solid currentColor;
+  }
+}

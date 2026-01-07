@@ -704,11 +704,35 @@ body {
   }
 
   /* Mobile Button Enhancements - 移动端按钮增强 */
-  button {
+  /* Primary action buttons - 主要操作按钮 */
+  button.primary,
+  button.submit,
+  button.action,
+  button[class*="Button"],
+  button[class*="submit"],
+  button[class*="action"] {
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
     display: block;
+    min-height: 48px;
+  }
+
+  /* Small buttons and icon buttons - 小按钮和图标按钮 */
+  button.icon,
+  button[aria-label*="关闭"],
+  button[aria-label*="删除"],
+  button[aria-label*="关闭"],
+  button.close,
+  button[class*="Icon"],
+  button[class*="Close"],
+  button[style*="width"] {
+    width: auto;
+    max-width: none;
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
   }
 
   .button-group {
@@ -719,6 +743,74 @@ body {
   .button-group button {
     width: 100%;
     max-width: none;
+  }
+
+  /* Form inputs - 表单输入 */
+  input,
+  textarea,
+  select {
+    min-height: 48px;
+    font-size: 16px; /* Prevent auto-zoom on iOS */
+  }
+
+  /* Ensure better touch targets for interactive elements */
+  a, button, [role="button"] {
+    min-touch-target-size: 44px 44px;
+  }
+
+  /* Modal optimizations - 模态框优化 */
+  .modalContent,
+  [class*="modalContent"],
+  [class*="ModalContent"] {
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  .modalOverlay,
+  [class*="modalOverlay"],
+  [class*="ModalOverlay"] {
+    padding: 0;
+  }
+
+  /* Toast notifications - Toast 通知优化 */
+  [class*="toastContainer"],
+  [class*="ToastContainer"] {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    width: auto !important;
+  }
+
+  [class*="toast"],
+  [class*="Toast"] {
+    min-height: 48px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+  }
+
+  /* Scroll optimization - 滚动优化 */
+  .app-content,
+  [class*="content"],
+  [class*="scroll"] {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Text selection optimization - 文本选择优化 */
+  * {
+    -webkit-tap-highlight-color: rgba(14, 165, 233, 0.2);
+  }
+
+  /* Prevent zoom on focus for input elements - 防止输入框聚焦时缩放 */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
   }
 }
 

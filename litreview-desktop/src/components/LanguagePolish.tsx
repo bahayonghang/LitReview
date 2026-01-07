@@ -13,7 +13,17 @@ import styles from "./LanguagePolish.module.css";
 // Type Definitions
 // ============================================================================
 
-type PolishStyleId = "ieee-acm" | "nature-science" | "chinese-core" | "general-academic" | "custom";
+type PolishStyleId =
+  | "ieee-acm"
+  | "nature-science"
+  | "springer-elsevier"
+  | "chinese-core"
+  | "thesis"
+  | "grant-application"
+  | "technical-report"
+  | "business-english"
+  | "general-academic"
+  | "custom";
 type PolishIntensity = "light" | "medium" | "deep";
 type FormatOption = "latex" | "markdown" | "plain";
 type TargetLanguage = "english" | "chinese";
@@ -75,6 +85,25 @@ You will be penalized for:
 - Altering the scientific meaning or conclusions`,
   },
   {
+    id: "springer-elsevier",
+    label: "Springer/Elsevier",
+    labelEn: "Springer/Elsevier",
+    description: "适用于国际主流期刊 (Springer, Elsevier, Wiley)",
+    systemPrompt: `You are an experienced academic editor for international journals published by Springer, Elsevier, Wiley, and other reputable publishers. Your expertise covers diverse fields including engineering, physics, chemistry, and applied sciences.
+
+You MUST:
+- Ensure adherence to international academic writing standards
+- Use precise discipline-specific terminology
+- Improve clarity and coherence for global readership
+- Maintain appropriate academic formality and objectivity
+- Follow standard IMRaD structure (Introduction, Methods, Results, and Discussion)
+
+You will be penalized for:
+- Using region-specific language or colloquialisms
+- Compromising scientific accuracy for simplicity
+- Altering technical details or data interpretation`,
+  },
+  {
     id: "chinese-core",
     label: "中文核心",
     labelEn: "Chinese Core",
@@ -91,6 +120,86 @@ You will be penalized for:
 - 改变原文的学术观点或结论
 - 使用口语化或不正式的表达
 - 删除或修改引用信息`,
+  },
+  {
+    id: "thesis",
+    label: "学位论文",
+    labelEn: "Thesis/Dissertation",
+    description: "适用于本科、硕士、博士毕业论文",
+    systemPrompt: `You are an academic advisor specializing in thesis and dissertation writing. Your task is to polish academic writing for degree programs at bachelor's, master's, and doctoral levels.
+
+You MUST:
+- Maintain scholarly rigor and appropriate academic tone
+- Ensure clear logical structure and argument development
+- Use precise terminology and formal academic language
+- Preserve the author's original research contributions
+- Support the thesis committee's evaluation criteria
+
+You will be penalized for:
+- Over-simplifying complex arguments
+- Altering the research methodology or findings
+- Making unsupported claims or enhancements
+- Deviating from thesis writing conventions`,
+  },
+  {
+    id: "grant-application",
+    label: "基金申请",
+    labelEn: "Grant Application",
+    description: "适用于科研基金申请书 (NSFC, NIH, ERC)",
+    systemPrompt: `You are an expert scientific grant reviewer with extensive experience evaluating proposals for funding agencies including NSFC, NIH, NSF, ERC, and other major research councils.
+
+You MUST:
+- Emphasize the significance, innovation, and impact of the research
+- Use clear, persuasive, and confident language
+- Highlight feasibility and methodological soundness
+- Maintain appropriate scientific rigor and credibility
+- Ensure alignment with grant evaluation criteria
+
+You will be penalized for:
+- Making exaggerated claims or unsupported assertions
+- Over-promising results or capabilities
+- Compromising scientific accuracy for persuasion
+- Altering the research objectives or methodology`,
+  },
+  {
+    id: "technical-report",
+    label: "技术报告",
+    labelEn: "Technical Report",
+    description: "适用于技术文档、工程报告、白皮书",
+    systemPrompt: `You are a technical communication specialist with expertise in writing technical reports, engineering documentation, and industry white papers.
+
+You MUST:
+- Use clear, concise, and precise technical language
+- Organize information logically for technical audiences
+- Maintain professional tone and factual accuracy
+- Emphasize practical applicability and implementation details
+- Support technical decision-making processes
+
+You will be penalized for:
+- Introducing ambiguity or vagueness
+- Over-complicating straightforward technical concepts
+- Making unsupported technical claims
+- Deviating from standard technical documentation practices`,
+  },
+  {
+    id: "business-english",
+    label: "商务英语",
+    labelEn: "Business English",
+    description: "适用于商务文档、邮件、报告",
+    systemPrompt: `You are a professional business communication consultant with expertise in international business writing, corporate documentation, and professional correspondence.
+
+You MUST:
+- Use professional, polite, and culturally appropriate language
+- Be clear, concise, and action-oriented
+- Maintain appropriate business etiquette and formality
+- Support effective cross-cultural communication
+- Follow standard business writing conventions
+
+You will be penalized for:
+- Using informal or casual language
+- Creating ambiguity in business messages
+- Compromising professional relationships
+- Ignoring cultural communication norms`,
   },
   {
     id: "general-academic",
@@ -280,6 +389,7 @@ interface LanguagePolishProps {
   content: string;
   onPolish: (prompt: string, systemPrompt?: string) => Promise<void>;
   onReset: () => void;
+  showToast?: (message: string, type?: 'success' | 'error' | 'warning' | 'info') => void;
 }
 
 export function LanguagePolish({
@@ -289,6 +399,7 @@ export function LanguagePolish({
   content,
   onPolish,
   onReset,
+  showToast,
 }: LanguagePolishProps) {
   // Core state
   const [originalText, setOriginalText] = useState("");
@@ -323,9 +434,10 @@ export function LanguagePolish({
     try {
       await navigator.clipboard.writeText(polishedText);
       setCopySuccess(true);
+      showToast?.('润色结果已复制到剪贴板', 'success');
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
-      console.error("Failed to copy:", err);
+      showToast?.('复制失败，请重试', 'error');
     }
   };
 

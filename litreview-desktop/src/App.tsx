@@ -1,19 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useLlmStream } from "./hooks/useLlmStream";
 import { useConfig } from "./hooks/useConfig";
 import { useTheme } from "./hooks/useTheme";
+import { useToast, ToastContainer } from "./components/Toast";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { PageSkeleton } from "./components/Skeleton";
+import { KeyboardShortcutsModal, KeyboardShortcutsButton } from "./components/KeyboardShortcutsModal";
 import { Sidebar } from "./components/Sidebar";
 import type { TabType } from "./types/tabs";
 import { HomePage } from "./components/HomePage";
-import { ReviewGenerator } from "./components/ReviewGenerator";
-import { LanguagePolish } from "./components/LanguagePolish";
-import { ApiConfigPage } from "./components/ApiConfigPage";
+
+// Lazy load heavy components
+const ReviewGenerator = lazy(() => import("./components/ReviewGenerator").then(m => ({ default: m.ReviewGenerator })));
+const LanguagePolish = lazy(() => import("./components/LanguagePolish").then(m => ({ default: m.LanguagePolish })));
+const ApiConfigPage = lazy(() => import("./components/ApiConfigPage").then(m => ({ default: m.ApiConfigPage })));
+
 import "./App.css";
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>("home");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
   
   const { mode: themeMode, setTheme } = useTheme();
+  const { toasts, showSuccess, showToast, closeToast } = useToast();
   const { content, loading, error, startStream, reset } = useLlmStream();
   const { 
     config, 
@@ -36,24 +46,27 @@ function App() {
   };
 
   const handlePolish = async (prompt: string, systemPrompt?: string) => {
-    console.log("[App] handlePolish called");
-    console.log("[App] prompt length:", prompt?.length);
-    console.log("[App] systemPrompt length:", systemPrompt?.length);
-    console.log("[App] config:", config);
-    
-    if (!config) {
-      console.log("[App] Early return - no config");
-      return;
-    }
-    
-    console.log("[App] Calling startStream...");
+    if (!config) return;
     await startStream(prompt, config, systemPrompt);
-    console.log("[App] startStream completed");
   };
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl/Cmd + / to open keyboard shortcuts help
+      if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+        e.preventDefault();
+        setShowKeyboardHelp(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const renderContent = () => {
     if (configLoading) {
-      return <div className="loading">加载配置中...</div>;
+      return <PageSkeleton />;
     }
 
     switch (activeTab) {
@@ -67,40 +80,55 @@ function App() {
         );
       case "review":
         return (
-          <ReviewGenerator
-            config={config}
-            providerName={providerName}
-            content={content}
-            loading={loading}
-            error={error}
-            onGenerate={handleGenerate}
-            onReset={reset}
-          />
+          <Suspense fallback={<PageSkeleton />}>
+            <ReviewGenerator
+              config={config}
+              providerName={providerName}
+              content={content}
+              loading={loading}
+              error={error}
+              onGenerate={handleGenerate}
+              onReset={reset}
+              showToast={(message, type) => {
+                if (type === 'error') showToast?.(message, 'error');
+                else if (type === 'warning') showToast?.(message, 'warning');
+                else showSuccess?.(message);
+              }}
+            />
+          </Suspense>
         );
       case "polish":
         return (
-          <LanguagePolish
-            config={config}
-            loading={loading}
-            error={error}
-            content={content}
-            onPolish={handlePolish}
-            onReset={reset}
-          />
+          <Suspense fallback={<PageSkeleton />}>
+            <LanguagePolish
+              config={config}
+              loading={loading}
+              error={error}
+              content={content}
+              onPolish={handlePolish}
+              onReset={reset}
+              showToast={(message, type) => {
+                if (type === 'error') showToast?.(message, 'error');
+                else showSuccess?.(message);
+              }}
+            />
+          </Suspense>
         );
       case "config":
         return (
-          <ApiConfigPage
-            appConfig={appConfig}
-            configPath={configPath}
-            saving={saving}
-            onSaveAppConfig={saveAppConfig}
-            onSetDefault={setDefaultProvider}
-            onDeleteProvider={deleteProvider}
-            onTestConnection={testConnection}
-            themeMode={themeMode}
-            onThemeChange={setTheme}
-          />
+          <Suspense fallback={<PageSkeleton />}>
+            <ApiConfigPage
+              appConfig={appConfig}
+              configPath={configPath}
+              saving={saving}
+              onSaveAppConfig={saveAppConfig}
+              onSetDefault={setDefaultProvider}
+              onDeleteProvider={deleteProvider}
+              onTestConnection={testConnection}
+              themeMode={themeMode}
+              onThemeChange={setTheme}
+            />
+          </Suspense>
         );
       default:
         return null;
@@ -108,25 +136,44 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
-      <header className="app-header">
-        <h1>LitReview Pro</h1>
-        <div className="header-right">
-          {config && (
-            <span className="header-provider">
-              {providerName} / {config.model}
-            </span>
-          )}
-        </div>
-      </header>
+    <ErrorBoundary>
+      <div className="app-wrapper">
+        <header className="app-header">
+          <h1>LitReview Pro</h1>
+          <div className="header-right">
+            {config && (
+              <span className="header-provider">
+                {providerName} / {config.model}
+              </span>
+            )}
+          </div>
+        </header>
 
-      <div className="app-layout">
-        <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-        <main className="app-content">
-          {renderContent()}
-        </main>
+        <div className="app-layout">
+          <Sidebar 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab}
+            isCollapsed={isSidebarCollapsed}
+            onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          />
+          <main className="app-content">
+            {renderContent()}
+          </main>
+        </div>
+
+        <ToastContainer
+          toasts={toasts}
+          onClose={closeToast}
+        />
+
+        <KeyboardShortcutsButton onClick={() => setShowKeyboardHelp(true)} />
+
+        <KeyboardShortcutsModal
+          isOpen={showKeyboardHelp}
+          onClose={() => setShowKeyboardHelp(false)}
+        />
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 

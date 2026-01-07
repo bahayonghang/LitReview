@@ -3,12 +3,14 @@
  * Enhanced dashboard with mini charts, animations, and improved UX
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { TabType } from '../types/tabs';
 import type { ProviderConfig } from '../hooks/useLlmStream';
 import { useBreakpoint } from '../hooks/useDesignTokens';
 import { StatCard } from './common/StatCard';
 import { ActionCard } from './common/ActionCard';
+import { StatsChart, WeeklyActivityChart, type ChartData } from './StatsChart';
+import { STORAGE_KEYS } from '../constants/constants';
 import {
   DocumentIcon,
   SparklesIcon,
@@ -91,31 +93,58 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
     providerUsage: {}
   });
 
-  // Load and calculate stats
+  // Load and calculate stats from real history data
   useEffect(() => {
     const loadStats = () => {
-      const generationCount = parseInt(localStorage.getItem('litreview_generation_count') || '0', 10);
-      const polishCount = parseInt(localStorage.getItem('litreview_polish_count') || '0', 10);
-      const totalCharacters = parseInt(localStorage.getItem('litreview_total_characters') || '0', 10);
+      // Load history from localStorage
+      const savedHistory = localStorage.getItem(STORAGE_KEYS.HISTORY);
+      const historyData = savedHistory ? JSON.parse(savedHistory) : [];
 
-      // Calculate weekly activity (mock data for demo)
-      const weeklyActivity = Array.from({ length: 7 }, () =>
-        Math.floor(Math.random() * 50) + 10
+      const generationCount = parseInt(localStorage.getItem(STORAGE_KEYS.GENERATION_COUNT) || '0', 10);
+      const polishCount = parseInt(localStorage.getItem('litreview_polish_count') || '0', 10);
+
+      // Calculate total characters from history
+      const totalCharacters = historyData.reduce((sum: number, item: any) =>
+        sum + (item.wordCount || 0), 0
       );
 
-      // Calculate provider usage
-      const providerUsage = {
-        'OpenAI': generationCount * 0.4,
-        'Claude': generationCount * 0.3,
-        'Gemini': generationCount * 0.2,
-        'Other': generationCount * 0.1
-      };
+      // Calculate weekly activity from actual history
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const weekData = new Array(7).fill(0);
+
+      historyData.forEach((item: any) => {
+        const itemDate = new Date(item.timestamp);
+        const daysDiff = Math.floor((now.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24));
+        if (daysDiff < 7) {
+          const dayIndex = (dayOfWeek - daysDiff + 7) % 7;
+          weekData[dayIndex]++;
+        }
+      });
+
+      // Adjust weekData to start from Monday
+      const weeklyActivity = [
+        weekData[1], // Monday
+        weekData[2], // Tuesday
+        weekData[3], // Wednesday
+        weekData[4], // Thursday
+        weekData[5], // Friday
+        weekData[6], // Saturday
+        weekData[0]  // Sunday
+      ];
+
+      // Calculate provider usage from actual history
+      const providerUsage: Record<string, number> = {};
+      historyData.forEach((item: any) => {
+        const provider = item.provider || 'Unknown';
+        providerUsage[provider] = (providerUsage[provider] || 0) + 1;
+      });
 
       setStats({
         generationCount,
         polishCount,
         totalCharacters,
-        averageResponseTime: Math.floor(Math.random() * 2000) + 500,
+        averageResponseTime: 0, // Not tracking response time currently
         weeklyActivity,
         providerUsage
       });
@@ -149,6 +178,32 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onNavigate]);
+
+  // Prepare chart data from stats
+  const providerUsageChartData: ChartData[] = useMemo(() => {
+    return Object.entries(stats.providerUsage).map(([provider, count], index) => ({
+      label: provider,
+      value: count,
+      color: `var(--chart-color-${(index % 6) + 1})`
+    }));
+  }, [stats.providerUsage]);
+
+  const totalOperations = stats.generationCount + stats.polishCount;
+
+  const operationDistributionChartData: ChartData[] = useMemo(() => {
+    return [
+      {
+        label: '综述生成',
+        value: stats.generationCount,
+        color: 'var(--chart-color-1)'
+      },
+      {
+        label: '语言润色',
+        value: stats.polishCount,
+        color: 'var(--chart-color-2)'
+      }
+    ];
+  }, [stats.generationCount, stats.polishCount]);
 
   return (
     <div className={`${styles.homePage} ${className}`}>
@@ -235,6 +290,31 @@ export function HomePage({ config, providerName, onNavigate, className = '' }: H
             trend={{ value: 12, isPositive: true }}
             color="#f5576c"
           />
+        </div>
+
+        {/* Charts Section */}
+        <div className={styles.chartsGrid}>
+          {totalOperations > 0 && (
+            <>
+              <StatsChart
+                data={operationDistributionChartData}
+                title="操作分布"
+                type="donut"
+              />
+            </>
+          )}
+
+          {providerUsageChartData.length > 0 && (
+            <StatsChart
+              data={providerUsageChartData}
+              title="Provider 使用情况"
+              type="bar"
+            />
+          )}
+
+          {stats.weeklyActivity.some(v => v > 0) && (
+            <WeeklyActivityChart data={stats.weeklyActivity} />
+          )}
         </div>
       </section>
 

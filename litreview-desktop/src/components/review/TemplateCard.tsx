@@ -18,7 +18,7 @@ interface TemplateCardProps {
   onSelect: () => void;
 }
 
-export const TemplateCard: React.FC<TemplateCardProps> = ({ template, isSelected, onSelect }) => {
+export const TemplateCard: React.FC<TemplateCardProps> = React.memo(({ template, isSelected, onSelect }) => {
   return (
     <button
       className={`
@@ -47,4 +47,9 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({ template, isSelected
       </div>
     </button>
   );
-};
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.template.id === nextProps.template.id
+  );
+});

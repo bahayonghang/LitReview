@@ -12,7 +12,7 @@ export interface ActionCardProps {
   index?: number;
 }
 
-export const ActionCard: React.FC<ActionCardProps> = ({
+export const ActionCard: React.FC<ActionCardProps> = React.memo(({
   title,
   description,
   icon,
@@ -63,4 +63,4 @@ export const ActionCard: React.FC<ActionCardProps> = ({
       )}
     </button>
   );
-};
+});;

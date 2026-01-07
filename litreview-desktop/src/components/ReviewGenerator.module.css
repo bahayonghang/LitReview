@@ -363,6 +363,132 @@
   border-color: var(--color-primary-500);
 }
 
+/* ============================================================================
+   Templates Section Styles
+   ============================================================================ */
+
+.templatesCategories {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.categoryButton {
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-out);
+  white-space: nowrap;
+}
+
+.categoryButton:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--color-primary-400);
+  color: var(--color-text-primary);
+}
+
+.categoryButtonActive {
+  background: var(--gradient-aurora-primary);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+}
+
+.categoryButtonActive:hover {
+  background: var(--gradient-aurora-primary);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+  transform: translateY(-1px);
+}
+
+.templatesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+/* ============================================================================
+   History Filters Styles
+   ============================================================================ */
+
+.historyFilters {
+  padding: var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.historySearchBox {
+  width: 100%;
+}
+
+.historySearchInput {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--glass-bg-active);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.historySearchInput:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.historySearchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.historyFilterControls {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.historyFilterSelect {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--glass-bg-active);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.historyFilterSelect:hover {
+  border-color: var(--color-primary-400);
+}
+
+.historyFilterSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.historyResultsCount {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding-top: var(--space-1);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .mainContent {
@@ -382,6 +508,31 @@
   .section {
     padding: var(--space-4);
   }
+
+  .templatesCategories {
+    gap: var(--space-1);
+  }
+
+  .categoryButton {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-xs);
+    flex: 1;
+    min-width: calc(50% - var(--space-1));
+  }
+
+  .templatesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .historyFilterControls {
+    flex-direction: column;
+  }
+
+  .historyFilterSelect {
+    width: 100%;
+    min-width: auto;
+  }
 }
 
 /* High Contrast Mode */
@@ -392,6 +543,19 @@
 
   .promptTextarea,
   .outputContent {
+    border-width: 2px;
+  }
+
+  .categoryButton {
+    border-width: 2px;
+  }
+
+  .categoryButtonActive {
+    border-width: 2px;
+  }
+
+  .historySearchInput,
+  .historyFilterSelect {
     border-width: 2px;
   }
 }
@@ -406,7 +570,14 @@
   .secondaryButton,
   .templateSelector,
   .exportButton,
-  .historyButton {
+  .historyButton,
+  .categoryButton,
+  .historySearchInput,
+  .historyFilterSelect {
     transition: none;
+  }
+
+  .categoryButtonActive:hover {
+    transform: none;
   }
 }

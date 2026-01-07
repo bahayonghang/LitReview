@@ -18,7 +18,7 @@ interface HistoryItemProps {
   onDelete: () => void;
 }
 
-export const HistoryItem: React.FC<HistoryItemProps> = ({ item, onLoad, onDelete }) => {
+export const HistoryItem: React.FC<HistoryItemProps> = React.memo(({ item, onLoad, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -63,4 +63,6 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ item, onLoad, onDelete
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return prevProps.item.id === nextProps.item.id;
+});
