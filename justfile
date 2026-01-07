@@ -4,9 +4,20 @@ project_dir := "litreview-desktop"
 
 default := "dev"
 
-# 启动 LitReview Pro 桌面应用开发模式
+# 启动 LitReview Pro 桌面应用开发模式（智能端口检测）
 dev:
+	@echo "🚀 Starting LitReview Pro with smart port detection..."
+	./{{project_dir}}/scripts/dev-smart.sh
+
+# 启动 LitReview Pro 桌面应用开发模式（传统模式，固定端口）
+dev-fixed:
 	cd {{project_dir}} && bun run tauri dev
+
+# 仅启动前端 Vite 开发服务器（不启动 Tauri 桌面应用）
+dev-web:
+	@echo "🌐 Starting Vite development server only..."
+	@echo "📝 Note: This will not start the Tauri desktop window"
+	cd {{project_dir}} && bun run dev
 
 # 构建 LitReview Pro 桌面应用
 build:
@@ -132,7 +143,9 @@ help:
 	@echo "=============================="
 	@echo ""
 	@echo "Development:"
-	@echo "  just dev          - Start development server"
+	@echo "  just dev          - Start development server (smart port detection)"
+	@echo "  just dev-fixed    - Start development server (fixed port 1420)"
+	@echo "  just dev-web      - Start Vite dev server only (no Tauri)"
 	@echo "  just build        - Build for production"
 	@echo "  just build-web    - Build frontend only"
 	@echo "  just install      - Install dependencies"
