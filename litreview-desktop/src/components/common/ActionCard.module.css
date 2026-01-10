@@ -1,96 +1,164 @@
-/* Quick Action Cards */
+/* ============================================================================
+   ✧ Celestial Library Action Card ✧
+   星辰图书馆操作卡片 - 功能入口的星光门户
+   ============================================================================ */
+
 .actionCard {
   position: relative;
   padding: 32px;
-  /* Enhanced Glassmorphism */
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  animation: slideInUp 0.5s ease-out both;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: var(--glass-shadow);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-2xl);
+
+  /* Starlight Shadow */
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.05);
+
+  transition: var(--transition-all);
+  animation: card-entrance 0.5s var(--ease-celestial) both;
 }
 
-@keyframes slideInUp {
+@keyframes card-entrance {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-:global([data-theme="light"]) .actionCard {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-.actionCard:hover {
-  transform: translateY(-6px);
-  background: var(--glass-bg-hover);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  border-color: rgba(139, 92, 246, 0.5);
-}
-
+/* Star Pattern Overlay */
 .actionCard::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(56, 189, 248, 0.1) 100%);
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 50%, rgba(124, 58, 237, 0.2) 0%, transparent 100%);
+  opacity: 0.5;
+  transition: opacity 0.3s var(--ease-celestial);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hover Glow Effect */
+.actionCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(212, 175, 55, 0.1) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   opacity: 0;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s var(--ease-celestial);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Light Theme */
+:global([data-theme="light"]) .actionCard {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme="light"]) .actionCard::before {
+  display: none;
+}
+
+/* Hover State */
+.actionCard:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow:
+    var(--shadow-glow-gold),
+    0 16px 48px -8px rgba(0, 0, 0, 0.4);
 }
 
 .actionCard:hover::before {
+  opacity: 0.8;
+}
+
+.actionCard:hover::after {
   opacity: 1;
 }
 
+:global([data-theme="light"]) .actionCard:hover {
+  border-color: rgba(167, 139, 29, 0.4);
+  box-shadow:
+    0 0 20px rgba(167, 139, 29, 0.2),
+    0 16px 48px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* New Badge */
 .newBadge {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-  color: white;
-  font-size: 0.75rem;
+  background: var(--gradient-starlight);
+  color: var(--cosmic-void);
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 999px;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
-  animation: pulse 2s infinite;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-glow-gold);
+  animation: badge-pulse 2s ease-in-out infinite;
+  z-index: 2;
 }
 
-@keyframes pulse {
+@keyframes badge-pulse {
   0%, 100% {
     transform: scale(1);
-    opacity: 1;
+    box-shadow: var(--shadow-glow-gold);
   }
   50% {
     transform: scale(1.05);
-    opacity: 0.8;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
   }
 }
 
+/* Action Icon */
 .actionIcon {
+  position: relative;
   margin-bottom: 24px;
-  transition: transform 0.3s ease-out;
   font-size: 2.5rem;
-  color: var(--color-text-primary);
+  color: var(--starlight-400);
+  transition: var(--transition-all);
+  z-index: 1;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
 }
 
-/* SVG 图标内部样式 */
 .actionIconInner {
   display: flex;
   align-items: center;
@@ -98,13 +166,25 @@
 }
 
 .actionCard:hover .actionIcon {
-  transform: scale(1.1);
-  color: #a78bfa;
+  transform: scale(1.15) rotate(-5deg);
+  color: var(--starlight-300);
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.5));
 }
 
+:global([data-theme="light"]) .actionIcon {
+  color: var(--starlight-600);
+}
+
+:global([data-theme="light"]) .actionCard:hover .actionIcon {
+  color: var(--starlight-500);
+}
+
+/* Action Content */
 .actionContent {
+  position: relative;
   flex: 1;
   margin-bottom: 16px;
+  z-index: 1;
 }
 
 .actionTitle {
@@ -112,74 +192,106 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  margin: 0 0 8px 0;
-  transition: color 0.3s ease-out;
+  margin: 0 0 10px 0;
+  transition: var(--transition-colors);
+}
+
+.actionCard:hover .actionTitle {
+  color: var(--starlight-400);
+}
+
+:global([data-theme="light"]) .actionCard:hover .actionTitle {
+  color: var(--starlight-700);
 }
 
 .actionDescription {
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--color-text-secondary);
   margin: 0;
-  transition: color 0.3s ease-out;
 }
 
+/* Shortcut Badge */
 .actionShortcut {
+  position: relative;
   margin-top: auto;
   display: flex;
   justify-content: flex-end;
+  z-index: 1;
 }
 
 .kbd {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--glass-border);
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-md);
+  padding: 5px 10px;
+  font-family: var(--font-family-mono);
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--starlight-400);
+  transition: var(--transition-all);
 }
 
+.actionCard:hover .kbd {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+}
+
+:global([data-theme="light"]) .kbd {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.2);
+  color: var(--starlight-700);
+}
+
+/* Glow Effect Layer */
 .actionGlow {
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
   opacity: 0;
-  transition: opacity var(--duration-300) var(--ease-out);
+  transition: opacity 0.4s var(--ease-celestial);
   border-radius: 50%;
-  filter: blur(60px);
+  filter: blur(40px);
   pointer-events: none;
+  z-index: 0;
 }
 
 .actionCard:hover .actionGlow {
-  opacity: 0.3;
+  opacity: 1;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .actionCard {
-    padding: var(--space-6);
+    padding: 24px;
     min-height: 160px;
   }
 
   .actionTitle {
-    font-size: var(--font-size-lg);
+    font-size: 1.25rem;
   }
 
   .actionDescription {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
+  }
+
+  .actionIcon {
+    font-size: 2rem;
   }
 }
 
+/* Accessibility */
 @media (prefers-contrast: high) {
   .actionCard {
     border-width: 2px;
   }
 
   .actionCard:hover {
-    border-color: var(--color-primary-500);
+    border-color: var(--starlight-500);
   }
 }
 
@@ -187,10 +299,16 @@
   .actionCard {
     animation: none;
   }
+
   .actionCard:hover {
     transform: none;
   }
-  .actionIcon:hover {
+
+  .actionCard:hover .actionIcon {
     transform: none;
+  }
+
+  .newBadge {
+    animation: none;
   }
 }

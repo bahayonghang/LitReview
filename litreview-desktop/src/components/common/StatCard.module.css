@@ -1,38 +1,40 @@
-/* Stat Cards - 学术优雅统计卡片 */
+/* ============================================================================
+   ✧ Celestial Library Stat Card ✧
+   星辰图书馆统计卡片 - 数据星辰的闪耀展示
+   ============================================================================ */
+
 .statCard {
   position: relative;
   padding: 28px;
   overflow: hidden;
 
-  /* Academic Glassmorphism - 学术玻璃效果 */
-  background: var(--glass-bg);
-  backdrop-filter: var(--backdrop-blur-lg);
-  -webkit-backdrop-filter: var(--backdrop-blur-lg);
-  border: 1px solid var(--glass-border);
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: var(--radius-2xl);
 
-  /* Academic Shadows - 学术阴影系统 */
+  /* Starlight Shadow */
   box-shadow:
-    0 4px 20px -4px rgba(14, 165, 233, 0.1),
-    0 2px 10px -2px rgba(168, 85, 247, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.05);
 
-  /* Academic Elegance Transitions */
-  transition:
-    transform var(--duration-smooth) var(--ease-gentle),
-    background-color var(--duration-normal) var(--ease-gentle),
-    border-color var(--duration-normal) var(--ease-gentle),
-    box-shadow var(--duration-normal) var(--ease-academic);
-
-  /* Academic Animation - 学术动画 */
-  animation: academicCardEntrance 0.8s var(--ease-premium);
-  animation-fill-mode: both;
+  transition: var(--transition-all);
+  animation: stat-card-entrance 0.6s var(--ease-celestial) both;
 }
 
-@keyframes academicCardEntrance {
+@keyframes stat-card-entrance {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -40,70 +42,119 @@
   }
 }
 
-/* Light Theme Stat Cards - 浅色主题统计卡片 */
-:global([data-theme="light"]) .statCard {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 4px 20px -4px rgba(14, 165, 233, 0.08),
-    0 2px 10px -2px rgba(168, 85, 247, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+/* Star Pattern Overlay */
+.statCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 100%);
+  opacity: 0.5;
+  transition: opacity 0.3s var(--ease-celestial);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Clickable Stat Card - 可点击统计卡片 */
+/* Light Theme */
+:global([data-theme="light"]) .statCard {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme="light"]) .statCard::before {
+  display: none;
+}
+
+/* ==========================================================================
+   CLICKABLE STAT CARD - 可点击统计卡片
+   ========================================================================== */
+
 .statCardClickable {
   cursor: pointer;
 }
 
 .statCardClickable:hover {
   transform: translateY(-6px) scale(1.02);
-  background: var(--glass-bg-hover);
-  border-color: var(--color-primary-400);
+  border-color: rgba(212, 175, 55, 0.4);
   box-shadow:
-    0 12px 40px -8px rgba(14, 165, 233, 0.25),
-    0 6px 20px -4px rgba(168, 85, 247, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    var(--shadow-glow-gold),
+    0 16px 48px -8px rgba(0, 0, 0, 0.4);
 }
 
-/* Academic Card Hover Glow - 学术卡片悬停光晕 */
-.statCardClickable::before {
+.statCardClickable:hover::before {
+  opacity: 0.8;
+}
+
+:global([data-theme="light"]) .statCardClickable:hover {
+  border-color: rgba(167, 139, 29, 0.4);
+  box-shadow:
+    0 0 20px rgba(167, 139, 29, 0.2),
+    0 16px 48px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover Glow Border Effect */
+.statCardClickable::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: var(--radius-2xl);
-  padding: 1px;
-  background: var(--gradient-aurora-primary);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: subtract;
+  background: linear-gradient(135deg,
+    rgba(212, 175, 55, 0.1) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-gentle);
+  transition: opacity 0.3s var(--ease-celestial);
   pointer-events: none;
+  z-index: 0;
 }
 
-.statCardClickable:hover::before {
-  opacity: 0.3;
+.statCardClickable:hover::after {
+  opacity: 1;
 }
+
+/* ==========================================================================
+   CARD HEADER - 卡片头部
+   ========================================================================== */
 
 .statCardHeader {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  z-index: 1;
 }
 
 .statCardIcon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: var(--color-text-primary);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--cosmic-void);
+  background: var(--gradient-starlight);
+  box-shadow:
+    0 4px 16px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: var(--transition-all);
 }
 
-/* SVG 图标内部样式 */
+.statCardClickable:hover .statCardIcon {
+  transform: rotate(-5deg) scale(1.1);
+  box-shadow: var(--shadow-glow-gold);
+}
+
 .statCardIconInner {
   display: flex;
   align-items: center;
@@ -112,69 +163,109 @@
   height: 100%;
 }
 
+/* ==========================================================================
+   TREND INDICATOR - 趋势指示器
+   ========================================================================== */
+
 .trend {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .trendPositive {
   background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
 }
 
 .trendNegative {
   background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   color: #f87171;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
 }
 
 .trendIcon {
   font-weight: 700;
 }
 
+/* ==========================================================================
+   CARD CONTENT - 卡片内容
+   ========================================================================== */
+
 .statCardContent {
+  position: relative;
   margin-bottom: 16px;
+  z-index: 1;
 }
 
 .statCardValue {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 2rem;
+  font-family: var(--font-family-display);
+  font-size: 2.25rem;
   font-weight: 700;
+  margin-bottom: 6px;
+  background: var(--gradient-starlight);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+}
+
+:global([data-theme="light"]) .statCardValue {
+  background: linear-gradient(135deg, var(--starlight-700) 0%, var(--starlight-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.statCardTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 
-.statCardTitle {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  margin-bottom: 4px;
-}
-
 .statCardSubtitle {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
+/* ==========================================================================
+   MINI CHART - 迷你图表
+   ========================================================================== */
+
 .statCardChart {
-  height: 40px;
+  position: relative;
+  height: 44px;
   margin-top: auto;
+  z-index: 1;
 }
+
+/* ==========================================================================
+   OVERLAY - 悬停覆盖层
+   ========================================================================== */
 
 .statCardOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(5, 8, 16, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-2xl);
   opacity: 0;
-  transition: opacity var(--duration-200) var(--ease-out);
+  transition: opacity 0.3s var(--ease-celestial);
   pointer-events: none;
+  z-index: 2;
 }
 
 .statCardClickable:hover .statCardOverlay {
@@ -182,26 +273,80 @@
 }
 
 .statCardOverlayText {
-  color: white;
+  color: var(--starlight-400);
   font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
 }
+
+/* ==========================================================================
+   GLOW EFFECT - 光晕效果
+   ========================================================================== */
+
+.statCardGlow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-celestial);
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.statCardClickable:hover .statCardGlow {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 768px) {
   .statCard {
-    padding: var(--space-4);
+    padding: 22px;
+  }
+
+  .statCardIcon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.25rem;
+  }
+
+  .statCardValue {
+    font-size: 1.875rem;
   }
 }
 
 @media (max-width: 480px) {
+  .statCard {
+    padding: 18px;
+  }
+
   .statCardValue {
-    font-size: var(--font-size-xl);
+    font-size: 1.5rem;
+  }
+
+  .statCardTitle {
+    font-size: 0.875rem;
   }
 }
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-contrast: high) {
   .statCard {
     border-width: 2px;
+  }
+
+  .statCardClickable:hover {
+    border-color: var(--starlight-500);
   }
 }
 
@@ -209,7 +354,12 @@
   .statCard {
     animation: none;
   }
-  .statCard:hover {
+
+  .statCardClickable:hover {
+    transform: none;
+  }
+
+  .statCardClickable:hover .statCardIcon {
     transform: none;
   }
 }

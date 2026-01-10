@@ -7,6 +7,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { PageSkeleton } from "./components/Skeleton";
 import { KeyboardShortcutsModal, KeyboardShortcutsButton } from "./components/KeyboardShortcutsModal";
 import { Sidebar } from "./components/Sidebar";
+import { StardustParticles } from "./components/common/StardustParticles";
 import type { TabType } from "./types/tabs";
 import { HomePage } from "./components/HomePage";
 
@@ -138,6 +139,9 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="app-wrapper">
+        {/* ✧ Celestial Stardust Background ✧ */}
+        <StardustParticles count={25} showShootingStars={true} />
+
         <header className="app-header">
           <h1>LitReview Pro</h1>
           <div className="header-right">

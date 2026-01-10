@@ -1,18 +1,24 @@
 /* ============================================================================
-   Skeleton Loading Styles - Academic Elegance
-   学术优雅主义骨架屏样式
+   ✧ Celestial Library Skeleton Loading ✧
+   星辰图书馆骨架屏 - 星光加载的等待
    ============================================================================ */
 
 .skeleton {
-  background: var(--glass-bg);
-  border-radius: var(--radius-base);
   position: relative;
   overflow: hidden;
+  border-radius: var(--radius-base);
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.6) 0%,
+      rgba(10, 14, 26, 0.7) 100%
+    );
 }
 
-/* ============================================================================
-   Variants
-   ============================================================================ */
+/* ==========================================================================
+   VARIANTS - 变体样式
+   ========================================================================== */
 
 .skeleton.text {
   height: 1em;
@@ -32,11 +38,11 @@
   border-radius: var(--radius-xl);
 }
 
-/* ============================================================================
-   Animations
-   ============================================================================ */
+/* ==========================================================================
+   ANIMATIONS - 动画效果
+   ========================================================================== */
 
-/* Pulse Animation - 默认脉动效果 */
+/* Pulse Animation - 星光脉动效果 */
 .skeleton.pulse {
   animation: skeletonPulse 2s ease-in-out infinite;
 }
@@ -44,15 +50,25 @@
 @keyframes skeletonPulse {
   0%, 100% {
     opacity: 1;
+    background:
+      linear-gradient(135deg,
+        rgba(13, 19, 33, 0.6) 0%,
+        rgba(10, 14, 26, 0.7) 100%
+      );
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
+    background:
+      linear-gradient(135deg,
+        rgba(212, 175, 55, 0.1) 0%,
+        rgba(13, 19, 33, 0.5) 100%
+      );
   }
 }
 
-/* Wave Animation - 波浪扫过效果 */
+/* Wave Animation - 星光波浪效果 */
 .skeleton.wave {
-  animation: skeletonWave 1.6s linear infinite;
+  animation: skeletonWave 1.8s linear infinite;
 }
 
 .skeleton.wave::after {
@@ -65,20 +81,29 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 20%,
-    rgba(255, 255, 255, 0.5) 60%,
+    rgba(212, 175, 55, 0.15) 20%,
+    rgba(212, 175, 55, 0.25) 50%,
+    rgba(212, 175, 55, 0.15) 80%,
     transparent 100%
   );
   transform: translateX(-100%);
-  animation: skeletonWaveShimmer 1.6s infinite;
+  animation: skeletonWaveShimmer 1.8s infinite;
 }
 
 @keyframes skeletonWave {
   0%, 100% {
-    background: var(--glass-bg);
+    background:
+      linear-gradient(135deg,
+        rgba(13, 19, 33, 0.6) 0%,
+        rgba(10, 14, 26, 0.7) 100%
+      );
   }
   50% {
-    background: var(--glass-bg-active);
+    background:
+      linear-gradient(135deg,
+        rgba(13, 19, 33, 0.5) 0%,
+        rgba(10, 14, 26, 0.6) 100%
+      );
   }
 }
 
@@ -91,9 +116,9 @@
   }
 }
 
-/* ============================================================================
-   Composite Components
-   ============================================================================ */
+/* ==========================================================================
+   COMPOSITE COMPONENTS - 组合组件
+   ========================================================================== */
 
 /* Text Skeleton */
 .textSkeleton {
@@ -114,9 +139,15 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+
+  /* Celestial Glass */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .cardContent {
@@ -129,9 +160,18 @@
 /* Stats Card Skeleton */
 .statsCard {
   padding: 1.25rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
+
+  /* Celestial Glass */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .statsHeader {
@@ -158,16 +198,18 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  background: var(--glass-bg-active);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+
+  /* Golden Header */
+  background: rgba(212, 175, 55, 0.08);
 }
 
 .tableRow {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
 }
 
 .tableRow:last-child {
@@ -177,9 +219,18 @@
 /* Content Skeleton */
 .contentSkeleton {
   padding: 1.5rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
+
+  /* Celestial Glass */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .title {
@@ -205,34 +256,70 @@
   margin: 0 auto;
 }
 
-/* ============================================================================
-   Light Theme
-   ============================================================================ */
+/* ==========================================================================
+   LIGHT THEME - 浅色主题
+   ========================================================================== */
 
-[data-theme="light"] .skeleton {
-  background: rgba(0, 0, 0, 0.05);
+:global([data-theme="light"]) .skeleton {
+  background:
+    linear-gradient(135deg,
+      rgba(167, 139, 29, 0.08) 0%,
+      rgba(167, 139, 29, 0.05) 100%
+    );
 }
 
-[data-theme="light"] .skeleton.wave::after {
+:global([data-theme="light"]) .skeleton.pulse {
+  animation: skeletonPulseLight 2s ease-in-out infinite;
+}
+
+@keyframes skeletonPulseLight {
+  0%, 100% {
+    opacity: 1;
+    background: rgba(167, 139, 29, 0.08);
+  }
+  50% {
+    opacity: 0.6;
+    background: rgba(167, 139, 29, 0.15);
+  }
+}
+
+:global([data-theme="light"]) .skeleton.wave::after {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(0, 0, 0, 0.05) 20%,
-    rgba(0, 0, 0, 0.1) 60%,
+    rgba(167, 139, 29, 0.1) 20%,
+    rgba(167, 139, 29, 0.2) 50%,
+    rgba(167, 139, 29, 0.1) 80%,
     transparent 100%
   );
 }
 
-[data-theme="light"] .cardItem,
-[data-theme="light"] .statsCard,
-[data-theme="light"] .contentSkeleton {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.08);
+:global([data-theme="light"]) .cardItem,
+:global([data-theme="light"]) .statsCard,
+:global([data-theme="light"]) .contentSkeleton {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.15);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* ============================================================================
-   Reduced Motion
-   ============================================================================ */
+:global([data-theme="light"]) .tableHeader {
+  background: rgba(167, 139, 29, 0.1);
+  border-bottom-color: rgba(167, 139, 29, 0.2);
+}
+
+:global([data-theme="light"]) .tableRow {
+  border-bottom-color: rgba(167, 139, 29, 0.1);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .skeleton.pulse,
@@ -246,19 +333,9 @@
   }
 }
 
-/* ============================================================================
-   Accessibility
-   ============================================================================ */
-
-.skeleton {
-  /* Improve readability for screen readers */
-  role: "status";
-  aria-label: "正在加载...";
-}
-
-/* ============================================================================
-   Responsive
-   ============================================================================ */
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 768px) {
   .cardSkeleton {

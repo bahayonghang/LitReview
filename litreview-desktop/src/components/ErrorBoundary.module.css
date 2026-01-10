@@ -1,6 +1,6 @@
 /* ============================================================================
-   Error Boundary Styles - Academic Elegance
-   学术优雅主义错误边界样式
+   ✧ Celestial Library Error Boundary ✧
+   星辰图书馆错误边界 - 星际异常捕获
    ============================================================================ */
 
 .errorBoundary {
@@ -9,87 +9,155 @@
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  /* Cosmic Background */
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+    linear-gradient(180deg, var(--cosmic-void) 0%, var(--cosmic-deep) 100%);
 }
 
 .errorContainer {
+  position: relative;
   max-width: 600px;
   width: 100%;
   text-align: center;
   padding: 3rem 2rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid var(--glass-border);
+  overflow: hidden;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.9) 0%,
+      rgba(10, 14, 26, 0.95) 100%
+    );
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+
+  /* Error Accent Border */
+  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--radius-3xl);
+
+  /* Shadow */
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(239, 68, 68, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* Star Pattern Overlay */
+.errorContainer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(239, 68, 68, 0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 75%, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: var(--radius-3xl);
+}
+
+/* ==========================================================================
+   ERROR ICON - 错误图标
+   ========================================================================== */
+
 .errorIcon {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 120px;
   height: 120px;
   margin: 0 auto 2rem;
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%);
   border-radius: 50%;
-  color: var(--color-error-600);
-  animation: errorPulse 2s ease-in-out infinite;
+  z-index: 1;
+  animation: errorPulse 2.5s ease-in-out infinite;
+
+  /* Error Gradient */
+  background:
+    linear-gradient(135deg,
+      rgba(239, 68, 68, 0.2) 0%,
+      rgba(220, 38, 38, 0.15) 100%
+    );
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  box-shadow:
+    0 0 40px rgba(239, 68, 68, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 @keyframes errorPulse {
   0%, 100% {
     transform: scale(1);
-    opacity: 1;
+    box-shadow:
+      0 0 40px rgba(239, 68, 68, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   50% {
     transform: scale(1.05);
-    opacity: 0.8;
+    box-shadow:
+      0 0 60px rgba(239, 68, 68, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 }
 
+/* ==========================================================================
+   ERROR TEXT - 错误文字
+   ========================================================================== */
+
 .errorTitle {
+  position: relative;
   margin: 0 0 1rem 0;
+  font-family: var(--font-family-display);
   font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  background: var(--gradient-aurora-primary);
+  font-weight: 700;
+  z-index: 1;
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
 }
 
 .errorMessage {
+  position: relative;
   margin: 0 0 2rem 0;
   font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
+  line-height: 1.7;
   color: var(--color-text-secondary);
+  z-index: 1;
 }
 
+/* ==========================================================================
+   ERROR DETAILS - 错误详情
+   ========================================================================== */
+
 .errorDetails {
+  position: relative;
   margin: 2rem 0;
   padding: 1.5rem;
-  background: var(--color-bg-tertiary);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
   text-align: left;
+  border-radius: var(--radius-xl);
+  z-index: 1;
+
+  /* Dark Glass */
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.15);
 }
 
 .errorSummary {
   cursor: pointer;
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: 600;
   color: var(--color-text-primary);
   user-select: none;
+  transition: var(--transition-colors);
 }
 
 .errorSummary:hover {
-  color: var(--color-primary-500);
+  color: #f87171;
 }
 
 .errorContent {
@@ -99,35 +167,45 @@
 .errorName {
   margin: 0 0 1rem 0;
   padding: 1rem;
-  background: var(--color-error-50);
-  border-left: 4px solid var(--color-error-600);
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
-  color: var(--color-error-700);
   font-family: var(--font-family-mono);
   word-break: break-word;
+
+  /* Error Highlight */
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+  color: #fca5a5;
 }
 
 .errorStack {
   margin: 0;
   padding: 1rem;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
-  line-height: var(--line-height-relaxed);
-  color: var(--color-text-secondary);
+  line-height: 1.7;
   font-family: var(--font-family-mono);
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-all;
+
+  /* Code Block */
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  color: var(--color-text-secondary);
 }
 
+/* ==========================================================================
+   ACTION BUTTONS - 操作按钮
+   ========================================================================== */
+
 .errorActions {
+  position: relative;
   display: flex;
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  z-index: 1;
 }
 
 .resetButton,
@@ -139,75 +217,132 @@
   border: none;
   border-radius: var(--radius-xl);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: 600;
   font-family: var(--font-family-primary);
   cursor: pointer;
-  transition: var(--transition-ui-smooth);
+  transition: var(--transition-all);
 }
 
 .resetButton {
-  background: var(--gradient-aurora-primary);
-  color: white;
-  box-shadow:
-    0 4px 16px rgba(14, 165, 233, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
+  position: relative;
+  overflow: hidden;
 
-.resetButton:hover:not(:disabled) {
-  transform: translateY(-2px);
+  /* Starlight Gradient */
+  background: var(--gradient-starlight);
+  color: var(--cosmic-void);
   box-shadow:
-    0 6px 20px rgba(14, 165, 233, 0.4),
+    0 4px 16px rgba(212, 175, 55, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+.resetButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s var(--ease-celestial);
+}
+
+.resetButton:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.resetButton:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+
 .reloadButton {
-  background: var(--glass-bg);
-  color: var(--color-text-primary);
-  border: 1px solid var(--glass-border);
+  /* Glass Button */
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: var(--starlight-400);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .reloadButton:hover:not(:disabled) {
-  background: var(--glass-bg-hover);
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(212, 175, 55, 0.1);
 }
 
-/* ============================================================================
-   Light Theme
-   ============================================================================ */
+/* ==========================================================================
+   LIGHT THEME - 浅色主题
+   ========================================================================== */
 
-[data-theme="light"] .errorBoundary {
-  background: rgba(255, 255, 255, 0.5);
+:global([data-theme="light"]) .errorBoundary {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(239, 68, 68, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.03) 0%, transparent 50%),
+    linear-gradient(180deg, #fdfcfb 0%, #f9f7f4 100%);
 }
 
-[data-theme="light"] .errorContainer {
-  background: rgba(255, 255, 255, 0.85);
+:global([data-theme="light"]) .errorContainer {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(239, 68, 68, 0.2);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    0 0 40px rgba(239, 68, 68, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="light"] .errorIcon {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+:global([data-theme="light"]) .errorContainer::before {
+  display: none;
 }
 
-[data-theme="light"] .errorName {
-  background: var(--color-error-100);
-  color: var(--color-error-700);
+:global([data-theme="light"]) .errorIcon {
+  background:
+    linear-gradient(135deg,
+      rgba(239, 68, 68, 0.15) 0%,
+      rgba(220, 38, 38, 0.1) 100%
+    );
+  color: #dc2626;
 }
 
-[data-theme="light"] .errorStack {
-  background: var(--color-gray-50);
+:global([data-theme="light"]) .errorDetails {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.15);
 }
 
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
+:global([data-theme="light"]) .errorName {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+}
+
+:global([data-theme="light"]) .errorStack {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(167, 139, 29, 0.15);
+}
+
+:global([data-theme="light"]) .reloadButton {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.25);
+  color: var(--starlight-700);
+}
+
+:global([data-theme="light"]) .reloadButton:hover:not(:disabled) {
+  background: rgba(167, 139, 29, 0.2);
+  border-color: rgba(167, 139, 29, 0.4);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 640px) {
   .errorBoundary {
@@ -238,9 +373,9 @@
   }
 }
 
-/* ============================================================================
-   Reduced Motion
-   ============================================================================ */
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .errorIcon {
@@ -251,11 +386,11 @@
   .reloadButton:hover:not(:disabled) {
     transform: none;
   }
-}
 
-/* ============================================================================
-   High Contrast Mode
-   ============================================================================ */
+  .resetButton::before {
+    display: none;
+  }
+}
 
 @media (prefers-contrast: high) {
   .errorContainer {

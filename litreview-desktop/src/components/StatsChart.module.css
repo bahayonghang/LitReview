@@ -1,61 +1,157 @@
 /* ============================================================================
-   Stats Chart Component Styles
-   学术优雅主义统计图表样式
+   ✧ Celestial Library Stats Chart ✧
+   星辰图书馆统计图表 - 数据星图的可视化呈现
    ============================================================================ */
+
+/* ==========================================================================
+   CHART CONTAINER - 图表容器
+   ========================================================================== */
 
 .chartContainer {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  position: relative;
+  padding: var(--space-5);
+  overflow: hidden;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: var(--radius-2xl);
-  padding: var(--space-4);
+
+  /* Starlight Shadow */
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  transition: var(--transition-all);
+  animation: chart-entrance 0.6s var(--ease-celestial) both;
 }
 
+@keyframes chart-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Star Pattern Overlay */
+.chartContainer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.chartContainer:hover {
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow:
+    0 12px 40px -8px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Light Theme */
+:global([data-theme="light"]) .chartContainer {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme="light"]) .chartContainer::before {
+  display: none;
+}
+
+:global([data-theme="light"]) .chartContainer:hover {
+  border-color: rgba(167, 139, 29, 0.3);
+  box-shadow:
+    0 12px 40px -8px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(167, 139, 29, 0.1);
+}
+
+/* Chart Title */
 .chartTitle {
-  margin: 0 0 var(--space-3) 0;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  position: relative;
+  margin: 0 0 var(--space-4) 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
   color: var(--color-text-primary);
+  z-index: 1;
 }
 
-/* ============================================================================
-   Bar Chart
-   ============================================================================ */
+/* ==========================================================================
+   BAR CHART - 条形图
+   ========================================================================== */
 
 .barChartContent {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  z-index: 1;
 }
 
 .barItem {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .barLabel {
   min-width: 80px;
   font-size: var(--font-size-sm);
+  font-weight: 500;
   color: var(--color-text-secondary);
   text-align: right;
 }
 
 .barTrack {
   flex: 1;
-  height: 8px;
-  background: var(--glass-bg-active);
+  height: 10px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.1);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.barFill {
-  height: 100%;
-  background: var(--gradient-aurora-primary);
-  border-radius: var(--radius-full);
-  transition: width var(--transition-duration-default) var(--ease-premium);
-  position: relative;
+:global([data-theme="light"]) .barTrack {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.15);
 }
 
+.barFill {
+  height: 100%;
+  background: var(--gradient-starlight);
+  border-radius: var(--radius-full);
+  transition: width 0.8s var(--ease-celestial);
+  position: relative;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+}
+
+/* Shimmer Animation */
 .barFill::after {
   content: '';
   position: absolute;
@@ -66,13 +162,13 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
     transparent 100%
   );
-  animation: shimmer 2s ease-in-out infinite;
+  animation: bar-shimmer 2.5s ease-in-out infinite;
 }
 
-@keyframes shimmer {
+@keyframes bar-shimmer {
   0% {
     transform: translateX(-100%);
   }
@@ -82,28 +178,36 @@
 }
 
 .barValue {
-  min-width: 40px;
+  min-width: 48px;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+  font-weight: 600;
+  color: var(--starlight-400);
   text-align: right;
 }
 
-/* ============================================================================
-   Donut Chart
-   ============================================================================ */
+:global([data-theme="light"]) .barValue {
+  color: var(--starlight-700);
+}
+
+/* ==========================================================================
+   DONUT CHART - 环形图
+   ========================================================================== */
 
 .donutChart {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  z-index: 1;
 }
 
 .donut {
   position: relative;
   width: 160px;
   height: 160px;
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.2));
 }
 
 .donutSvg {
@@ -113,12 +217,14 @@
 }
 
 .donutSegment {
-  transition: stroke-width var(--transition-duration-default) var(--ease-smooth);
+  transition: stroke-width 0.3s var(--ease-celestial), filter 0.3s var(--ease-celestial);
   cursor: pointer;
+  filter: drop-shadow(0 0 4px currentColor);
 }
 
 .donutSegment:hover {
-  stroke-width: 12;
+  stroke-width: 14;
+  filter: drop-shadow(0 0 8px currentColor);
 }
 
 .donutCenter {
@@ -127,23 +233,33 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .donutValue {
+  font-family: var(--font-family-display);
   font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  background: var(--gradient-aurora-primary);
+  font-weight: 700;
+  background: var(--gradient-starlight);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
 }
 
+:global([data-theme="light"]) .donutValue {
+  background: linear-gradient(135deg, var(--starlight-700) 0%, var(--starlight-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Chart Legend */
 .chartLegend {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
   width: 100%;
 }
 
@@ -151,14 +267,26 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
+  transition: var(--transition-colors);
+}
+
+.legendItem:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+:global([data-theme="light"]) .legendItem:hover {
+  background: rgba(167, 139, 29, 0.1);
 }
 
 .legendColor {
-  width: 12px;
-  height: 12px;
-  border-radius: var(--radius-base);
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-md);
   flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
 }
 
 .legendLabel {
@@ -167,25 +295,28 @@
 }
 
 .legendValue {
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-mono);
+  font-weight: 600;
   color: var(--color-text-primary);
 }
 
-/* ============================================================================
-   Weekly Activity Chart
-   ============================================================================ */
+/* ==========================================================================
+   WEEKLY ACTIVITY CHART - 周活动图表
+   ========================================================================== */
 
 .activityChart {
+  position: relative;
   width: 100%;
+  z-index: 1;
 }
 
 .activityBars {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--space-1);
+  gap: var(--space-2);
   height: 120px;
-  padding-top: var(--space-2);
+  padding-top: var(--space-3);
 }
 
 .activityBar {
@@ -193,86 +324,99 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
   height: 100%;
 }
 
 .activityBarFill {
   width: 100%;
-  max-width: 32px;
-  min-height: 4px;
-  background: var(--gradient-aurora-primary);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  transition: height var(--transition-duration-default) var(--ease-premium);
+  max-width: 36px;
+  min-height: 6px;
+  background: var(--gradient-starlight);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-sm);
+  transition: height 0.6s var(--ease-celestial), filter 0.3s var(--ease-celestial);
   position: relative;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
 }
 
+.activityBarFill:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* Tooltip */
 .activityBarFill::before {
-  content: attr(title);
+  content: attr(data-value);
   position: absolute;
-  bottom: calc(100% + 4px);
+  bottom: calc(100% + 8px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0.9);
   padding: var(--space-1) var(--space-2);
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: var(--radius-md);
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
-  color: var(--color-text-primary);
+  font-weight: 600;
+  color: var(--starlight-400);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-duration-fast) var(--ease-smooth);
+  transition: opacity 0.2s var(--ease-celestial), transform 0.2s var(--ease-celestial);
   z-index: 10;
+  box-shadow: var(--shadow-glow-gold);
 }
 
 .activityBarFill:hover::before {
   opacity: 1;
-}
-
-.activityBarFill:hover {
-  filter: brightness(1.1);
+  transform: translateX(-50%) scale(1);
 }
 
 .activityBarLabel {
   font-size: var(--font-size-xs);
+  font-weight: 500;
   color: var(--color-text-muted);
   text-align: center;
+  transition: var(--transition-colors);
 }
 
-/* ============================================================================
-   Chart Colors
-   ============================================================================ */
+.activityBar:hover .activityBarLabel {
+  color: var(--starlight-400);
+}
+
+:global([data-theme="light"]) .activityBar:hover .activityBarLabel {
+  color: var(--starlight-700);
+}
+
+/* ==========================================================================
+   CHART COLORS - 图表颜色
+   ========================================================================== */
 
 :root {
-  --chart-color-1: #0ea5e9;
-  --chart-color-2: #8b5cf6;
-  --chart-color-3: #ec4899;
-  --chart-color-4: #f59e0b;
+  --chart-color-1: var(--starlight-500);
+  --chart-color-2: var(--nebula-500);
+  --chart-color-3: var(--galaxy-500);
+  --chart-color-4: var(--aurora-500);
   --chart-color-5: #10b981;
-  --chart-color-6: #06b6d4;
+  --chart-color-6: #f59e0b;
 }
 
-/* ============================================================================
-   Light Theme
-   ============================================================================ */
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
-[data-theme="light"] .barFill,
-[data-theme="light"].activityBarFill {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+@media (max-width: 768px) {
+  .chartContainer {
+    padding: var(--space-4);
+  }
+
+  .chartTitle {
+    font-size: var(--font-size-base);
+  }
 }
-
-[data-theme="light"] .donutValue {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
 
 @media (max-width: 640px) {
   .barLabel {
@@ -281,8 +425,12 @@
   }
 
   .barValue {
-    min-width: 32px;
+    min-width: 36px;
     font-size: var(--font-size-xs);
+  }
+
+  .barTrack {
+    height: 8px;
   }
 
   .donut {
@@ -296,10 +444,11 @@
 
   .activityBars {
     height: 100px;
+    gap: var(--space-1);
   }
 
   .activityBarFill {
-    max-width: 24px;
+    max-width: 28px;
   }
 
   .activityBarLabel {
@@ -307,16 +456,23 @@
   }
 }
 
-/* ============================================================================
-   Reduced Motion
-   ============================================================================ */
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+  .chartContainer {
+    animation: none;
+  }
+
+  .chartContainer:hover {
+    transform: none;
+  }
+
   .barFill,
   .donutSegment,
   .activityBarFill {
     transition: none;
-    animation: none;
   }
 
   .barFill::after {
@@ -324,16 +480,16 @@
   }
 }
 
-/* ============================================================================
-   High Contrast Mode
-   ============================================================================ */
-
 @media (prefers-contrast: high) {
   .chartContainer {
     border-width: 2px;
   }
 
   .barTrack {
-    border: 1px solid currentColor;
+    border-width: 2px;
+  }
+
+  .donutSegment {
+    stroke-width: 12;
   }
 }

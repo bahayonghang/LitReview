@@ -1,69 +1,98 @@
 /* ============================================================================
-   Liquid Glass Sidebar Styles
-   液态玻璃侧边栏 - 极致通透与流动感 (High Visibility Version)
+   ✧ Celestial Library Sidebar Styles ✧
+   星辰图书馆侧边栏 - 古典书架与星空的融合
    ============================================================================ */
 
-/* Base Sidebar - 液态玻璃基础 */
+/* ==========================================================================
+   BASE SIDEBAR - 星辰侧边栏基础
+   ========================================================================== */
+
 .sidebar {
   position: sticky;
   top: 0;
   left: 0;
   z-index: 100;
-  width: 280px;
-  min-width: 280px;
+  width: 300px;
+  min-width: 300px;
   height: 100vh;
-  
+
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
 
-  /* Texture & Noise Overlay (Subtle) */
-  background-image: 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(180deg,
+      rgba(13, 19, 33, 0.95) 0%,
+      rgba(10, 14, 26, 0.98) 50%,
+      rgba(5, 8, 16, 0.99) 100%
+    );
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+
+  /* Golden Border Accent */
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
+
+  /* Starlight Shadow */
+  box-shadow:
+    4px 0 24px rgba(0, 0, 0, 0.4),
+    inset -1px 0 0 rgba(212, 175, 55, 0.1);
 
   transition:
-    width var(--duration-smooth) var(--ease-gentle),
-    min-width var(--duration-smooth) var(--ease-gentle),
-    transform var(--duration-smooth) var(--ease-gentle),
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
+    width 0.4s var(--ease-celestial),
+    min-width 0.4s var(--ease-celestial),
+    transform 0.4s var(--ease-celestial);
 
   will-change: width, min-width, transform;
 }
 
-/* Light Theme - Clean Liquid (Enhanced Contrast) */
+/* Decorative Star Pattern Overlay */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(124, 58, 237, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 20%, rgba(212, 175, 55, 0.4) 0%, transparent 100%);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Light Theme */
 [data-theme="light"] .sidebar {
-  /* Slightly more opaque for readability against complex backgrounds */
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-right: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 
-    10px 0 30px rgba(0, 0, 0, 0.05),
-    inset 1px 0 0 rgba(255, 255, 255, 0.9);
+  background:
+    linear-gradient(180deg,
+      rgba(253, 252, 251, 0.98) 0%,
+      rgba(249, 247, 244, 0.99) 100%
+    );
+  border-right: 1px solid rgba(167, 139, 29, 0.2);
+  box-shadow:
+    4px 0 24px rgba(0, 0, 0, 0.08),
+    inset -1px 0 0 rgba(167, 139, 29, 0.15);
 }
 
-/* Dark Theme - Deep Liquid (Enhanced Contrast) */
-[data-theme="dark"] .sidebar {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    10px 0 30px rgba(0, 0, 0, 0.3),
-    inset 1px 0 0 rgba(255, 255, 255, 0.05);
+[data-theme="light"] .sidebar::before {
+  display: none;
 }
 
-/* Sidebar States */
+/* ==========================================================================
+   SIDEBAR STATES
+   ========================================================================== */
+
 .sidebarCollapsed {
   width: 80px;
   min-width: 80px;
 }
 
 .sidebarExpanded {
-  width: 280px;
-  min-width: 280px;
+  width: 300px;
+  min-width: 300px;
 }
 
 .sidebarMobile {
@@ -72,124 +101,211 @@
   max-width: 320px;
   height: 100vh;
   transform: translateX(-100%);
-  /* Ensure mobile sidebar is very readable */
-  background: var(--glass-bg-light); 
-  border-right: 1px solid var(--glass-border);
-}
-
-[data-theme="dark"] .sidebarMobile {
-  background: rgba(15, 23, 42, 0.95);
+  z-index: 1000;
 }
 
 .sidebarMobileOpen {
   transform: translateX(0);
 }
 
-/* Header */
+/* ==========================================================================
+   SIDEBAR HEADER - 星辰图书馆标题
+   ========================================================================== */
+
 .sidebarHeader {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 32px 24px;
+  padding: 24px 16px;
   min-height: 88px;
   flex-shrink: 0;
+  z-index: 1;
+  gap: 12px;
+
+  /* Bottom border with gold accent */
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .sidebarLogo {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
 }
 
+/* Logo Icon - Book with Star */
 .sidebarLogoIcon {
-  font-size: 2rem;
+  position: relative;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #FF6B6B 0%, #a855f7 100%);
-  border-radius: 14px;
-  color: white;
+  background: var(--gradient-starlight);
+  border-radius: 12px;
+  color: var(--cosmic-void);
+  font-size: 1.5rem;
   flex-shrink: 0;
-  box-shadow: 0 8px 16px rgba(168, 85, 247, 0.25);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow:
+    0 4px 16px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: var(--transition-all);
 }
 
-/* High Visibility Logo Text */
+.sidebarLogoIcon:hover {
+  transform: rotate(-5deg) scale(1.05);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+/* Logo Text - Elegant Typography */
 .sidebarLogoText {
   font-family: var(--font-family-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  /* Removed transparent text fill to guarantee visibility */
-  color: var(--color-text-primary); 
-  white-space: nowrap;
+  font-size: 1.35rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  background: var(--gradient-starlight);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+[data-theme="light"] .sidebarLogoText {
+  background: linear-gradient(135deg, var(--starlight-700) 0%, var(--starlight-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Toggle Button */
 .sidebarToggle {
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(212, 175, 55, 0.1) !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
   border-radius: 8px;
-  color: var(--color-text-secondary);
+  color: var(--starlight-400) !important;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-all);
+  box-shadow: none !important;
 }
 
 .sidebarToggle:hover {
-  background: rgba(255, 255, 255, 0.8);
-  color: var(--color-primary-600);
+  background: rgba(212, 175, 55, 0.2) !important;
+  color: var(--starlight-300) !important;
   transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-glow-gold) !important;
 }
 
-/* Navigation */
+/* ==========================================================================
+   NAVIGATION - 星辰导航
+   ========================================================================== */
+
 .sidebarNav {
   flex: 1;
-  padding: 0 16px;
+  padding: 16px 12px;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-top: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebarNavList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-/* Nav Buttons - Liquid Style High Contrast */
+/* Navigation Button Base */
 .navButton {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 18px;
-  border-radius: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
   border: 1px solid transparent;
   background: transparent;
-  
-  /* Critical: Text Color */
-  color: var(--color-text-primary);
-  
+  color: var(--color-text-secondary);
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-family: var(--font-family-primary);
-  font-weight: 600; /* Increased weight for readability on glass */
+  font-weight: 500;
+  transition: var(--transition-all);
+  overflow: visible;
 }
 
-/* Icons */
+/* Navigation Content */
+.navButtonContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Hover State - Starlight Glow */
+.navButton:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.15);
+  color: var(--color-text-primary);
+  transform: translateX(4px);
+}
+
+.navButton:hover .navButtonIcon {
+  color: var(--starlight-400);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+/* Active State - Golden Highlight */
+.navButtonActive {
+  background: linear-gradient(90deg,
+    rgba(212, 175, 55, 0.15) 0%,
+    rgba(212, 175, 55, 0.05) 100%
+  ) !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+  border-left: 3px solid var(--starlight-500) !important;
+  box-shadow:
+    0 4px 16px -4px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.navButtonActive .navButtonLabel {
+  color: var(--starlight-400);
+  font-weight: 600;
+}
+
+.navButtonActive .navButtonIcon {
+  color: var(--starlight-400);
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+}
+
+/* Light Theme Active */
+[data-theme="light"] .navButtonActive {
+  background: linear-gradient(90deg,
+    rgba(167, 139, 29, 0.12) 0%,
+    rgba(167, 139, 29, 0.04) 100%
+  ) !important;
+  border-color: rgba(167, 139, 29, 0.3) !important;
+  border-left-color: var(--starlight-600) !important;
+}
+
+[data-theme="light"] .navButtonActive .navButtonLabel,
+[data-theme="light"] .navButtonActive .navButtonIcon {
+  color: var(--starlight-700);
+}
+
+/* Navigation Icon */
 .navButtonIcon {
   font-size: 1.25rem;
   width: 24px;
@@ -197,86 +313,69 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary); /* Explicit color */
-  transition: all 0.3s ease;
+  color: var(--color-text-muted);
+  transition: var(--transition-all);
+  flex-shrink: 0;
 }
 
-/* Nav Button Text */
+/* Navigation Label */
 .navButtonLabel {
   font-size: 0.95rem;
-  font-weight: 600;
-  color: inherit; /* Inherit from button color */
+  font-weight: 500;
+  color: inherit;
+  transition: var(--transition-colors);
 }
 
 .navButtonDescription {
   font-size: 0.75rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Hover - Liquid Gloss */
-.navButton:hover {
-  background: var(--glass-bg-hover); /* Use token which is safe */
-  border: 1px solid var(--glass-border);
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* Navigation Keyboard Shortcut */
+.navButtonKeyboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-family-mono);
+  flex-shrink: 0;
+
+  /* Starlight Style */
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: var(--starlight-400);
 }
 
-[data-theme="light"] .navButton:hover {
-  background: rgba(255, 255, 255, 0.6);
+[data-theme="light"] .navButtonKeyboard {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.2);
+  color: var(--starlight-700);
 }
 
-.navButton:hover .navButtonIcon {
-  color: var(--color-primary-600);
-  transform: scale(1.1);
-}
+/* ==========================================================================
+   SIDEBAR FOOTER - 底部信息
+   ========================================================================== */
 
-/* Active State - Floating & Glowing */
-.navButtonActive {
-  background: rgba(255, 255, 255, 0.65) !important;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(14, 165, 233, 0.3);
-  box-shadow: 
-    0 8px 16px -4px rgba(14, 165, 233, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
-  opacity: 1;
-}
-
-[data-theme="dark"] .navButtonActive {
-  background: rgba(14, 165, 233, 0.2) !important;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  box-shadow: 
-    0 8px 16px -4px rgba(14, 165, 233, 0.3),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.navButtonActive .navButtonLabel {
-  color: var(--color-primary-600);
-}
-
-[data-theme="dark"] .navButtonActive .navButtonLabel {
-  color: var(--color-primary-400);
-}
-
-.navButtonActive .navButtonIcon {
-  color: var(--color-primary-600);
-  transform: scale(1.1);
-  filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.3));
-}
-
-[data-theme="dark"] .navButtonActive .navButtonIcon {
-  color: var(--color-primary-400);
-}
-
-/* Footer & Theme Toggle */
 .sidebarFooter {
-  padding: 24px;
-  border-top: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  padding: 20px 16px;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
-[data-theme="dark"] .sidebarFooter {
-  background: rgba(0, 0, 0, 0.2);
+[data-theme="light"] .sidebarFooter {
+  background: rgba(167, 139, 29, 0.05);
+  border-top-color: rgba(167, 139, 29, 0.15);
 }
 
 .sidebarThemeInfo {
@@ -294,28 +393,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(212, 175, 55, 0.15);
   border-radius: 50%;
-  color: var(--color-text-primary);
+  color: var(--starlight-400);
+  transition: var(--transition-all);
 }
 
-[data-theme="dark"] .sidebarThemeIcon {
-  background: rgba(255, 255, 255, 0.1);
+.sidebarThemeIcon:hover {
+  background: rgba(212, 175, 55, 0.25);
+  transform: rotate(15deg);
 }
 
 .sidebarVersion {
-  margin-top: 8px;
+  margin-top: 12px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--color-text-muted);
   font-family: var(--font-family-mono);
-  opacity: 0.8;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
 }
 
-/* Collapsed State */
+/* ==========================================================================
+   COLLAPSED STATE
+   ========================================================================== */
+
 .sidebarCollapsed .navButton {
   justify-content: center;
-  padding: 16px;
+  padding: 14px;
 }
 
 .sidebarCollapsed .navButtonContent,
@@ -335,37 +440,33 @@
   padding: 24px 12px;
   justify-content: center;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .sidebarCollapsed .sidebarToggle {
-  width: 24px;
-  height: 24px;
-  font-size: 0.7rem;
+  width: 28px;
+  height: 28px;
 }
 
-/* Mobile Toggle */
-.mobileMenuToggle {
-  display: none; /* Controlled by React/Media Query in TSX, but styling here */
-}
-
-/* Tooltips for Collapsed */
+/* Tooltip for Collapsed State */
 .navButton[data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
   left: 70px;
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(8px);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur-lg);
+  -webkit-backdrop-filter: var(--backdrop-blur-lg);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text-primary);
+  padding: 8px 14px;
+  border-radius: 10px;
   font-size: 0.85rem;
   font-weight: 500;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s var(--ease-celestial);
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-glass), var(--shadow-glow-gold);
   z-index: 1000;
 }
 
@@ -373,10 +474,35 @@
   opacity: 1;
 }
 
-/* Responsive */
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
 @media (max-width: 768px) {
-  .sidebar { 
-     /* Handled by .sidebarMobile */
-     z-index: 1000;
+  .sidebar {
+    z-index: 1000;
+  }
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes sidebar-star-twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .navButton,
+  .sidebarLogoIcon,
+  .sidebarToggle {
+    transition: none;
+  }
+
+  .sidebar::before {
+    animation: none;
   }
 }

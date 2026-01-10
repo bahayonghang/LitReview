@@ -1,6 +1,6 @@
 /* ============================================================================
-   Keyboard Shortcuts Modal Styles - Academic Elegance
-   学术优雅主义快捷键帮助模态框样式
+   ✧ Celestial Library Keyboard Shortcuts Modal ✧
+   星辰图书馆快捷键帮助 - 星际导航指南
    ============================================================================ */
 
 .modalOverlay {
@@ -9,15 +9,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--overlay-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal);
   padding: 1rem;
-  animation: modalFadeIn 0.2s var(--ease-smooth);
+  animation: modalFadeIn 0.3s var(--ease-celestial);
+
+  /* Cosmic Overlay */
+  background: rgba(5, 8, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 @keyframes modalFadeIn {
@@ -30,26 +32,54 @@
 }
 
 .modalContent {
-  background: var(--glass-bg);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-2xl);
-  padding: 0;
+  position: relative;
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
   overflow: hidden;
+  padding: 0;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.95) 0%,
+      rgba(10, 14, 26, 0.98) 100%
+    );
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-2xl);
+
+  /* Starlight Shadow */
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-  animation: modalSlideUp 0.3s var(--ease-premium);
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  animation: modalSlideUp 0.4s var(--ease-celestial);
+}
+
+/* Star Pattern Overlay */
+.modalContent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: var(--radius-2xl);
 }
 
 @keyframes modalSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.98);
+    transform: translateY(30px) scale(0.95);
   }
   to {
     opacity: 1;
@@ -57,22 +87,39 @@
   }
 }
 
+/* ==========================================================================
+   MODAL HEADER - 模态框头部
+   ========================================================================== */
+
 .modalHeader {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .modalTitle {
   margin: 0;
+  font-family: var(--font-family-display);
   font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  background: var(--gradient-aurora-primary);
+  font-weight: 700;
+  background: var(--gradient-starlight);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+}
+
+.modalTitle::before {
+  content: '✧ ';
+}
+
+.modalTitle::after {
+  content: ' ✧';
 }
 
 .closeButton {
@@ -84,29 +131,35 @@
   padding: 0;
   border: none;
   border-radius: var(--radius-lg);
-  background: var(--glass-bg-active);
+  background: rgba(212, 175, 55, 0.1);
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: var(--transition-ui-smooth);
+  transition: var(--transition-all);
 }
 
 .closeButton:hover {
-  background: var(--glass-bg-hover);
-  color: var(--color-text-primary);
-  transform: scale(1.05);
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--starlight-400);
+  transform: scale(1.05) rotate(90deg);
 }
 
 .closeButton:active {
   transform: scale(0.95);
 }
 
+/* ==========================================================================
+   MODAL BODY - 模态框内容
+   ========================================================================== */
+
 .modalBody {
+  position: relative;
   padding: 2rem;
   overflow-y: auto;
   max-height: calc(90vh - 140px);
+  z-index: 1;
 }
 
-/* Scrollbar for modal body */
+/* Celestial Scrollbar */
 .modalBody::-webkit-scrollbar {
   width: 8px;
 }
@@ -116,13 +169,17 @@
 }
 
 .modalBody::-webkit-scrollbar-thumb {
-  background: var(--glass-bg-active);
-  border-radius: var(--radius-base);
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-full);
 }
 
 .modalBody::-webkit-scrollbar-thumb:hover {
-  background: var(--glass-bg-hover);
+  background: rgba(212, 175, 55, 0.5);
 }
+
+/* ==========================================================================
+   SHORTCUT GROUPS - 快捷键分组
+   ========================================================================== */
 
 .shortcutGroup {
   margin-bottom: 2rem;
@@ -134,11 +191,13 @@
 
 .shortcutCategory {
   margin: 0 0 1rem 0;
+  font-family: var(--font-family-display);
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
+  font-weight: 600;
   color: var(--color-text-primary);
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary-500);
+  border-bottom: 2px solid;
+  border-image: var(--gradient-starlight) 1;
 }
 
 .shortcutList {
@@ -151,17 +210,20 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  padding: 0.75rem 1rem;
   border-radius: var(--radius-lg);
-  transition: var(--transition-ui-smooth);
+  transition: var(--transition-all);
+
+  /* Celestial Glass */
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .shortcutItem:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--color-primary-400);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.25);
   transform: translateX(4px);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.1);
 }
 
 .shortcutKey {
@@ -170,17 +232,19 @@
   justify-content: center;
   padding: 0.25rem 0.75rem;
   min-width: 80px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  border-radius: var(--radius-md);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-base);
-  box-shadow:
-    0 2px 8px rgba(102, 126, 234, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-weight: 600;
   text-align: center;
   white-space: nowrap;
+
+  /* Starlight Gradient */
+  background: var(--gradient-starlight);
+  color: var(--cosmic-void);
+  box-shadow:
+    0 2px 8px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .shortcutDescription {
@@ -189,10 +253,16 @@
   color: var(--color-text-secondary);
 }
 
+/* ==========================================================================
+   MODAL FOOTER - 模态框底部
+   ========================================================================== */
+
 .modalFooter {
+  position: relative;
   padding: 1rem 2rem;
-  background: var(--glass-bg-active);
-  border-top: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .footerHint {
@@ -202,65 +272,136 @@
   text-align: center;
 }
 
-/* ============================================================================
-   Help Button
-   ============================================================================ */
+/* ==========================================================================
+   HELP BUTTON - 帮助按钮
+   ========================================================================== */
 
 .helpButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: none;
   border-radius: var(--radius-lg);
-  background: var(--glass-bg);
-  color: var(--color-text-secondary);
   cursor: pointer;
-  transition: var(--transition-ui-smooth);
+  transition: var(--transition-all);
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   z-index: var(--z-sticky);
+
+  /* Celestial Glass */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.9) 0%,
+      rgba(10, 14, 26, 0.95) 100%
+    );
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--starlight-400);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .helpButton:hover {
-  background: var(--glass-bg-hover);
-  color: var(--color-primary-500);
-  transform: scale(1.05) rotate(10deg);
+  background:
+    linear-gradient(135deg,
+      rgba(212, 175, 55, 0.15) 0%,
+      rgba(13, 19, 33, 0.9) 100%
+    );
+  border-color: rgba(212, 175, 55, 0.4);
+  color: var(--starlight-300);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: var(--shadow-glow-gold);
 }
 
 .helpButton:active {
   transform: scale(0.95);
 }
 
-/* ============================================================================
-   Light Theme
-   ============================================================================ */
+/* ==========================================================================
+   LIGHT THEME - 浅色主题
+   ========================================================================== */
 
-[data-theme="light"] .modalContent {
-  background: rgba(255, 255, 255, 0.95);
+:global([data-theme="light"]) .modalOverlay {
+  background: rgba(249, 247, 244, 0.85);
+}
+
+:global([data-theme="light"]) .modalContent {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.98) 0%,
+      rgba(249, 247, 244, 0.99) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.25);
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+    0 0 40px rgba(167, 139, 29, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="light"] .shortcutKey {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+:global([data-theme="light"]) .modalContent::before {
+  display: none;
 }
 
-[data-theme="light"] .helpButton {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+:global([data-theme="light"]) .modalHeader {
+  background: rgba(167, 139, 29, 0.05);
+  border-bottom-color: rgba(167, 139, 29, 0.2);
 }
 
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
+:global([data-theme="light"]) .closeButton {
+  background: rgba(167, 139, 29, 0.1);
+}
+
+:global([data-theme="light"]) .closeButton:hover {
+  background: rgba(167, 139, 29, 0.2);
+  color: var(--starlight-700);
+}
+
+:global([data-theme="light"]) .shortcutCategory {
+  border-image: linear-gradient(90deg, var(--starlight-600), var(--starlight-500)) 1;
+}
+
+:global([data-theme="light"]) .shortcutItem {
+  background: rgba(167, 139, 29, 0.05);
+  border-color: rgba(167, 139, 29, 0.1);
+}
+
+:global([data-theme="light"]) .shortcutItem:hover {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.25);
+}
+
+:global([data-theme="light"]) .modalFooter {
+  background: rgba(167, 139, 29, 0.05);
+  border-top-color: rgba(167, 139, 29, 0.2);
+}
+
+:global([data-theme="light"]) .helpButton {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.25);
+  color: var(--starlight-700);
+}
+
+:global([data-theme="light"]) .helpButton:hover {
+  background:
+    linear-gradient(135deg,
+      rgba(167, 139, 29, 0.1) 0%,
+      rgba(253, 252, 251, 0.95) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.4);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 640px) {
   .modalContent {
@@ -301,27 +442,22 @@
   }
 }
 
-/* ============================================================================
-   Reduced Motion
-   ============================================================================ */
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .modalOverlay,
-  .modalContent,
-  .shortcutItem,
-  .helpButton {
+  .modalContent {
     animation: none;
   }
 
   .shortcutItem:hover,
+  .closeButton:hover,
   .helpButton:hover {
     transform: none;
   }
 }
-
-/* ============================================================================
-   High Contrast Mode
-   ============================================================================ */
 
 @media (prefers-contrast: high) {
   .modalContent {
@@ -333,6 +469,6 @@
   }
 
   .helpButton {
-    border: 2px solid currentColor;
+    border-width: 2px;
   }
 }

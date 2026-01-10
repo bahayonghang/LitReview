@@ -1,218 +1,212 @@
 /**
- * LitReview Pro Design Tokens
- * Academic Elegance Design System
- * 为学术研究者打造的专业优雅界面
+ * ✧ LitReview Pro - Celestial Library Design System ✧
+ * 星辰图书馆设计系统 - 深邃宇宙与古典学术的融合
+ *
+ * Design Philosophy: 每一篇文献都是一颗星星，综述就是绘制星图
  */
+
+/* ==========================================================================
+   GOOGLE FONTS IMPORT - 优雅字体加载
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* ==========================================================================
-     COLORS
+     CELESTIAL COLOR PALETTE - 星辰色彩系统
      ========================================================================== */
+
+  /* Cosmic Deep - 宇宙深邃色 (背景主色) */
+  --cosmic-void: #050810;
+  --cosmic-deep: #0a0e1a;
+  --cosmic-night: #0d1321;
+  --cosmic-dusk: #111827;
+  --cosmic-twilight: #1a2332;
+
+  /* Starlight Gold - 星光金 (主强调色) */
+  --starlight-50: #fefce8;
+  --starlight-100: #fef9c3;
+  --starlight-200: #fef08a;
+  --starlight-300: #fde047;
+  --starlight-400: #f4d03f;
+  --starlight-500: #d4af37;
+  --starlight-600: #c9a227;
+  --starlight-700: #a78b1d;
+  --starlight-800: #8a7119;
+  --starlight-900: #715c15;
+
+  /* Nebula Purple - 星云紫 (次强调色) */
+  --nebula-50: #faf5ff;
+  --nebula-100: #f3e8ff;
+  --nebula-200: #e9d5ff;
+  --nebula-300: #d8b4fe;
+  --nebula-400: #c084fc;
+  --nebula-500: #a855f7;
+  --nebula-600: #9333ea;
+  --nebula-700: #7c3aed;
+  --nebula-800: #6d28d9;
+  --nebula-900: #581c87;
+
+  /* Galaxy Blue - 银河蓝 (辅助色) */
+  --galaxy-50: #eff6ff;
+  --galaxy-100: #dbeafe;
+  --galaxy-200: #bfdbfe;
+  --galaxy-300: #93c5fd;
+  --galaxy-400: #60a5fa;
+  --galaxy-500: #3b82f6;
+  --galaxy-600: #2563eb;
+  --galaxy-700: #1d4ed8;
+  --galaxy-800: #1e3a5f;
+  --galaxy-900: #1e3a8a;
+
+  /* Aurora Cyan - 极光青 (点缀色) */
+  --aurora-50: #ecfeff;
+  --aurora-100: #cffafe;
+  --aurora-200: #a5f3fc;
+  --aurora-300: #67e8f9;
+  --aurora-400: #22d3ee;
+  --aurora-500: #06b6d4;
+  --aurora-600: #0891b2;
+  --aurora-700: #0e7490;
+  --aurora-800: #155e75;
+  --aurora-900: #164e63;
+
+  /* Parchment - 羊皮纸色 (文本背景) */
+  --parchment-50: #fdfcfb;
+  --parchment-100: #f9f7f4;
+  --parchment-200: #f3efe8;
+  --parchment-300: #e8e2d6;
+  --parchment-400: #d4cbb8;
 
   /* ==========================================================================
-     ACADEMIC ELEGANCE COLOR PALETTE
+     CELESTIAL GRADIENTS - 星辰渐变
      ========================================================================== */
 
-  /* Primary Colors - 深邃学术蓝 (Academic Deep Blue) */
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-200: #bae6fd;
-  --color-primary-300: #7dd3fc;
-  --color-primary-400: #38bdf8;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
-  --color-primary-800: #075985;
-  --color-primary-900: #0c4a6e;
+  /* Primary Gradients */
+  --gradient-starlight: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #c9a227 100%);
+  --gradient-nebula: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #6d28d9 100%);
+  --gradient-galaxy: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+  --gradient-aurora: linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #0891b2 100%);
 
-  /* Secondary Colors - 知识紫 (Knowledge Purple) */
-  --color-secondary-50: #faf5ff;
-  --color-secondary-100: #f3e8ff;
-  --color-secondary-200: #e9d5ff;
-  --color-secondary-300: #d8b4fe;
-  --color-secondary-400: #c084fc;
-  --color-secondary-500: #a855f7;
-  --color-secondary-600: #9333ea;
-  --color-secondary-700: #7c3aed;
-  --color-secondary-800: #6b21a8;
-  --color-secondary-900: #581c87;
+  /* Cosmic Background Gradients */
+  --gradient-cosmic-radial: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+  --gradient-cosmic-deep: linear-gradient(180deg, #050810 0%, #0a0e1a 30%, #111827 100%);
 
-  /* Academic Accent - 活力青 (Vibrant Cyan) */
-  --color-accent-50: #ecfeff;
-  --color-accent-100: #cffafe;
-  --color-accent-200: #a5f3fc;
-  --color-accent-300: #67e8f9;
-  --color-accent-400: #22d3ee;
-  --color-accent-500: #06b6d4;
-  --color-accent-600: #0891b2;
-  --color-accent-700: #0e7490;
-  --color-accent-800: #155e75;
-  --color-accent-900: #164e63;
+  /* Card Gradients with Starlight */
+  --gradient-card-gold: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(244, 208, 63, 0.05) 100%);
+  --gradient-card-purple: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+  --gradient-card-blue: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+  --gradient-card-cyan: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
 
-  /* Aurora Gradient - 极光渐变 */
-  --gradient-aurora-primary: linear-gradient(135deg, #0ea5e9 0%, #a855f7 50%, #06b6d4 100%);
-  --gradient-aurora-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%);
-  --gradient-aurora-glow: linear-gradient(135deg, #38bdf8 0%, #d8b4fe 50%, #67e8f9 100%);
-
-  /* Card Gradients - 卡片语义化渐变 */
-  --gradient-card-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-card-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-card-neutral: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-card-accent: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-
-
-  /* Legacy Compatibility */
-  --color-primary-400: #818cf8; /* 保留原有的indigo for backward compatibility */
-  --color-primary-500: #6366f1;
-  --color-primary-600: #5b21b6;
-  --color-primary-700: #4c1d95;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #312e81;
-
-  /* Neutral Colors - Extended Grayscale */
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
-
-  /* Semantic Colors */
-  --color-success-50: #ecfdf5;
-  --color-success-100: #d1fae5;
-  --color-success-500: #10b981;
-  --color-success-600: #059669;
-  --color-success-700: #047857;
-
-  --color-warning-50: #fffbeb;
-  --color-warning-100: #fef3c7;
-  --color-warning-500: #f59e0b;
-  --color-warning-600: #d97706;
-  --color-warning-700: #b45309;
-
-  --color-error-50: #fef2f2;
-  --color-error-100: #fee2e2;
-  --color-error-500: #ef4444;
-  --color-error-600: #dc2626;
-  --color-error-700: #b91c1c;
-
-  --color-info-50: #eff6ff;
-  --color-info-100: #dbeafe;
-  --color-info-500: #3b82f6;
-  --color-info-600: #2563eb;
-  --color-info-700: #1d4ed8;
+  /* Accent Gradient (主强调渐变) */
+  --accent-gradient: var(--gradient-starlight);
 
   /* ==========================================================================
-     TYPOGRAPHY
+     TYPOGRAPHY - 星辰字体系统
      ========================================================================== */
 
-  /* ==========================================================================
-     ACADEMIC TYPOGRAPHY SYSTEM
-     ========================================================================== */
+  /* Font Families */
+  --font-family-display: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+  --font-family-primary: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  --font-family-academic: 'Playfair Display', 'Georgia', serif;
 
-  /* Font Families - 优雅字体栈 */
-  --font-family-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-  --font-family-mono: 'SF Mono', 'JetBrains Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
-  --font-family-display: 'SF Pro Display', 'Inter', system-ui, sans-serif;
-  --font-family-academic: 'SF Pro Display', 'Times New Roman', 'Georgia', serif; /* 学术写作专用 */
-
-  /* Font Loading Strategy */
-  --font-display-swap: swap;
-
-  /* Font Sizes - Fluid Typography Scale */
-  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);    /* 12px - 14px */
-  --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);      /* 14px - 16px */
-  --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);      /* 16px - 18px */
-  --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);     /* 18px - 20px */
-  --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);      /* 20px - 24px */
-  --font-size-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);      /* 24px - 30px */
-  --font-size-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem); /* 30px - 36px */
-  --font-size-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);      /* 36px - 48px */
+  /* Font Sizes - Harmonious Scale (1.25 ratio) */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 3rem;        /* 48px */
 
   /* Font Weights */
-  --font-weight-thin: 100;
-  --font-weight-extralight: 200;
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
-  --font-weight-black: 900;
 
   /* Line Heights */
-  --line-height-tight: 1.25;
+  --line-height-tight: 1.2;
   --line-height-snug: 1.375;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
   --line-height-loose: 2;
 
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
   /* ==========================================================================
-     SPACING
+     SPACING - 8px Grid System
      ========================================================================== */
 
-  /* 8px Grid System */
   --space-0: 0;
   --space-px: 1px;
-  --space-0-5: 0.125rem;   /* 2px */
-  --space-1: 0.25rem;      /* 4px */
-  --space-1-5: 0.375rem;   /* 6px */
-  --space-2: 0.5rem;       /* 8px */
-  --space-2-5: 0.625rem;   /* 10px */
-  --space-3: 0.75rem;      /* 12px */
-  --space-3-5: 0.875rem;   /* 14px */
-  --space-4: 1rem;         /* 16px */
-  --space-5: 1.25rem;      /* 20px */
-  --space-6: 1.5rem;       /* 24px */
-  --space-7: 1.75rem;      /* 28px */
-  --space-8: 2rem;         /* 32px */
-  --space-9: 2.25rem;      /* 36px */
-  --space-10: 2.5rem;      /* 40px */
-  --space-11: 2.75rem;     /* 44px */
-  --space-12: 3rem;        /* 48px */
-  --space-14: 3.5rem;      /* 56px */
-  --space-16: 4rem;        /* 64px */
-  --space-20: 5rem;        /* 80px */
-  --space-24: 6rem;        /* 96px */
-  --space-28: 7rem;        /* 112px */
-  --space-32: 8rem;        /* 128px */
+  --space-0-5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
+  --space-2: 0.5rem;
+  --space-2-5: 0.625rem;
+  --space-3: 0.75rem;
+  --space-3-5: 0.875rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-14: 3.5rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
 
   /* ==========================================================================
-     BORDER RADIUS
+     BORDER RADIUS - 圆角系统
      ========================================================================== */
 
   --radius-none: 0;
-  --radius-sm: 0.125rem;    /* 2px */
-  --radius-base: 0.25rem;   /* 4px */
-  --radius-md: 0.375rem;    /* 6px */
-  --radius-lg: 0.5rem;      /* 8px */
-  --radius-xl: 0.75rem;     /* 12px */
-  --radius-2xl: 1rem;       /* 16px */
-  --radius-3xl: 1.5rem;     /* 24px */
+  --radius-sm: 0.25rem;
+  --radius-base: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
   --radius-full: 9999px;
 
   /* ==========================================================================
-     SHADOWS
+     SHADOWS - 星光阴影系统
      ========================================================================== */
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* Standard Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
-  /* Glass Effect Shadows */
-  --shadow-glass-sm: 0 2px 8px -2px rgb(0 0 0 / 0.1);
-  --shadow-glass-md: 0 4px 16px -4px rgb(0 0 0 / 0.15);
-  --shadow-glass-lg: 0 8px 24px -8px rgb(0 0 0 / 0.2);
+  /* Starlight Glow Shadows */
+  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.1);
+  --shadow-glow-purple: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 40px rgba(124, 58, 237, 0.1);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1);
+  --shadow-glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(6, 182, 212, 0.1);
+
+  /* Glass Shadows */
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glass-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
   /* ==========================================================================
-     BACKDROPS & BLUR
+     BLUR & BACKDROP - 模糊效果
      ========================================================================== */
 
   --blur-sm: blur(4px);
@@ -222,10 +216,11 @@
   --blur-xl: blur(24px);
   --blur-2xl: blur(40px);
 
-  --backdrop-blur-sm: blur(4px) saturate(150%);
-  --backdrop-blur-base: blur(8px) saturate(150%);
-  --backdrop-blur-md: blur(12px) saturate(150%);
-  --backdrop-blur-lg: blur(16px) saturate(180%);
+  --backdrop-blur-sm: blur(4px) saturate(120%);
+  --backdrop-blur-base: blur(8px) saturate(130%);
+  --backdrop-blur-md: blur(12px) saturate(140%);
+  --backdrop-blur-lg: blur(16px) saturate(150%);
+  --backdrop-blur-xl: blur(24px) saturate(160%);
 
   /* ==========================================================================
      Z-INDEX SCALE
@@ -241,20 +236,11 @@
   --z-toast: 1080;
 
   /* ==========================================================================
-     BREAKPOINTS
+     ANIMATION & TRANSITIONS - 星辰动效系统
      ========================================================================== */
 
-  --breakpoint-sm: 640px;   /* Small devices */
-  --breakpoint-md: 768px;   /* Medium devices */
-  --breakpoint-lg: 1024px;  /* Large devices */
-  --breakpoint-xl: 1280px;  /* Extra large devices */
-  --breakpoint-2xl: 1536px; /* 2X large devices */
-
-  /* ==========================================================================
-     ANIMATION & TRANSITIONS
-     ========================================================================== */
-
-  /* Transition Durations */
+  /* Durations */
+  --duration-instant: 0ms;
   --duration-75: 75ms;
   --duration-100: 100ms;
   --duration-150: 150ms;
@@ -264,158 +250,116 @@
   --duration-700: 700ms;
   --duration-1000: 1000ms;
 
-  /* ==========================================================================
-     ACADEMIC ELEGANCE ANIMATION SYSTEM
-     ========================================================================== */
-
-  /* Transition Timing Functions - 学术优雅动效 */
+  /* Easing Functions */
   --ease-linear: linear;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Academic Elegance Curves - 专业动效曲线 */
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);           /* 标准平滑 */
-  --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);  /* 温和优雅 */
-  --ease-academic: cubic-bezier(0.32, 0.72, 0.46, 0.92); /* 学术专业 */
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* 弹性活力 */
-  --ease-premium: cubic-bezier(0.23, 1, 0.32, 1);        /* 高级质感 */
+  /* Celestial Easing - 星辰专属曲线 */
+  --ease-celestial: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-float: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Academic Transition Durations - 专业过渡时长 */
-  --duration-instant: 0ms;           /* 即时响应 */
-  --duration-quick: 0.15s;           /* 快速交互 */
-  --duration-normal: 0.25s;          /* 标准过渡 */
-  --duration-smooth: 0.35s;          /* 平滑动效 */
-  --duration-slow: 0.5s;             /* 缓慢变化 */
-  --duration-page: 0.6s;             /* 页面切换 */
-
-  /* ==========================================================================
-     ACADEMIC ELEGANCE STANDARD TRANSITIONS
-     ========================================================================== */
-
-  /* Color Transitions - 色彩过渡 */
-  --transition-colors-quick: color var(--duration-quick) var(--ease-smooth),
-                            background-color var(--duration-quick) var(--ease-smooth),
-                            border-color var(--duration-quick) var(--ease-smooth);
-
-  --transition-colors-smooth: color var(--duration-normal) var(--ease-gentle),
-                              background-color var(--duration-normal) var(--ease-gentle),
-                              border-color var(--duration-normal) var(--ease-gentle);
-
-  /* Opacity Transitions - 透明度过渡 */
-  --transition-opacity-gentle: opacity var(--duration-quick) var(--ease-gentle);
-  --transition-opacity-smooth: opacity var(--duration-normal) var(--ease-smooth);
-
-  /* Shadow & Glow Effects - 阴影和光晕 */
-  --transition-shadow-academic: box-shadow var(--duration-normal) var(--ease-academic),
-                               drop-shadow var(--duration-normal) var(--ease-academic);
-
-  --transition-glow-premium: box-shadow var(--duration-smooth) var(--ease-premium),
-                            filter var(--duration-smooth) var(--ease-premium);
-
-  /* Transform & Scale - 变换和缩放 */
-  --transition-transform-interactive: transform var(--duration-quick) var(--ease-smooth),
-                                      scale var(--duration-quick) var(--ease-smooth);
-
-  --transition-transform-elegant: transform var(--duration-normal) var(--ease-gentle),
-                                 scale var(--duration-normal) var(--ease-gentle);
-
-  /* Comprehensive Transitions - 综合过渡 */
-  --transition-ui-quick: all var(--duration-quick) var(--ease-smooth);
-  --transition-ui-smooth: all var(--duration-normal) var(--ease-gentle);
-  --transition-ui-premium: all var(--duration-smooth) var(--ease-premium);
-
-  /* Legacy Compatibility */
-  --transition-colors: var(--transition-colors-smooth);
-  --transition-opacity: var(--transition-opacity-gentle);
-  --transition-shadow: var(--transition-shadow-academic);
-  --transition-transform: var(--transition-transform-interactive);
-  --transition-all: var(--transition-ui-smooth);
+  /* Standard Transitions */
+  --transition-colors: color 0.2s var(--ease-smooth), background-color 0.2s var(--ease-smooth), border-color 0.2s var(--ease-smooth);
+  --transition-opacity: opacity 0.2s var(--ease-smooth);
+  --transition-shadow: box-shadow 0.3s var(--ease-celestial);
+  --transition-transform: transform 0.3s var(--ease-celestial);
+  --transition-all: all 0.3s var(--ease-celestial);
 }
 
 /* ==========================================================================
-   THEME VARIATIONS
+   DARK THEME (Default) - 星辰深邃主题
    ========================================================================== */
 
+[data-theme="dark"], :root {
+  /* Text Colors */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #0f172a;
+  --color-text-gold: var(--starlight-400);
+
+  /* Background Colors */
+  --color-bg-primary: var(--cosmic-deep);
+  --color-bg-secondary: var(--cosmic-night);
+  --color-bg-tertiary: var(--cosmic-dusk);
+
+  /* Glass Effects */
+  --glass-bg: rgba(13, 19, 33, 0.8);
+  --glass-bg-light: rgba(13, 19, 33, 0.6);
+  --glass-bg-hover: rgba(26, 35, 50, 0.9);
+  --glass-bg-active: rgba(30, 41, 59, 0.95);
+  --glass-border: rgba(212, 175, 55, 0.2);
+  --glass-border-light: rgba(212, 175, 55, 0.1);
+  --glass-border-focus: rgba(212, 175, 55, 0.5);
+
+  /* Input Styles */
+  --input-bg: rgba(10, 14, 26, 0.6);
+  --input-border: rgba(212, 175, 55, 0.15);
+  --input-border-focus: rgba(212, 175, 55, 0.4);
+
+  /* Accent Colors */
+  --accent: var(--starlight-500);
+  --accent-hover: var(--starlight-400);
+  --accent-light: var(--starlight-300);
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: var(--galaxy-500);
+
+  /* Overlay */
+  --overlay-bg: rgba(5, 8, 16, 0.85);
+}
+
 /* ==========================================================================
-     ACADEMIC ELEGANCE THEME SYSTEM
-     ========================================================================== */
+   LIGHT THEME - 羊皮纸日间主题
+   ========================================================================== */
 
-/* Light Theme - 学术优雅浅色主题 */
 [data-theme="light"] {
-  /* Text Colors - 高对比度文字 */
-  --color-text-primary: #0f172a;           /* 深邃学术蓝 */
-  --color-text-secondary: #334155;         /* 中等蓝灰 */
-  --color-text-muted: #64748b;            /* 柔和灰蓝 */
-  --color-text-inverse: #ffffff;          /* 纯白反色 */
+  /* Text Colors */
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #f8fafc;
+  --color-text-gold: var(--starlight-700);
 
-  /* Background Colors - 清新学术背景 */
-  --color-bg-primary: #ffffff;            /* 纯白主背景 */
-  --color-bg-secondary: #f8fafc;          /* 极淡蓝灰 */
-  --color-bg-tertiary: #f1f5f9;           /* 淡蓝灰 */
+  /* Background Colors */
+  --color-bg-primary: var(--parchment-50);
+  --color-bg-secondary: var(--parchment-100);
+  --color-bg-tertiary: var(--parchment-200);
 
-  /* Academic Glass Effects - 学术玻璃效果 */
-  --glass-bg: rgba(255, 255, 255, 0.85);   /* 半透明白 */
-  --glass-border: rgba(14, 165, 233, 0.2);  /* 学术蓝边框 */
-  --glass-bg-light: rgba(255, 255, 255, 0.95);
-  --glass-border-light: rgba(14, 165, 233, 0.3);
-  --glass-bg-hover: rgba(255, 255, 255, 0.5);
+  /* Glass Effects */
+  --glass-bg: rgba(253, 252, 251, 0.9);
+  --glass-bg-light: rgba(253, 252, 251, 0.7);
+  --glass-bg-hover: rgba(249, 247, 244, 0.95);
+  --glass-bg-active: rgba(243, 239, 232, 1);
+  --glass-border: rgba(167, 139, 29, 0.25);
+  --glass-border-light: rgba(167, 139, 29, 0.15);
+  --glass-border-focus: rgba(167, 139, 29, 0.5);
 
-  /* Academic Gradients - 学术渐变 */
-  --gradient-primary: var(--gradient-aurora-primary);
-  --gradient-subtle: var(--gradient-aurora-subtle);
-  --gradient-glow: var(--gradient-aurora-glow);
+  /* Input Styles */
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: rgba(167, 139, 29, 0.2);
+  --input-border-focus: rgba(167, 139, 29, 0.5);
 
-  /* Enhanced Contrast for Academic Reading */
-  --contrast-text-primary: 16;             /* WCAG AAA standard */
-  --contrast-text-secondary: 7;            /* WCAG AA+ standard */
+  /* Accent Colors */
+  --accent: var(--starlight-600);
+  --accent-hover: var(--starlight-500);
+  --accent-light: var(--starlight-400);
+
+  /* Overlay */
+  --overlay-bg: rgba(253, 252, 251, 0.85);
 }
 
-/* Dark Theme - 深邃学术深色主题 */
-[data-theme="dark"] {
-  /* Text Colors - 深色主题文字 */
-  --color-text-primary: #f8fafc;           /* 高亮白 */
-  --color-text-secondary: #e2e8f0;         /* 中等亮白 */
-  --color-text-muted: #94a3b8;            /* 柔和亮灰 */
-  --color-text-inverse: #0f172a;          /* 深邃蓝反色 */
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
 
-  /* Background Colors - 深邃学术背景 */
-  --color-bg-primary: #0f172a;            /* 深邃学术蓝 */
-  --color-bg-secondary: #1e293b;          /* 中等深蓝 */
-  --color-bg-tertiary: #334155;           /* 淡蓝灰 */
-
-  /* Academic Glass Effects - 深色玻璃效果 */
-  --glass-bg: rgba(15, 23, 42, 0.75);     /* 半透明深蓝 */
-  --glass-border: rgba(56, 189, 248, 0.3); /* 明亮蓝边框 */
-  --glass-bg-light: rgba(15, 23, 42, 0.85);
-  --glass-border-light: rgba(56, 189, 248, 0.4);
-  --glass-bg-hover: rgba(255, 255, 255, 0.1);
-
-  /* Academic Gradients - 深色渐变 */
-  --gradient-primary: var(--gradient-aurora-primary);
-  --gradient-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(6, 182, 212, 0.15) 100%);
-  --gradient-glow: linear-gradient(135deg, #38bdf8 0%, #d8b4fe 50%, #67e8f9 100%);
-
-  /* Enhanced Contrast for Academic Reading */
-  --contrast-text-primary: 18;             /* 极高对比度 */
-  --contrast-text-secondary: 8;            /* 高对比度 */
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  :root {
-    --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-border: rgba(0, 0, 0, 0.8);
-    --shadow-glass-md: 0 4px 16px -4px rgb(0 0 0 / 0.4);
-  }
-
-  [data-theme="dark"] {
-    --glass-bg: rgba(15, 12, 41, 0.95);
-    --glass-border: rgba(255, 255, 255, 0.8);
-  }
-}
-
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-75: 0ms;
@@ -426,5 +370,21 @@
     --duration-500: 0ms;
     --duration-700: 0ms;
     --duration-1000: 0ms;
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --glass-bg: rgba(13, 19, 33, 0.95);
+    --glass-border: rgba(212, 175, 55, 0.5);
+  }
+
+  [data-theme="light"] {
+    --glass-bg: rgba(253, 252, 251, 0.98);
+    --glass-border: rgba(167, 139, 29, 0.5);
   }
 }

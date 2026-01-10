@@ -1,6 +1,6 @@
 /* ============================================================================
-   Toast Notification System - Academic Elegance Style
-   学术优雅主义通知系统样式
+   ✧ Celestial Library Toast Notification ✧
+   星辰图书馆通知系统 - 星光消息的传递
    ============================================================================ */
 
 .toastContainer {
@@ -21,22 +21,29 @@
   min-width: 300px;
   max-width: 500px;
   padding: 16px 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   pointer-events: auto;
 
-  /* Academic Elegance Animation */
-  animation: toastSlideIn 0.3s var(--ease-premium);
-  transition:
-    opacity 0.3s var(--ease-smooth),
-    transform 0.3s var(--ease-premium),
-    box-shadow 0.2s var(--ease-smooth);
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.92) 0%,
+      rgba(10, 14, 26, 0.95) 100%
+    );
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-xl);
+
+  /* Starlight Shadow */
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  animation: toastSlideIn 0.4s var(--ease-celestial);
+  transition: var(--transition-all);
 }
 
 .toast.exiting {
@@ -47,58 +54,76 @@
 @keyframes toastSlideIn {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(100%) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
-/* Toast Icon */
+/* ==========================================================================
+   TOAST ICON - 图标样式
+   ========================================================================== */
+
 .toastIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
   border-radius: var(--radius-lg);
-  color: white;
+  color: var(--cosmic-void);
+  font-size: 1rem;
 }
 
-/* Toast Types */
+/* Toast Types with Celestial Styling */
 .toast.success .toastIcon {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow:
+    0 4px 12px rgba(16, 185, 129, 0.4),
+    0 0 16px rgba(16, 185, 129, 0.2);
 }
 
 .toast.error .toastIcon {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  box-shadow:
+    0 4px 12px rgba(239, 68, 68, 0.4),
+    0 0 16px rgba(239, 68, 68, 0.2);
 }
 
 .toast.warning .toastIcon {
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  box-shadow:
+    0 4px 12px rgba(245, 158, 11, 0.4),
+    0 0 16px rgba(245, 158, 11, 0.2);
 }
 
 .toast.info .toastIcon {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: var(--gradient-starlight);
+  box-shadow:
+    0 4px 12px rgba(212, 175, 55, 0.4),
+    0 0 16px rgba(212, 175, 55, 0.2);
 }
 
-/* Toast Message */
+/* ==========================================================================
+   TOAST MESSAGE - 消息内容
+   ========================================================================== */
+
 .toastMessage {
   flex: 1;
   min-width: 0;
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-snug);
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-/* Toast Close Button */
+/* ==========================================================================
+   TOAST CLOSE BUTTON - 关闭按钮
+   ========================================================================== */
+
 .toastClose {
   display: flex;
   align-items: center;
@@ -108,56 +133,67 @@
   flex-shrink: 0;
   padding: 0;
   border: none;
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition:
-    color 0.15s var(--ease-smooth),
-    background 0.15s var(--ease-smooth);
+  transition: var(--transition-all);
 }
 
 .toastClose:hover {
-  color: var(--color-text-primary);
-  background: var(--glass-bg-hover);
+  color: var(--starlight-400);
+  background: rgba(212, 175, 55, 0.15);
 }
 
 .toastClose:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
-/* ============================================================================
-   Toast Hover Effect
-   ============================================================================ */
+/* ==========================================================================
+   HOVER EFFECT - 悬停效果
+   ========================================================================== */
 
 .toast:hover {
+  border-color: rgba(212, 175, 55, 0.35);
   box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(212, 175, 55, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
 }
 
-/* ============================================================================
-   Light Theme
-   ============================================================================ */
+/* ==========================================================================
+   LIGHT THEME - 浅色主题
+   ========================================================================== */
 
-[data-theme="light"] .toast {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(0, 0, 0, 0.08);
+:global([data-theme="light"]) .toast {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="light"] .toast:hover {
+:global([data-theme="light"]) .toast:hover {
+  border-color: rgba(167, 139, 29, 0.35);
   box-shadow:
     0 12px 48px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    0 0 16px rgba(167, 139, 29, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
+:global([data-theme="light"]) .toastClose:hover {
+  color: var(--starlight-700);
+  background: rgba(167, 139, 29, 0.15);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 640px) {
   .toastContainer {
@@ -172,9 +208,9 @@
   }
 }
 
-/* ============================================================================
-   Reduced Motion
-   ============================================================================ */
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .toast {
@@ -190,10 +226,6 @@
     transform: none;
   }
 }
-
-/* ============================================================================
-   High Contrast Mode
-   ============================================================================ */
 
 @media (prefers-contrast: high) {
   .toast {

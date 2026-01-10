@@ -60,15 +60,3 @@ export const CHART_DEFAULTS = {
   HEIGHT: 40,
   POINTS: 7,
 } as const;
-
-// ============================================================================
-// LocalStorage Keys (Legacy Support)
-// ============================================================================
-
-export const LEGACY_STORAGE_KEYS = {
-  GENERATION_COUNT: 'litreview_generation_count',
-  POLISH_COUNT: 'litreview_polish_count',
-  TOTAL_CHARACTERS: 'litreview_total_characters',
-  DRAFT_PROMPT: 'litreview_draft_prompt',
-  HISTORY: 'litreview_history',
-} as const;

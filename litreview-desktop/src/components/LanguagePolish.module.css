@@ -1,167 +1,375 @@
 /* ============================================================================
-   Language Polish Workbench Styles (Deep Aurora Theme)
+   ✧ Celestial Library Language Polish Workbench ✧
+   星辰图书馆语言润色工坊 - 文字星辰的精雕细琢
    ============================================================================ */
 
-/* Main Container - Full height, flex column layout */
+/* ==========================================================================
+   MAIN CONTAINER - 主容器
+   ========================================================================== */
+
 .workbenchContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
   max-height: 100%;
   overflow: hidden;
-  gap: 16px;
-  animation: fadeIn 0.4s ease-out;
+  gap: var(--space-4);
+  animation: workbench-entrance 0.6s var(--ease-celestial);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes workbench-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ============================================================================
-   Toolbar (Top Configuration)
-   ============================================================================ */
+/* ==========================================================================
+   TOOLBAR - 工具栏
+   ========================================================================== */
+
 .toolbar {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  margin: 0 var(--space-1);
+  overflow: hidden;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(135deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-2xl);
+
+  /* Starlight Shadow */
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
   flex-shrink: 0;
-  overflow-x: auto; /* Allow scroll on small screens */
-  box-shadow: var(--glass-shadow);
+  overflow-x: auto;
+  transition: var(--transition-all);
+}
+
+/* Star Pattern Overlay */
+.toolbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 30%, rgba(212, 175, 55, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.toolbar:hover {
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow:
+    0 12px 40px -12px rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Light Theme */
+:global([data-theme="light"]) .toolbar {
+  background:
+    linear-gradient(135deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme="light"]) .toolbar::before {
+  display: none;
 }
 
 .toolbarGroup {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   white-space: nowrap;
+  z-index: 1;
 }
 
 .toolbarLabel {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-secondary);
+  font-family: var(--font-family-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--starlight-400);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
+}
+
+:global([data-theme="light"]) .toolbarLabel {
+  color: var(--starlight-700);
 }
 
 .toolbarDivider {
   width: 1px;
-  height: 24px;
-  background: var(--glass-border);
-  margin: 0 4px;
+  height: 28px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.3) 50%,
+    transparent 100%
+  );
+  margin: 0 var(--space-2);
 }
 
 /* Glass Select */
 .glassSelect {
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: var(--glass-bg-active);
-  border: 1px solid var(--glass-border);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   color: var(--color-text-primary);
   font-size: 0.9rem;
+  font-weight: 500;
   outline: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-all);
   min-width: 140px;
 }
 
 .glassSelect:hover {
-  background: var(--glass-bg-hover);
-  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.glassSelect:focus {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+:global([data-theme="light"]) .glassSelect {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.2);
+}
+
+:global([data-theme="light"]) .glassSelect:hover {
+  background: rgba(167, 139, 29, 0.15);
+  border-color: rgba(167, 139, 29, 0.4);
 }
 
 /* Toggle Group (Capsule Buttons) */
 .toggleGroup {
   display: flex;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  background: rgba(10, 14, 26, 0.5);
+  border-radius: var(--radius-lg);
   padding: 3px;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+:global([data-theme="light"]) .toggleGroup {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.2);
 }
 
 .toggleBtn {
-  padding: 4px 12px;
-  border-radius: 6px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
   border: none;
   background: transparent;
   color: var(--color-text-secondary);
   font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-all);
 }
 
 .toggleBtn:hover:not(:disabled) {
   color: var(--color-text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(212, 175, 55, 0.1);
 }
 
 .toggleBtn.active {
-  background: var(--glass-bg-active);
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  font-weight: 500;
+  background: var(--gradient-starlight);
+  color: var(--cosmic-void);
+  box-shadow:
+    0 2px 8px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-weight: 600;
 }
 
-/* ============================================================================
-   Split Pane (Workspace)
-   ============================================================================ */
+:global([data-theme="light"]) .toggleBtn.active {
+  background: var(--gradient-starlight);
+  color: var(--cosmic-void);
+}
+
+/* ==========================================================================
+   SPLIT PANE (WORKSPACE) - 分割面板
+   ========================================================================== */
+
 .splitPane {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--space-4);
   flex: 1;
-  min-height: 0; /* Important for grid child scrolling */
+  min-height: 0;
 }
 
 .editorPanel {
+  position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--glass-shadow);
-  transition: all 0.3s ease;
+
+  /* Celestial Glass Background */
+  background:
+    linear-gradient(180deg,
+      rgba(13, 19, 33, 0.85) 0%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+
+  /* Golden Border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-2xl);
+
+  /* Starlight Shadow */
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  transition: var(--transition-all);
+}
+
+/* Star Pattern Overlay */
+.editorPanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(212, 175, 55, 0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 75%, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: var(--radius-2xl);
 }
 
 .editorPanel:focus-within {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow:
+    var(--shadow-glow-gold),
+    0 24px 48px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
 }
 
+.editorPanel:focus-within::before {
+  opacity: 0.8;
+}
+
+/* Light Theme */
+:global([data-theme="light"]) .editorPanel {
+  background:
+    linear-gradient(180deg,
+      rgba(253, 252, 251, 0.95) 0%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme="light"]) .editorPanel::before {
+  display: none;
+}
+
+:global([data-theme="light"]) .editorPanel:focus-within {
+  border-color: rgba(167, 139, 29, 0.5);
+  box-shadow:
+    0 0 20px rgba(167, 139, 29, 0.2),
+    0 24px 48px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Target Panel - Nebula Accent */
 .targetPanel {
-  background: rgba(255, 255, 255, 0.05); /* Slightly lighter/different for distinction */
+  background:
+    linear-gradient(180deg,
+      rgba(124, 58, 237, 0.08) 0%,
+      rgba(13, 19, 33, 0.85) 30%,
+      rgba(10, 14, 26, 0.9) 100%
+    );
 }
 
-/* Panel Header */
+.targetPanel::before {
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(124, 58, 237, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 75%, rgba(212, 175, 55, 0.2) 0%, transparent 100%);
+}
+
+:global([data-theme="light"]) .targetPanel {
+  background:
+    linear-gradient(180deg,
+      rgba(124, 58, 237, 0.05) 0%,
+      rgba(253, 252, 251, 0.95) 30%,
+      rgba(249, 247, 244, 0.98) 100%
+    );
+}
+
+/* ==========================================================================
+   PANEL HEADER - 面板头部
+   ========================================================================== */
+
 .panelHeader {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.1);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+:global([data-theme="light"]) .panelHeader {
+  background: rgba(167, 139, 29, 0.05);
+  border-bottom-color: rgba(167, 139, 29, 0.15);
 }
 
 .panelTitle {
-  font-size: 0.9rem;
+  font-family: var(--font-family-display);
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.panelTitle::before {
+  content: '✧';
+  color: var(--starlight-400);
+  font-size: 0.8em;
 }
 
 .panelActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .iconBtn {
@@ -169,42 +377,58 @@
   border: none;
   color: var(--color-text-secondary);
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  transition: var(--transition-all);
   font-size: 1rem;
 }
 
 .iconBtn:hover:not(:disabled) {
-  background: var(--glass-bg-hover);
-  color: var(--color-text-primary);
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--starlight-400);
+}
+
+:global([data-theme="light"]) .iconBtn:hover:not(:disabled) {
+  background: rgba(167, 139, 29, 0.15);
+  color: var(--starlight-700);
 }
 
 .statusBadge {
   font-size: 0.75rem;
-  color: #a78bfa;
-  margin-right: 8px;
-  animation: pulse 2s infinite;
+  color: var(--starlight-400);
+  margin-right: var(--space-2);
+  animation: status-pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: 0 0 4px rgba(212, 175, 55, 0.3);
+  }
 }
 
-/* Editor Area */
+/* ==========================================================================
+   EDITOR AREA - 编辑区域
+   ========================================================================== */
+
 .editorTextarea {
+  position: relative;
   flex: 1;
   width: 100%;
-  padding: 16px;
+  padding: var(--space-4);
   background: transparent;
   border: none;
   resize: none;
-  font-family: inherit;
+  font-family: var(--font-family-primary);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-text-primary);
   outline: none;
+  z-index: 1;
 }
 
 .editorTextarea::placeholder {
@@ -212,19 +436,24 @@
   font-style: italic;
 }
 
-/* Result Area */
+/* ==========================================================================
+   RESULT AREA - 结果区域
+   ========================================================================== */
+
 .resultContainer {
+  position: relative;
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-5);
+  z-index: 1;
 }
 
 .resultContent {
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-text-primary);
   white-space: pre-wrap;
 }
@@ -232,159 +461,214 @@
 .emptyState {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--space-3);
   color: var(--color-text-muted);
   font-style: italic;
 }
 
-/* Modifications Table */
+.emptyState::before {
+  content: '✧';
+  font-size: 2rem;
+  color: var(--starlight-400);
+  opacity: 0.5;
+  animation: star-float 3s ease-in-out infinite;
+}
+
+@keyframes star-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(10deg); }
+}
+
+/* ==========================================================================
+   MODIFICATIONS TABLE - 修改表格
+   ========================================================================== */
+
 .modificationsSection {
   margin-top: auto;
-  border-top: 1px solid var(--glass-border);
-  padding-top: 16px;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  padding-top: var(--space-4);
+}
+
+:global([data-theme="light"]) .modificationsSection {
+  border-top-color: rgba(167, 139, 29, 0.2);
 }
 
 .modificationsHeader {
-  font-size: 0.85rem;
+  font-family: var(--font-family-display);
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-text-secondary);
-  margin-bottom: 8px;
+  color: var(--starlight-400);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.modificationsHeader::before {
+  content: '✧';
+  font-size: 0.8em;
+}
+
+:global([data-theme="light"]) .modificationsHeader {
+  color: var(--starlight-700);
 }
 
 .tableWrapper {
   overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+:global([data-theme="light"]) .tableWrapper {
+  border-color: rgba(167, 139, 29, 0.15);
 }
 
 .modTable {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
 }
 
 .modTable th {
   text-align: left;
-  padding: 8px;
-  color: var(--color-text-muted);
-  font-weight: 500;
-  border-bottom: 1px solid var(--glass-border);
+  padding: var(--space-3);
+  color: var(--starlight-400);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(212, 175, 55, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+:global([data-theme="light"]) .modTable th {
+  color: var(--starlight-700);
+  background: rgba(167, 139, 29, 0.08);
+  border-bottom-color: rgba(167, 139, 29, 0.2);
 }
 
 .modTable td {
-  padding: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
   vertical-align: top;
+  transition: var(--transition-colors);
+}
+
+:global([data-theme="light"]) .modTable td {
+  border-bottom-color: rgba(167, 139, 29, 0.1);
+}
+
+.modTable tr:hover td {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+:global([data-theme="light"]) .modTable tr:hover td {
+  background: rgba(167, 139, 29, 0.05);
+}
+
+.modTable tr:last-child td {
+  border-bottom: none;
 }
 
 .diffDel {
   color: #f87171;
   text-decoration: line-through;
   opacity: 0.8;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
 }
 
 .diffAdd {
   color: #4ade80;
-  background: rgba(74, 222, 128, 0.1);
-  border-radius: 4px;
-  padding: 2px 4px;
+  background: rgba(74, 222, 128, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
 }
 
 .diffReason {
   color: var(--color-text-secondary);
   font-style: italic;
+  font-size: 0.8125rem;
 }
 
-/* ============================================================================
-   Action Bar (Bottom)
-   ============================================================================ */
-.actionBar {
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-  gap: 16px;
-  flex-shrink: 0;
-}
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
-.actionSpacer {
-  flex: 1;
-}
-
-.errorMsg {
-  color: #f87171;
-  background: rgba(248, 113, 113, 0.1);
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  border: 1px solid rgba(248, 113, 113, 0.2);
-}
-
-.primaryBtn {
-  padding: 10px 32px;
-  border: none;
-  border-radius: 12px;
-  background: var(--accent-gradient);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
-}
-
-.primaryBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(129, 140, 248, 0.4);
-}
-
-.primaryBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* ============================================================================
-   Setup Prompt (Error State)
-   ============================================================================ */
-.setupPrompt {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.setupCard {
-  text-align: center;
-  padding: 48px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  max-width: 400px;
-}
-
-.setupIcon {
-  font-size: 3rem;
-  margin-bottom: 16px;
-}
-
-.setupCard h3 {
-  margin: 0 0 8px 0;
-  color: var(--color-text-primary);
-}
-
-.setupCard p {
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .splitPane {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }
-  
+
   .toolbar {
     flex-wrap: wrap;
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .toolbarGroup {
+    flex-wrap: wrap;
+  }
+
+  .glassSelect {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .workbenchContainer {
+    gap: var(--space-3);
+  }
+
+  .toolbar {
+    padding: var(--space-2);
+  }
+
+  .editorTextarea,
+  .resultContainer {
+    padding: var(--space-3);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .workbenchContainer {
+    animation: none;
+  }
+
+  .statusBadge {
+    animation: none;
+  }
+
+  .emptyState::before {
+    animation: none;
+  }
+
+  .editorPanel:focus-within {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .toolbar,
+  .editorPanel {
+    border-width: 2px;
+  }
+
+  .modTable th,
+  .modTable td {
+    border-width: 2px;
   }
 }
