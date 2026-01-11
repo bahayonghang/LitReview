@@ -1,32 +1,175 @@
+/* ==========================================================================
+   TemplateCard Component - 星辰图书馆设计系统
+   Celestial Library Design System
+   ========================================================================== */
+
+/* ==========================================================================
+   TEMPLATE CARD CONTAINER
+   ========================================================================== */
+
 .templateCard {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
-  background: var(--glass-bg);
-  backdrop-filter: var(--backdrop-blur-md);
-  -webkit-backdrop-filter: var(--backdrop-blur-md);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
   text-align: left;
   cursor: pointer;
-  transition: all var(--duration-200) var(--ease-out);
   overflow: hidden;
+  border-radius: var(--radius-xl);
+  transition: all var(--duration-200) var(--ease-out);
+
+  /* Celestial Glass Effect */
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.6) 0%,
+    rgba(30, 41, 59, 0.4) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.templateCardSelected {
-  background: var(--glass-bg-active);
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+/* Star pattern overlay */
+.templateCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+    circle at 20% 30%,
+    rgba(212, 175, 55, 0.03) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-300) var(--ease-out);
 }
 
+/* Top golden line */
+.templateCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.5) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-200) var(--ease-out);
+}
+
+/* Hover state */
 .templateCard:hover {
-  transform: translateY(-4px);
-  background: var(--glass-bg-hover);
-  border-color: var(--color-primary-300);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.7) 0%,
+    rgba(30, 41, 59, 0.5) 100%
+  );
 }
+
+.templateCard:hover::before {
+  opacity: 1;
+}
+
+.templateCard:hover::after {
+  opacity: 1;
+}
+
+/* Selected state */
+.templateCardSelected {
+  border-color: var(--starlight-400);
+  box-shadow:
+    0 0 0 2px rgba(212, 175, 55, 0.25),
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(212, 175, 55, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.7) 0%,
+    rgba(30, 41, 59, 0.5) 100%
+  );
+}
+
+.templateCardSelected::after {
+  opacity: 1;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--starlight-400) 50%,
+    transparent 100%
+  );
+}
+
+/* Light theme */
+[data-theme="light"] .templateCard {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(254, 249, 231, 0.7) 100%
+  );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .templateCard::before {
+  background-image: radial-gradient(
+    circle at 20% 30%,
+    rgba(167, 139, 29, 0.04) 1px,
+    transparent 1px
+  );
+}
+
+[data-theme="light"] .templateCard::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(167, 139, 29, 0.4) 50%,
+    transparent 100%
+  );
+}
+
+[data-theme="light"] .templateCard:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(254, 249, 231, 0.85) 100%
+  );
+  border-color: rgba(167, 139, 29, 0.35);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 0 24px rgba(167, 139, 29, 0.08);
+}
+
+[data-theme="light"] .templateCardSelected {
+  border-color: var(--starlight-500);
+  box-shadow:
+    0 0 0 2px rgba(167, 139, 29, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 32px rgba(167, 139, 29, 0.1);
+}
+
+/* ==========================================================================
+   TEMPLATE HEADER
+   ========================================================================== */
 
 .templateHeader {
   display: flex;
@@ -37,18 +180,62 @@
 .templateIcon {
   font-size: 2rem;
   line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+  transition: all var(--duration-200) var(--ease-out);
 }
 
+.templateCard:hover .templateIcon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
+}
+
+[data-theme="light"] .templateIcon {
+  filter: drop-shadow(0 0 6px rgba(167, 139, 29, 0.2));
+}
+
+[data-theme="light"] .templateCard:hover .templateIcon {
+  filter: drop-shadow(0 0 10px rgba(167, 139, 29, 0.35));
+}
+
+/* ==========================================================================
+   TEMPLATE BADGE
+   ========================================================================== */
+
 .templateBadge {
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-  color: white;
   font-size: 0.625rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 999px;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
+  text-transform: uppercase;
+
+  /* Celestial Golden Badge */
+  background: linear-gradient(
+    135deg,
+    var(--starlight-400) 0%,
+    var(--starlight-500) 100%
+  );
+  color: var(--cosmic-900);
+  box-shadow:
+    0 2px 8px rgba(212, 175, 55, 0.4),
+    0 0 12px rgba(212, 175, 55, 0.2);
 }
+
+[data-theme="light"] .templateBadge {
+  background: linear-gradient(
+    135deg,
+    var(--starlight-500) 0%,
+    var(--starlight-600) 100%
+  );
+  color: white;
+  box-shadow:
+    0 2px 8px rgba(167, 139, 29, 0.3),
+    0 0 8px rgba(167, 139, 29, 0.15);
+}
+
+/* ==========================================================================
+   TEMPLATE CONTENT
+   ========================================================================== */
 
 .templateContent {
   flex: 1;
@@ -63,15 +250,28 @@
   font-weight: 600;
   color: var(--color-text-primary);
   margin: 0;
+  transition: color var(--duration-200) var(--ease-out);
+}
+
+.templateCard:hover .templateName {
+  color: var(--starlight-300);
+}
+
+[data-theme="light"] .templateCard:hover .templateName {
+  color: var(--starlight-600);
 }
 
 .templateDescription {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
   flex: 1;
 }
+
+/* ==========================================================================
+   TEMPLATE TAGS
+   ========================================================================== */
 
 .templateTags {
   display: flex;
@@ -83,13 +283,49 @@
 .templateTag {
   font-size: 0.75rem;
   color: var(--color-text-muted);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
+  transition: all var(--duration-200) var(--ease-out);
+
+  /* Celestial Tag Style */
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .templateCard:hover .templateTag {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: var(--color-primary-200);
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.25);
+  color: var(--starlight-300);
+}
+
+[data-theme="light"] .templateTag {
+  background: rgba(167, 139, 29, 0.06);
+  border-color: rgba(167, 139, 29, 0.12);
+}
+
+[data-theme="light"] .templateCard:hover .templateTag {
+  background: rgba(167, 139, 29, 0.1);
+  border-color: rgba(167, 139, 29, 0.2);
+  color: var(--starlight-600);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .templateCard,
+  .templateIcon,
+  .templateName,
+  .templateTag {
+    transition: none;
+  }
+
+  .templateCard:hover {
+    transform: none;
+  }
+
+  .templateCard:hover .templateIcon {
+    transform: none;
+  }
 }

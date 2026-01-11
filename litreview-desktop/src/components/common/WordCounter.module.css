@@ -1,34 +1,166 @@
+/* ==========================================================================
+   WordCounter Component - 星辰图书馆设计系统
+   Celestial Library Design System
+   ========================================================================== */
+
+/* ==========================================================================
+   WORD COUNTER CONTAINER
+   ========================================================================== */
+
 .wordCounter {
   display: flex;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-4);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+
+  /* Celestial Glass Effect */
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.6) 0%,
+    rgba(30, 41, 59, 0.4) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
+
+[data-theme="light"] .wordCounter {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(254, 249, 231, 0.6) 100%
+  );
+  border-color: rgba(167, 139, 29, 0.2);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   COUNTER ITEMS
+   ========================================================================== */
 
 .wordCounterItem {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  position: relative;
 }
+
+/* Separator between items */
+.wordCounterItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: calc(-1 * var(--space-2));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 16px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+[data-theme="light"] .wordCounterItem:not(:last-child)::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(167, 139, 29, 0.25) 50%,
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   LABELS AND VALUES
+   ========================================================================== */
 
 .wordCounterLabel {
   color: var(--color-text-muted);
+  font-weight: 400;
+  transition: color var(--duration-200) var(--ease-out);
 }
 
 .wordCounterValue {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-semibold);
+  color: var(--starlight-400);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+  transition: all var(--duration-200) var(--ease-out);
 }
+
+[data-theme="light"] .wordCounterValue {
+  color: var(--starlight-600);
+  text-shadow: none;
+}
+
+/* Hover effect */
+.wordCounterItem:hover .wordCounterValue {
+  color: var(--starlight-300);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+[data-theme="light"] .wordCounterItem:hover .wordCounterValue {
+  color: var(--starlight-500);
+}
+
+/* ==========================================================================
+   COUNTER ICON (optional)
+   ========================================================================== */
+
+.wordCounterIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--starlight-400);
+  opacity: 0.7;
+}
+
+[data-theme="light"] .wordCounterIcon {
+  color: var(--starlight-600);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 @media (max-width: 640px) {
   .wordCounter {
     flex-direction: column;
     gap: var(--space-2);
     align-items: flex-start;
+  }
+
+  .wordCounterItem:not(:last-child)::after {
+    display: none;
+  }
+
+  .wordCounterItem:not(:last-child) {
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    width: 100%;
+  }
+
+  [data-theme="light"] .wordCounterItem:not(:last-child) {
+    border-bottom-color: rgba(167, 139, 29, 0.1);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .wordCounterValue,
+  .wordCounterLabel {
+    transition: none;
   }
 }
